@@ -14,7 +14,6 @@ int main() {
 	scrollable_menu_H SMH{ 100, 300 };
 
 	interpol<interpol_func::quadratic> pol{ sys::get_millis(), sys::get_millis() + 500 };
-
 	bool leftButtonPressed = false;
 
 	while (wind.isOpen()) {
@@ -24,6 +23,9 @@ int main() {
 				wind.close();
 			}
 			switch (eve.type) {
+			case sf::Event::Resized:
+				wind.setView(sf::View(sf::FloatRect(0.f, 0.f, eve.size.width, eve.size.height)));
+				break;
 			case sf::Event::Closed:
 				wind.close();
 				break;
