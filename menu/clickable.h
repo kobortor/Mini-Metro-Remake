@@ -12,5 +12,5 @@ protected:
 	virtual ~clickable();
 private:
 	int prevX, prevY;
-	bool initClick;
+	bool initClick = false;
 };
