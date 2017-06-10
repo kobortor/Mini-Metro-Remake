@@ -1,6 +1,8 @@
 #pragma once
 #include<SFML\Graphics\Drawable.hpp>
 #include"clickable.h"
+#include"map_button.h"
+#include<vector>
 
 class scrollable_menu_H : public sf::Drawable, public clickable {
 public:
@@ -10,5 +12,9 @@ public:
 	void onClick(int prevX, int prevY, int curX, int curY) override;
 	void onRelease(int prevX, int prevY, int curX, int curY) override;
 	int y1, y2;
-	int tmpX;
+protected:
+	std::vector<map_button> vec;
+private:
+	const static int margin = 30;
+	const static int padding = 20;
 };

@@ -51,7 +51,7 @@ int main() {
 			}
 		}
 		wind.clear();
-		txt.setString(std::to_string(sys::get_millis()) + "\n" + std::to_string(SMH.tmpX));
+		txt.setString(std::to_string(sys::get_millis()));
 		wind.draw(txt);
 		wind.draw(SMH);
 

@@ -1,7 +1,14 @@
 #include "scrollable_menu.h"
 #include<SFML\Graphics.hpp>
 
-scrollable_menu_H::scrollable_menu_H(int _y1, int _y2):y1(_y1), y2(_y2), tmpX(0) {}
+scrollable_menu_H::scrollable_menu_H(int _y1, int _y2) :y1(_y1), y2(_y2) {
+	int boxSz = y2 - y1 - 2 * margin;
+	int left = margin;
+	for (int a = 0; a < 10; a++) {
+		vec.push_back(map_button(left, y1 + margin, boxSz, boxSz, "asdfghjkl"));
+		left += boxSz + margin;
+	}
+}
 
 void scrollable_menu_H::draw(sf::RenderTarget &targ, sf::RenderStates) const {
 	sf::RectangleShape rect;
@@ -9,13 +16,11 @@ void scrollable_menu_H::draw(sf::RenderTarget &targ, sf::RenderStates) const {
 	rect.setSize(sf::Vector2f(10000, y2 - y1));
 	rect.setFillColor(sf::Color::Red);
 
-	sf::RectangleShape bar;
-	bar.setPosition(sf::Vector2f(tmpX, y1));
-	bar.setSize(sf::Vector2f(20, 100));
-	bar.setFillColor(sf::Color::Blue);
-
 	targ.draw(rect);
-	targ.draw(bar);
+
+	for (int a = 0; a < vec.size(); a++) {
+		targ.draw(vec[a]);
+	}
 }
 
 bool scrollable_menu_H::contained(int x, int y) {
@@ -25,7 +30,10 @@ bool scrollable_menu_H::contained(int x, int y) {
 void scrollable_menu_H::onClick(int prevX, int prevY, int curX, int curY) {
 	//TODO: shift the blocks as the mouse drags
 	//be sure to adjust for the block sizes, as that determines how much we can scroll
-	tmpX += curX - prevX;
+	int diffX = curX - prevX;
+	for (int a = 0; a < vec.size(); a++) {
+		vec[a].setPos(vec[a].getX() + diffX, vec[a].getY());
+	}
 }
 
 void scrollable_menu_H::onRelease(int prevX, int prevY, int curX, int curY) {
