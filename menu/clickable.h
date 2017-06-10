@@ -7,7 +7,8 @@ public:
 protected:
 	//default function is unclickable
 	virtual bool contained(int x, int y);
-	virtual void onClick(int prevX, int prevY, int curX, int curY) = 0;
+
+	virtual void onClick(int prevX, int prevY, int curX, int curY, bool initClick) = 0;
 	virtual void onRelease(int prevX, int prevY, int curX, int curY) = 0;
 	virtual ~clickable();
 private:

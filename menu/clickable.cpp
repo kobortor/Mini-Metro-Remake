@@ -8,7 +8,7 @@ void clickable::tryClick(int x, int y, bool isInitial) {
 			prevY = y;
 			initClick = true;
 		}
-		onClick(prevX, prevY, x, y);
+		onClick(prevX, prevY, x, y, isInitial);
 		prevX = x;
 		prevY = y;
 	}

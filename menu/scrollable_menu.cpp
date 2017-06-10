@@ -32,15 +32,20 @@ bool scrollable_menu_H::contained(int x, int y) {
 	return y1 <= y && y <= y2;
 }
 
-void scrollable_menu_H::onClick(int prevX, int prevY, int curX, int curY) {
+void scrollable_menu_H::onClick(int prevX, int prevY, int curX, int curY, bool isInitial) {
 	//TODO: shift the blocks as the mouse drags
 	//be sure to adjust for the block sizes, as that determines how much we can scroll
 	int diffX = curX - prevX;
 	for (int a = 0; a < vec.size(); a++) {
 		vec[a].setPos(vec[a].getX() + diffX, vec[a].getY());
+		vec[a].tryClick(curX, curY, isInitial);
 	}
 }
 
 void scrollable_menu_H::onRelease(int prevX, int prevY, int curX, int curY) {
-	onClick(prevX, prevY, curX, curY);
+	int diffX = curX - prevX;
+	for (int a = 0; a < vec.size(); a++) {
+		vec[a].setPos(vec[a].getX() + diffX, vec[a].getY());
+		vec[a].tryRelease(curX, curY);
+	}
 }
