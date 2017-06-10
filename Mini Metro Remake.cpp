@@ -32,17 +32,18 @@ int main() {
 			case sf::Event::MouseButtonPressed:
 				if (eve.mouseButton.button == sf::Mouse::Button::Left) {
 					leftButtonPressed = true;
-					SMH.tryclick(eve.mouseButton.x, eve.mouseButton.y, true);
+					SMH.tryClick(eve.mouseButton.x, eve.mouseButton.y, true);
 				}
 				break;
 			case sf::Event::MouseButtonReleased:
 				if (eve.mouseButton.button == sf::Mouse::Button::Left) {
 					leftButtonPressed = false;
+					SMH.tryRelease(eve.mouseButton.x, eve.mouseButton.y);
 				}
 				break;
 			case sf::Event::MouseMoved:
 				if (leftButtonPressed) {
-					SMH.tryclick(eve.mouseMove.x, eve.mouseMove.y, false);
+					SMH.tryClick(eve.mouseMove.x, eve.mouseMove.y, false);
 				}
 				break;
 			default:

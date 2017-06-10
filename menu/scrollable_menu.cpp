@@ -1,6 +1,5 @@
 #include "scrollable_menu.h"
 #include<SFML\Graphics.hpp>
-#include<iostream>
 
 scrollable_menu_H::scrollable_menu_H(int _y1, int _y2):y1(_y1), y2(_y2), tmpX(0) {}
 
@@ -27,4 +26,8 @@ void scrollable_menu_H::onClick(int prevX, int prevY, int curX, int curY) {
 	//TODO: shift the blocks as the mouse drags
 	//be sure to adjust for the block sizes, as that determines how much we can scroll
 	tmpX += curX - prevX;
+}
+
+void scrollable_menu_H::onRelease(int prevX, int prevY, int curX, int curY) {
+	onClick(prevX, prevY, curX, curY);
 }

@@ -1,15 +1,23 @@
 #include"clickable.h"
 
-void clickable::tryclick(int x, int y, bool isInitial) {
+void clickable::tryClick(int x, int y, bool isInitial) {
 	bool cont = contained(x, y);
-	if(cont){
+	if(cont || (!isInitial && initClick)){
 		if (isInitial) {
 			prevX = x;
 			prevY = y;
+			initClick = true;
 		}
 		onClick(prevX, prevY, x, y);
 		prevX = x;
 		prevY = y;
+	}
+}
+
+void clickable::tryRelease(int x, int y) {
+	if (initClick) {
+		onRelease(prevX, prevY, x, y);
+		initClick = false;
 	}
 }
 

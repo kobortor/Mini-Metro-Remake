@@ -8,6 +8,7 @@ public:
 	void draw(sf::RenderTarget&, sf::RenderStates) const override;
 	bool contained(int x, int y);
 	void onClick(int prevX, int prevY, int curX, int curY) override;
+	void onRelease(int prevX, int prevY, int curX, int curY) override;
 	int y1, y2;
 	int tmpX;
 };
