@@ -1,12 +1,17 @@
 #include "scrollable_menu.h"
 #include<SFML\Graphics.hpp>
+#include<fstream>
+#include<string>
+#include<iostream>
 
 scrollable_menu_H::scrollable_menu_H(int _y1, int _y2) :y1(_y1), y2(_y2) {
+	std::ifstream mapfile("assets/maplist.txt");
+	std::string mapname;
 	int boxSz = y2 - y1 - 2 * margin;
 	int left = margin;
-	for (int a = 0; a < 10; a++) {
-		vec.push_back(map_button(left, y1 + margin, boxSz, boxSz, "asdfghjkl"));
-		left += boxSz + margin;
+	while (getline(mapfile, mapname)){
+		vec.push_back(map_button(left, y1 + margin, boxSz, boxSz, mapname));
+		left += boxSz + padding;
 	}
 }
 

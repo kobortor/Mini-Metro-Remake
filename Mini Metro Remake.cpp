@@ -2,12 +2,12 @@
 #include"system\system_func.h"
 #include"interpol\interpol.h"
 #include"menu\scrollable_menu.h"
+#include"fonts.h"
 
 int main() {
-	sf::Font consola;
-	consola.loadFromFile("assets/fonts/consola.ttf");
+	font::consola.loadFromFile("assets/fonts/consola.ttf");
 	sf::Text txt;
-	txt.setFont(consola);
+	txt.setFont(font::consola);
 
 	sf::RenderWindow wind(sf::VideoMode(500, 500), "WTF");
 

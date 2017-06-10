@@ -12,9 +12,10 @@ public:
 	void onClick(int prevX, int prevY, int curX, int curY) override;
 	void onRelease(int prevX, int prevY, int curX, int curY) override;
 	int y1, y2;
+
+	const static int margin = 30;
+	const static int padding = 20;
 protected:
 	std::vector<map_button> vec;
 private:
-	const static int margin = 30;
-	const static int padding = 20;
 };
