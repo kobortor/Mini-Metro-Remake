@@ -1,5 +1,5 @@
 #include<SFML\Graphics.hpp>
-#include"system_func.h"
+#include"system\system_func.h"
 #include"interpol\interpol.h"
 
 int main() {
