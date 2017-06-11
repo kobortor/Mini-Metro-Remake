@@ -1,13 +1,12 @@
 #include"clickable.h"
 
 void clickable::tryClick(int x, int y, bool isInitial) {
-	bool cont = contained(x, y);
-	if(cont || (!isInitial && initClick)){
-		if (isInitial) {
-			prevX = x;
-			prevY = y;
-			initClick = true;
-		}
+	if (isInitial) {
+		prevX = x;
+		prevY = y;
+		initClick = contained(x, y);
+	}
+	if(initClick){
 		onClick(prevX, prevY, x, y, isInitial);
 		prevX = x;
 		prevY = y;
