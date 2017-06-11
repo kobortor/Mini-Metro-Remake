@@ -25,6 +25,7 @@ int main() {
 			switch (eve.type) {
 			case sf::Event::Resized:
 				main_window::getInstance().setView(sf::View(sf::FloatRect(0.f, 0.f, eve.size.width, eve.size.height)));
+				SMH.resize();
 				break;
 			case sf::Event::Closed:
 				main_window::getInstance().close();

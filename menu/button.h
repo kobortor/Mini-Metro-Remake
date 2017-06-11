@@ -7,6 +7,7 @@ public:
 	button(int _wid, int _ht);
 	button(int _x, int _y, int _wid, int _ht);
 	void setPos(int _x, int _y);
+	void setSize(int _wid, int _ht);
 	int getX();
 	int getY();
 	virtual void draw(sf::RenderTarget&, sf::RenderStates) const = 0;

@@ -8,6 +8,10 @@ void button::setPos(int _x, int _y) {
 	x = _x;
 	y = _y;
 }
+void button::setSize(int _wid, int _ht) {
+	wid = _wid;
+	ht = _ht;
+}
 
 int button::getX() { return x; }
 int button::getY() { return y; }
