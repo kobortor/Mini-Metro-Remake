@@ -2,6 +2,7 @@
 #include"system\system_func.h"
 #include"interpol\interpol.h"
 #include"menu\scrollable_menu.h"
+#include"game\main_game.h"
 #include"main_window.h"
 #include"fonts.h"
 
@@ -31,20 +32,26 @@ int main() {
 				main_window::getInstance().close();
 				break;
 			case sf::Event::MouseButtonPressed:
-				if (eve.mouseButton.button == sf::Mouse::Button::Left) {
-					leftButtonPressed = true;
-					SMH.tryClick(eve.mouseButton.x, eve.mouseButton.y, true);
+				if (main_window::RENDER_MODE == main_window::MAIN_MENU) {
+					if (eve.mouseButton.button == sf::Mouse::Button::Left) {
+						leftButtonPressed = true;
+						SMH.tryClick(eve.mouseButton.x, eve.mouseButton.y, true);
+					}
 				}
 				break;
 			case sf::Event::MouseButtonReleased:
-				if (eve.mouseButton.button == sf::Mouse::Button::Left) {
-					leftButtonPressed = false;
-					SMH.tryRelease(eve.mouseButton.x, eve.mouseButton.y);
+				if (main_window::RENDER_MODE == main_window::MAIN_MENU) {
+					if (eve.mouseButton.button == sf::Mouse::Button::Left) {
+						leftButtonPressed = false;
+						SMH.tryRelease(eve.mouseButton.x, eve.mouseButton.y);
+					}
 				}
 				break;
 			case sf::Event::MouseMoved:
-				if (leftButtonPressed) {
-					SMH.tryClick(eve.mouseMove.x, eve.mouseMove.y, false);
+				if (main_window::RENDER_MODE == main_window::MAIN_MENU) {
+					if (leftButtonPressed) {
+						SMH.tryClick(eve.mouseMove.x, eve.mouseMove.y, false);
+					}
 				}
 				break;
 			default:
@@ -52,9 +59,13 @@ int main() {
 			}
 		}
 		main_window::getInstance().clear();
-		txt.setString(std::to_string(sys::get_millis()));
-		main_window::getInstance().draw(txt);
-		main_window::getInstance().draw(SMH);
+		if (main_window::RENDER_MODE == main_window::MAIN_MENU) {
+			txt.setString(std::to_string(sys::get_millis()));
+			main_window::getInstance().draw(txt);
+			main_window::getInstance().draw(SMH);
+		} else if (main_window::RENDER_MODE == main_window::IN_GAME) {
+			main_game::render();
+		}
 
 		main_window::getInstance().display();
 	}
