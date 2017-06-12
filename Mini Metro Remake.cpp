@@ -8,11 +8,10 @@
 
 int main() {
 	font::consola.loadFromFile("assets/fonts/consola.ttf");
-	sf::Text txt;
-	txt.setFont(font::consola);
+
 	main_window::initialize();
 
-	scrollable_menu_H SMH{ 100, 300 };
+	
 
 	interpol<interpol_func::quadratic> pol{ sys::get_millis(), sys::get_millis() + 500 };
 	bool leftButtonPressed = false;
@@ -25,47 +24,25 @@ int main() {
 			}
 			switch (eve.type) {
 			case sf::Event::Resized:
-				main_window::getInstance().setView(sf::View(sf::FloatRect(0.f, 0.f, eve.size.width, eve.size.height)));
-				SMH.resize();
+				main_window::handle_resize(eve.size);
 				break;
 			case sf::Event::Closed:
 				main_window::getInstance().close();
 				break;
 			case sf::Event::MouseButtonPressed:
-				if (main_window::RENDER_MODE == main_window::MAIN_MENU) {
-					if (eve.mouseButton.button == sf::Mouse::Button::Left) {
-						leftButtonPressed = true;
-						SMH.tryClick(eve.mouseButton.x, eve.mouseButton.y, true);
-					}
-				}
+				main_window::handle_mouse_click(eve.mouseButton);
 				break;
 			case sf::Event::MouseButtonReleased:
-				if (main_window::RENDER_MODE == main_window::MAIN_MENU) {
-					if (eve.mouseButton.button == sf::Mouse::Button::Left) {
-						leftButtonPressed = false;
-						SMH.tryRelease(eve.mouseButton.x, eve.mouseButton.y);
-					}
-				}
+				main_window::handle_mouse_release(eve.mouseButton);
 				break;
 			case sf::Event::MouseMoved:
-				if (main_window::RENDER_MODE == main_window::MAIN_MENU) {
-					if (leftButtonPressed) {
-						SMH.tryClick(eve.mouseMove.x, eve.mouseMove.y, false);
-					}
-				}
+				main_window::handle_mouse_move(eve.mouseMove);
 				break;
 			default:
 				break;
 			}
 		}
-		main_window::getInstance().clear();
-		if (main_window::RENDER_MODE == main_window::MAIN_MENU) {
-			txt.setString(std::to_string(sys::get_millis()));
-			main_window::getInstance().draw(txt);
-			main_window::getInstance().draw(SMH);
-		} else if (main_window::RENDER_MODE == main_window::IN_GAME) {
-			main_game::render();
-		}
+		main_window::render();
 
 		main_window::getInstance().display();
 	}
