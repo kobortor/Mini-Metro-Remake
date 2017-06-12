@@ -12,4 +12,5 @@ protected:
 	std::string display_name;
 	std::string map_file_name;
 	bool isClicked = false;
+	bool moved = false;
 };

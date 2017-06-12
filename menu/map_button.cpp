@@ -30,10 +30,16 @@ void map_button::draw(sf::RenderTarget& targ, sf::RenderStates) const {
 
 void map_button::onClick(int prevX, int prevY, int curX, int curY, bool isInitial) {
 	isClicked = true;
+	if (isInitial) {
+		moved = false;
+	}
+	if (curX != prevX || curY != prevY) {
+		moved = true;
+	}
 }
 
 void map_button::onRelease(int prevX, int prevY, int curX, int curY) {
-	if (contained(curX, curY)) {
+	if (contained(curX, curY) && !moved) {
 		std::cout << "CLICK MAP " << display_name << "\n";
 		main_window::RENDER_MODE = main_window::IN_GAME;
 		main_game::initialize(new file_map_generator(map_file_name));
