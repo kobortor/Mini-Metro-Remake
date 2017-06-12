@@ -50,7 +50,12 @@ void main_window::handle_key_press(sf::Event::KeyEvent eve) {}
 void main_window::handle_key_release(sf::Event::KeyEvent eve) {}
 void main_window::handle_resize(sf::Event::SizeEvent eve) {
 	instance.setView(sf::View(sf::FloatRect(0.f, 0.f, eve.width, eve.height)));
-	map_menu.resize();
+	if (RENDER_MODE == MAIN_MENU) {
+		map_menu.resize();
+	} else if (RENDER_MODE == IN_GAME) {
+		main_game::resize();
+	}
+
 }
 
 void main_window::render() {
@@ -63,6 +68,7 @@ void main_window::render() {
 		instance.draw(txt);
 		instance.draw(map_menu);
 	} else if (main_window::RENDER_MODE == main_window::IN_GAME) {
+		main_game::update();
 		main_game::render();
 	}
 	instance.display();

@@ -11,9 +11,6 @@ int main() {
 
 	main_window::initialize();
 
-	
-
-	interpol<interpol_func::quadratic> pol{ sys::get_millis(), sys::get_millis() + 500 };
 	bool leftButtonPressed = false;
 
 	while (main_window::getInstance().isOpen()) {

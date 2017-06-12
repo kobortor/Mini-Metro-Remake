@@ -8,5 +8,6 @@ public:
 	file_map_generator(std::string file_name);
 	void update_until(long long game_tick);
 protected:
+	bool ticked = false;
 	std::ifstream fin;
 };
