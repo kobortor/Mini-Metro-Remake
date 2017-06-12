@@ -57,7 +57,7 @@ void main_window::render() {
 	sf::Text txt;
 	txt.setFont(font::consola);
 	txt.setString(std::to_string(sys::get_millis()));
-	main_window::getInstance().clear();
+	instance.clear();
 	if (RENDER_MODE == MAIN_MENU) {
 		txt.setString(std::to_string(sys::get_millis()));
 		instance.draw(txt);
@@ -65,4 +65,5 @@ void main_window::render() {
 	} else if (main_window::RENDER_MODE == main_window::IN_GAME) {
 		main_game::render();
 	}
+	instance.display();
 }

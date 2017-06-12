@@ -43,7 +43,5 @@ int main() {
 			}
 		}
 		main_window::render();
-
-		main_window::getInstance().display();
 	}
 }
