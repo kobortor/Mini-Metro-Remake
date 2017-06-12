@@ -7,8 +7,10 @@ station::station(float _relX, float _relY, STATION_TYPE _type):relX(_relX), relY
 }
 
 void station::resize() {
-	posX = relX * 500;
-	posY = relY * 500;
+	sf::IntRect bounds = main_game::getWindowBounds();
+
+	posX = bounds.left + bounds.width * relX;
+	posY = bounds.top + bounds.height * relX;
 }
 
 void station::draw(sf::RenderTarget& targ, sf::RenderStates) const {

@@ -37,6 +37,10 @@ void main_game::resize() {
 	}
 	background.setPosition(window_bounds.left, window_bounds.top);
 	background.setSize(sf::Vector2f(window_bounds.width, window_bounds.height));
+
+	for (station &stn : stations) {
+		stn.resize();
+	}
 }
 
 sf::IntRect main_game::getWindowBounds() {
