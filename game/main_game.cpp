@@ -7,26 +7,41 @@
 map_generator* main_game::map_gen = nullptr;
 time_t main_game::game_start_time = 0;
 std::vector<station> main_game::stations;
+sf::RectangleShape main_game::background;
+sf::IntRect main_game::window_bounds;
 
 void main_game::initialize(map_generator* _map_gen) {
 	game_start_time = sys::get_millis();
+	background.setFillColor(sf::Color(50,50,50));
 	map_gen = _map_gen;
+	resize();
 }
 void main_game::resize() {
 	sf::Vector2f bounds = getRelativeBounds();
 	//find which side is limiting
-	sf::Vector2u windowBounds = main_window::getInstance().getSize();
-	float calcWid = windowBounds.y * bounds.x / bounds.y;
-	float calcHt = windowBounds.x * bounds.y / bounds.x;
-	if (calcWid > windowBounds.x) {
-		//width is limiting
-		std::cout << "Width is limiting\n";
+	sf::Vector2u window = main_window::getInstance().getSize();
+	float calcWid = window.y * bounds.x / bounds.y;
+	float calcHt = window.x * bounds.y / bounds.x;
+	if (calcWid > window.x) {
+		window_bounds.width = calcHt * bounds.x / bounds.y;
+		window_bounds.height = calcHt;
+
+		window_bounds.top = window.y / 2 - window_bounds.height / 2;
+		window_bounds.left = 0;
 	} else {
-		//height is limiting
-		std::cout << "Height is limiting\n";
+		window_bounds.width = calcWid;
+		window_bounds.height = calcWid * bounds.y / bounds.x;
+
+		window_bounds.top = 0;
+		window_bounds.left = window.x / 2 - window_bounds.width / 2;
 	}
+	background.setPosition(window_bounds.left, window_bounds.top);
+	background.setSize(sf::Vector2f(window_bounds.width, window_bounds.height));
 }
 
+sf::IntRect main_game::getWindowBounds() {
+	return window_bounds;
+}
 void main_game::add_station(float _relX, float _relY, station::STATION_TYPE _type) {
 	stations.emplace_back(_relX, _relY, _type);
 }
@@ -41,6 +56,7 @@ sf::Vector2f main_game::getRelativeBounds() {
 	return map_gen->getRelativeBounds();
 }
 void main_game::render() {
+	main_window::getInstance().draw(background);
 	sf::Text txt;
 	txt.setFont(font::consola);
 	txt.setCharacterSize(20);
