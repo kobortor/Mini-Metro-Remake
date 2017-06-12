@@ -6,11 +6,13 @@
 #include"../main_window.h"
 
 scrollable_menu_H::scrollable_menu_H(int _y1, int _y2) :y1(_y1), y2(_y2) {
-	std::ifstream mapfile("assets/maplist.txt");
-	std::string mapname;
-	while (getline(mapfile, mapname)){
+	std::ifstream mapFile("assets/maplist.txt");
+	std::string mapName;
+	std::string mapFileName;
+	while (getline(mapFile, mapName)){
+		getline(mapFile, mapFileName);
 		//allow dummy sizes, will resize later
-		vec.push_back(map_button(0, 0, 1, 1, mapname));
+		vec.push_back(map_button(0, 0, 1, 1, mapName, mapFileName));
 	}
 	resize();
 }
