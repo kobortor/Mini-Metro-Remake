@@ -12,27 +12,6 @@ sf::RectangleShape main_game::background;
 sf::IntRect main_game::window_bounds;
 segment main_game::selected_segment;
 station* main_game::selected_station;
-const sf::Vector2f main_game::unit_direction[] = {
-	sf::Vector2f(0.f, -1.f),					//N
-	sf::Vector2f(1 / sqrtf(2), -1 / sqrtf(2)),	//NE
-	sf::Vector2f(1.f, 0.f),						//E
-	sf::Vector2f(1 / sqrtf(2), 1 / sqrtf(2)),	//SE
-	sf::Vector2f(0.f, 1.f),						//S
-	sf::Vector2f(-1 / sqrtf(2), 1 / sqrtf(2)),	//SW
-	sf::Vector2f(-1.f, 0.f),					//W
-	sf::Vector2f(-1 / sqrtf(2), -1 / sqrtf(2))	//NW
-};
-
-const std::string main_game::direction_names[] = {
-	"north",
-	"north-east",
-	"east",
-	"south-east",
-	"south",
-	"south-west",
-	"west",
-	"north-west"
-};
 
 decltype(main_game::CLICK_MODE) main_game::CLICK_MODE;
 
@@ -134,9 +113,9 @@ void main_game::handle_mouse_move(sf::Event::MouseMoveEvent eve) {
 
 		if (selected_segment.begin != selected_segment.end) {
 			int best_idx = 0;
-			float best = func::dot(selected_segment.end - selected_segment.begin, unit_direction[0]);
-			for (int a = 1; a < NUM_DIRECTIONS; a++) {
-				float nv = func::dot(selected_segment.end - selected_segment.begin, unit_direction[a]);
+			float best = func::dot(selected_segment.end - selected_segment.begin, segment::unit_direction[0]);
+			for (int a = 1; a < segment::NUM_DIRECTIONS; a++) {
+				float nv = func::dot(selected_segment.end - selected_segment.begin, segment::unit_direction[a]);
 				if (nv > best) {
 					best = nv;
 					best_idx = a;

@@ -35,23 +35,6 @@ protected:
 	static std::list<station> stations;
 	static time_t game_start_time;
 	static map_generator* map_gen;
-	
-	enum direction {
-		NORTH = 0,
-		NORTH_EAST = 1,
-		EAST = 2,
-		SOUTH_EAST = 3,
-		SOUTH = 4,
-		SOUTH_WEST = 5,
-		WEST = 6,
-		NORTH_WEST = 7,
-		NUM_DIRECTIONS = 8
-	};
-
-	//unit vectors in each of the 8 directions
-	const static sf::Vector2f unit_direction[NUM_DIRECTIONS];
-
-	const static std::string direction_names[NUM_DIRECTIONS];
 
 	static segment selected_segment;
 	static station* selected_station;
