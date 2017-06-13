@@ -31,4 +31,9 @@ protected:
 	static std::vector<station> stations;
 	static time_t game_start_time;
 	static map_generator* map_gen;
+
+
+
+	static bool mouse_button_pressed[sf::Mouse::ButtonCount];
+	static bool key_pressed[sf::Keyboard::KeyCount];
 };

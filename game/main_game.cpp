@@ -10,6 +10,9 @@ std::vector<station> main_game::stations;
 sf::RectangleShape main_game::background;
 sf::IntRect main_game::window_bounds;
 
+bool main_game::mouse_button_pressed[sf::Mouse::ButtonCount];
+bool main_game::key_pressed[sf::Keyboard::KeyCount];
+
 void main_game::initialize(map_generator* _map_gen) {
 	game_start_time = sys::get_millis();
 	background.setFillColor(sf::Color(50,50,50));
@@ -72,14 +75,17 @@ void main_game::render() {
 		main_window::get_instance().draw(stn);
 	}
 }
-
 void main_game::cleanup() {
 	delete map_gen;
 }
 
+void main_game::handle_mouse_click(sf::Event::MouseButtonEvent eve) {
 
-void main_game::handle_mouse_click(sf::Event::MouseButtonEvent eve) {}
+	mouse_button_pressed[eve.button] = true;
+}
 void main_game::handle_mouse_move(sf::Event::MouseMoveEvent eve) {}
-void main_game::handle_mouse_release(sf::Event::MouseButtonEvent eve) {}
+void main_game::handle_mouse_release(sf::Event::MouseButtonEvent eve) {
+	mouse_button_pressed[eve.button] = true;
+}
 void main_game::handle_key_press(sf::Event::KeyEvent eve) {}
 void main_game::handle_key_release(sf::Event::KeyEvent eve) {}
