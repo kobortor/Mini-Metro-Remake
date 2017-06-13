@@ -23,6 +23,7 @@ const std::string segment::direction_names[] = {
 };
 
 void segment::draw(sf::RenderTarget& targ, sf::RenderStates) const {
+	using std::min;
 	if (begin != end) {
 		sf::Vector2f mid = begin;
 		float diffX = abs(end.x - begin.x);
@@ -33,21 +34,29 @@ void segment::draw(sf::RenderTarget& targ, sf::RenderStates) const {
 			mid.y -= diffY - diffX;
 			break;
 		case NORTH_EAST:
-			mid.x -= std::min(diffX, diffY);
-			mid.y += std::min(diffX, diffY);
+			mid.x += min(diffX, diffY);
+			mid.y -= min(diffX, diffY);
 			break;
 		case EAST:
 			mid.x += diffX - diffY;
 			break;
 		case SOUTH_EAST:
+			mid.x += min(diffX, diffY);
+			mid.y += min(diffX, diffY);
 			break;
 		case SOUTH:
+			mid.y += diffY - diffX;
 			break;
 		case SOUTH_WEST:
+			mid.x -= min(diffX, diffY);
+			mid.y += min(diffX, diffY);
 			break;
 		case WEST:
+			mid.x -= diffX - diffY;
 			break;
 		case NORTH_WEST:
+			mid.x -= min(diffX, diffY);
+			mid.y -= min(diffX, diffY);
 			break;
 		default:
 			break;
