@@ -11,6 +11,7 @@ public:
 	void resize();
 	void draw(sf::RenderTarget&, sf::RenderStates) const override;
 	bool contained(int x, int y);
+	sf::Vector2i get_pos();
 protected:
 
 	STATION_TYPE type;

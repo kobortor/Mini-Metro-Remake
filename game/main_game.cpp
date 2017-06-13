@@ -9,6 +9,8 @@ time_t main_game::game_start_time = 0;
 std::list<station> main_game::stations;
 sf::RectangleShape main_game::background;
 sf::IntRect main_game::window_bounds;
+segment main_game::selected_segment;
+station* main_game::selected_station;
 
 decltype(main_game::CLICK_MODE) main_game::CLICK_MODE;
 
@@ -73,6 +75,10 @@ void main_game::render() {
 	txt.setPosition(30, 30);
 	main_window::get_instance().draw(txt);
 
+	if (CLICK_MODE == LINE_EDIT_STATION) {
+		main_window::get_instance().draw(selected_segment);
+	}
+
 	for (const station &stn : stations) {
 		main_window::get_instance().draw(stn);
 	}
@@ -84,14 +90,22 @@ void main_game::cleanup() {
 void main_game::handle_mouse_click(sf::Event::MouseButtonEvent eve) {
 	for (station &stn : stations) {
 		if (stn.contained(eve.x, eve.y)) {
-			std::cout << "Contained!\n";
+			CLICK_MODE = LINE_EDIT_STATION;
+			selected_station = &stn;
+			selected_segment.begin = sf::Vector2f(stn.get_pos());
+			selected_segment.end = sf::Vector2f(stn.get_pos());
 		}
 	}
 
 	mouse_button_pressed[eve.button] = true;
 }
-void main_game::handle_mouse_move(sf::Event::MouseMoveEvent eve) {}
+void main_game::handle_mouse_move(sf::Event::MouseMoveEvent eve) {
+	if (CLICK_MODE == LINE_EDIT_STATION) {
+		selected_segment.end = sf::Vector2f(eve.x, eve.y);
+	}
+}
 void main_game::handle_mouse_release(sf::Event::MouseButtonEvent eve) {
+	CLICK_MODE = NONE;
 	mouse_button_pressed[eve.button] = true;
 }
 void main_game::handle_key_press(sf::Event::KeyEvent eve) {}

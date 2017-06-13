@@ -38,6 +38,8 @@ void main_window::handle_mouse_move(sf::Event::MouseMoveEvent eve) {
 		if (mouse_button_pressed[sf::Mouse::Button::Left]) {
 			map_menu.try_click(eve.x, eve.y, false);
 		}
+	} else if (RENDER_MODE == IN_GAME) {
+		main_game::handle_mouse_move(eve);
 	}
 }
 void main_window::handle_mouse_release(sf::Event::MouseButtonEvent eve) {
@@ -46,6 +48,8 @@ void main_window::handle_mouse_release(sf::Event::MouseButtonEvent eve) {
 		if (eve.button == sf::Mouse::Button::Left) {
 			map_menu.try_release(eve.x, eve.y);
 		}
+	} else if (RENDER_MODE == IN_GAME) {
+		main_game::handle_mouse_release(eve);
 	}
 }
 void main_window::handle_key_press(sf::Event::KeyEvent eve) {}

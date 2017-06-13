@@ -2,6 +2,7 @@
 #include"map_generator.h"
 #include<SFML\Graphics.hpp>
 #include"station.h"
+#include"segment.h"
 #include<list>
 
 class main_game {
@@ -31,7 +32,9 @@ protected:
 	static std::list<station> stations;
 	static time_t game_start_time;
 	static map_generator* map_gen;
-
+	
+	static segment selected_segment;
+	static station* selected_station;
 	static enum {NONE, LINE_EDIT, LINE_EDIT_STATION } CLICK_MODE;
 
 	static bool mouse_button_pressed[sf::Mouse::ButtonCount];

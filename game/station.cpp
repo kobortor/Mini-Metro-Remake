@@ -15,8 +15,8 @@ void station::resize() {
 }
 
 void station::draw(sf::RenderTarget& targ, sf::RenderStates) const {
-	sf::CircleShape circ{ 20 };
-	circ.setPosition(posX - 10, posY - 10);
+	sf::CircleShape circ{ 15 };
+	circ.setPosition(posX - 15, posY - 15);
 	circ.setFillColor(sf::Color::White);
 	targ.draw(circ);
 }
@@ -25,4 +25,8 @@ bool station::contained(int x, int y) {
 	int diffX = x - posX;
 	int diffY = y - posY;
 	return diffX * diffX + diffY * diffY <= 30 * 30;
+}
+
+sf::Vector2i station::get_pos() {
+	return{ posX, posY };
 }
