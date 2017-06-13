@@ -6,7 +6,7 @@
 
 map_generator* main_game::map_gen = nullptr;
 time_t main_game::game_start_time = 0;
-std::vector<station> main_game::stations;
+std::list<station> main_game::stations;
 sf::RectangleShape main_game::background;
 sf::IntRect main_game::window_bounds;
 

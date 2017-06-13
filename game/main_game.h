@@ -2,7 +2,7 @@
 #include"map_generator.h"
 #include<SFML\Graphics.hpp>
 #include"station.h"
-#include<vector>
+#include<list>
 
 class main_game {
 public:
@@ -28,7 +28,7 @@ public:
 protected:
 	static sf::IntRect window_bounds;
 	static sf::RectangleShape background;
-	static std::vector<station> stations;
+	static std::list<station> stations;
 	static time_t game_start_time;
 	static map_generator* map_gen;
 
