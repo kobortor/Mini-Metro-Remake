@@ -20,6 +20,9 @@ public:
 	static void render(); //always render to main window
 	static void cleanup();
 
+	static float get_station_radius();
+	static float get_station_mouse_limit();
+
 	static void handle_mouse_click(sf::Event::MouseButtonEvent eve);
 	static void handle_mouse_move(sf::Event::MouseMoveEvent eve);
 	static void handle_mouse_release(sf::Event::MouseButtonEvent eve);
@@ -33,6 +36,19 @@ protected:
 	static time_t game_start_time;
 	static map_generator* map_gen;
 	
+	enum direction {
+		NORTH = 0,
+		NORTH_EAST = 1,
+		EAST = 2,
+		SOUTH_EAST = 3,
+		SOUTH = 4,
+		SOUTH_WEST = 5,
+		WEST = 6,
+		NORTH_WEST = 7,
+		NUM_DIRECTIONS = 8
+	};
+	const static sf::Vector2f unit_direction[NUM_DIRECTIONS];
+
 	static segment selected_segment;
 	static station* selected_station;
 	static enum {NONE, LINE_EDIT, LINE_EDIT_STATION } CLICK_MODE;

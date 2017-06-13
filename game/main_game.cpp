@@ -11,6 +11,16 @@ sf::RectangleShape main_game::background;
 sf::IntRect main_game::window_bounds;
 segment main_game::selected_segment;
 station* main_game::selected_station;
+const sf::Vector2f main_game::unit_direction[] = {
+	sf::Vector2f(0.f, -1.f),					//N
+	sf::Vector2f(1 / sqrtf(2), -1 / sqrtf(2)),	//NE
+	sf::Vector2f(1.f, 0.f),						//E
+	sf::Vector2f(1 / sqrtf(2), 1 / sqrtf(2)),	//SE
+	sf::Vector2f(0.f, 1.f),						//S
+	sf::Vector2f(-1 / sqrtf(2), 1 / sqrtf(2)),	//SW
+	sf::Vector2f(-1.f, 0.f),					//W
+	sf::Vector2f(-1 / sqrtf(2), -1 / sqrtf(2))	//NW
+};
 
 decltype(main_game::CLICK_MODE) main_game::CLICK_MODE;
 
@@ -86,6 +96,12 @@ void main_game::render() {
 void main_game::cleanup() {
 	delete map_gen;
 }
+float main_game::get_station_radius() {
+	return 20;
+}
+float main_game::get_station_mouse_limit() {
+	return 30;
+}
 
 void main_game::handle_mouse_click(sf::Event::MouseButtonEvent eve) {
 	for (station &stn : stations) {
@@ -93,6 +109,7 @@ void main_game::handle_mouse_click(sf::Event::MouseButtonEvent eve) {
 			CLICK_MODE = LINE_EDIT_STATION;
 			selected_station = &stn;
 			selected_segment.begin = sf::Vector2f(stn.get_pos());
+			selected_segment.mid = sf::Vector2f(stn.get_pos());
 			selected_segment.end = sf::Vector2f(stn.get_pos());
 		}
 	}

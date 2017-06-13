@@ -15,16 +15,18 @@ void station::resize() {
 }
 
 void station::draw(sf::RenderTarget& targ, sf::RenderStates) const {
-	sf::CircleShape circ{ 15 };
-	circ.setPosition(posX - 15, posY - 15);
+	float radius = main_game::get_station_radius();
+	sf::CircleShape circ{ radius };
+	circ.setPosition(posX - radius, posY - radius);
 	circ.setFillColor(sf::Color::White);
 	targ.draw(circ);
 }
 
 bool station::contained(int x, int y) {
+	float lim = main_game::get_station_mouse_limit();
 	int diffX = x - posX;
 	int diffY = y - posY;
-	return diffX * diffX + diffY * diffY <= 30 * 30;
+	return diffX * diffX + diffY * diffY <= lim * lim;
 }
 
 sf::Vector2i station::get_pos() {
