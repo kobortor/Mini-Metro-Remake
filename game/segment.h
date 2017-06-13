@@ -1,5 +1,6 @@
 #pragma once
 #include<SFML\Graphics.hpp>
+#include"station.h"
 
 /*
 --------------------------------
@@ -27,6 +28,7 @@ Y---/
 class segment : public sf::Drawable {
 public:
 	sf::Vector2f begin, end;
+	station *orig = nullptr, *dest = nullptr;
 	void draw(sf::RenderTarget&, sf::RenderStates) const override;
 
 	enum direction {

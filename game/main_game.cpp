@@ -7,13 +7,17 @@
 
 map_generator* main_game::map_gen = nullptr;
 time_t main_game::game_start_time = 0;
+std::list<metro_line> main_game::lines;
 std::list<station> main_game::stations;
 sf::RectangleShape main_game::background;
 sf::IntRect main_game::window_bounds;
-segment main_game::selected_segment;
-station* main_game::selected_station;
+std::list<metro_line>::iterator main_game::edit_line;
+segment main_game::edit_seg;
 
 decltype(main_game::CLICK_MODE) main_game::CLICK_MODE;
+
+int main_game::prvX = -1;
+int main_game::prvY = -1;
 
 bool main_game::mouse_button_pressed[sf::Mouse::ButtonCount];
 bool main_game::key_pressed[sf::Keyboard::KeyCount];
@@ -76,8 +80,10 @@ void main_game::render() {
 	txt.setPosition(30, 30);
 	main_window::get_instance().draw(txt);
 
-	if (CLICK_MODE == LINE_EDIT_STATION) {
-		main_window::get_instance().draw(selected_segment);
+	if (CLICK_MODE == LINE_EDIT_FRONT || CLICK_MODE == LINE_EDIT_BACK) {
+		for (const metro_line &ml : lines) {
+			main_window::get_instance().draw(ml);
+		}
 	}
 
 	for (const station &stn : stations) {
@@ -95,24 +101,37 @@ float main_game::get_station_mouse_limit() {
 }
 
 void main_game::handle_mouse_click(sf::Event::MouseButtonEvent eve) {
+	if (prvX == -1 && prvY == -1) {
+		prvX = eve.x;
+		prvY = eve.y;
+	}
+
 	for (station &stn : stations) {
 		if (stn.contained(eve.x, eve.y)) {
-			CLICK_MODE = LINE_EDIT_STATION;
-			selected_station = &stn;
-			selected_segment.begin = sf::Vector2f(stn.get_pos());
-			selected_segment.end = sf::Vector2f(stn.get_pos());
+			CLICK_MODE = LINE_EDIT_BACK;
+			edit_seg = segment();
+			edit_seg.begin = sf::Vector2f(stn.get_pos());
+			lines.push_back(metro_line(&stn));
+			break;
 		}
 	}
 
 	mouse_button_pressed[eve.button] = true;
+
+	prvX = eve.x;
+	prvY = eve.y;
 }
 void main_game::handle_mouse_move(sf::Event::MouseMoveEvent eve) {
-	if (CLICK_MODE == LINE_EDIT_STATION) {
-		selected_segment.end = sf::Vector2f(eve.x, eve.y);
+	if (prvX == -1 && prvY == -1) {
+		prvX = eve.x;
+		prvY = eve.y;
+	}
 
-		if (selected_segment.begin != selected_segment.end) {
-			sf::Vector2f diff = selected_segment.end - selected_segment.begin;
-			auto& idx = selected_segment.dir;
+	if (CLICK_MODE == LINE_EDIT_FRONT || CLICK_MODE == LINE_EDIT_BACK) {
+
+		if (edit_seg.begin != edit_seg.end) {
+			sf::Vector2f diff = edit_seg.end - edit_seg.begin;
+			auto& idx = edit_seg.dir;
 			//calculate the values
 			
 			while (func::dot(diff, segment::unit_direction[(idx + 2) % segment::NUM_DIRECTIONS]) >
@@ -125,11 +144,33 @@ void main_game::handle_mouse_move(sf::Event::MouseMoveEvent eve) {
 				idx = segment::direction((idx + segment::NUM_DIRECTIONS - 1) % segment::NUM_DIRECTIONS); //enums make it difficult to increment
 			}
 		}
+
+		station *hover = nullptr;
+		for (station &stn : stations) {
+			if (stn.contained(eve.x, eve.y)) {
+				hover = &stn;
+			}
+		}
+		//write logic for adding and removing stations
+
+		if (hover != edit_line->stations.back()) {
+			
+		}
 	}
+	prvX = eve.x;
+	prvY = eve.y;
 }
 void main_game::handle_mouse_release(sf::Event::MouseButtonEvent eve) {
+	if (prvX == -1 && prvY == -1) {
+		prvX = eve.x;
+		prvY = eve.y;
+	}
+
 	CLICK_MODE = NONE;
-	mouse_button_pressed[eve.button] = true;
+	mouse_button_pressed[eve.button] = false;
+
+	prvX = eve.x;
+	prvY = eve.y;
 }
 void main_game::handle_key_press(sf::Event::KeyEvent eve) {}
 void main_game::handle_key_release(sf::Event::KeyEvent eve) {}

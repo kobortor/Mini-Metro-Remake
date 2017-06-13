@@ -1,9 +1,7 @@
 #pragma once
 #include"map_generator.h"
 #include<SFML\Graphics.hpp>
-#include"station.h"
-#include"segment.h"
-#include<list>
+#include"metro_line.h"
 
 class main_game {
 public:
@@ -32,14 +30,16 @@ public:
 protected:
 	static sf::IntRect window_bounds;
 	static sf::RectangleShape background;
+	static std::list<metro_line> lines;
 	static std::list<station> stations;
 	static time_t game_start_time;
 	static map_generator* map_gen;
 
-	static segment selected_segment;
-	static station* selected_station;
-	static enum {NONE, LINE_EDIT, LINE_EDIT_STATION } CLICK_MODE;
+	static std::list<metro_line>::iterator edit_line;
+	static segment edit_seg;
+	static enum {NONE, LINE_EDIT_FRONT, LINE_EDIT_BACK } CLICK_MODE;
 
+	static int prvX, prvY;
 	static bool mouse_button_pressed[sf::Mouse::ButtonCount];
 	static bool key_pressed[sf::Keyboard::KeyCount];
 };
