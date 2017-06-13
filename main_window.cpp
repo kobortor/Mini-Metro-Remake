@@ -27,14 +27,14 @@ void main_window::handle_mouse_click(sf::Event::MouseButtonEvent eve) {
 	mouse_button_pressed[eve.button] = true;
 	if (RENDER_MODE == MAIN_MENU) {
 		if (eve.button == sf::Mouse::Button::Left) {
-			map_menu.tryClick(eve.x, eve.y, true);
+			map_menu.try_click(eve.x, eve.y, true);
 		}
 	}
 }
 void main_window::handle_mouse_move(sf::Event::MouseMoveEvent eve) {
 	if (RENDER_MODE == MAIN_MENU) {
 		if (mouse_button_pressed[sf::Mouse::Button::Left]) {
-			map_menu.tryClick(eve.x, eve.y, false);
+			map_menu.try_click(eve.x, eve.y, false);
 		}
 	}
 }
@@ -42,7 +42,7 @@ void main_window::handle_mouse_release(sf::Event::MouseButtonEvent eve) {
 	mouse_button_pressed[eve.button] = false;
 	if (RENDER_MODE == MAIN_MENU) {
 		if (eve.button == sf::Mouse::Button::Left) {
-			map_menu.tryRelease(eve.x, eve.y);
+			map_menu.try_release(eve.x, eve.y);
 		}
 	}
 }

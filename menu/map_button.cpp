@@ -28,7 +28,7 @@ void map_button::draw(sf::RenderTarget& targ, sf::RenderStates) const {
 	targ.draw(txt);
 }
 
-void map_button::onClick(int prevX, int prevY, int curX, int curY, bool isInitial) {
+void map_button::on_click(int prevX, int prevY, int curX, int curY, bool isInitial) {
 	isClicked = true;
 	if (isInitial) {
 		moved = false;
@@ -38,7 +38,7 @@ void map_button::onClick(int prevX, int prevY, int curX, int curY, bool isInitia
 	}
 }
 
-void map_button::onRelease(int prevX, int prevY, int curX, int curY) {
+void map_button::on_release(int prevX, int prevY, int curX, int curY) {
 	if (contained(curX, curY) && !moved) {
 		std::cout << "CLICK MAP " << display_name << "\n";
 		main_window::RENDER_MODE = main_window::IN_GAME;

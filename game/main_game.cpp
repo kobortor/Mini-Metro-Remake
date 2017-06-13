@@ -80,6 +80,9 @@ void main_game::cleanup() {
 }
 
 void main_game::handle_mouse_click(sf::Event::MouseButtonEvent eve) {
+	for (station &stn : stations) {
+		
+	}
 
 	mouse_button_pressed[eve.button] = true;
 }
