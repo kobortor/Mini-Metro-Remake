@@ -7,7 +7,7 @@ public:
 	//this should not be created as an object
 	main_window() = delete;
 	static void initialize();
-	static sf::RenderWindow& getInstance();
+	static sf::RenderWindow& get_instance();
 	enum {
 		MAIN_MENU,
 		IN_GAME,

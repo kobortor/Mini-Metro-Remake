@@ -17,9 +17,9 @@ void main_game::initialize(map_generator* _map_gen) {
 	resize();
 }
 void main_game::resize() {
-	sf::Vector2f bounds = getRelativeBounds();
+	sf::Vector2f bounds = get_relative_bounds();
 	//find which side is limiting
-	sf::Vector2u window = main_window::getInstance().getSize();
+	sf::Vector2u window = main_window::get_instance().getSize();
 	float calcWid = window.y * bounds.x / bounds.y;
 	float calcHt = window.x * bounds.y / bounds.x;
 	if (calcWid > window.x) {
@@ -43,7 +43,7 @@ void main_game::resize() {
 	}
 }
 
-sf::IntRect main_game::getWindowBounds() {
+sf::IntRect main_game::get_window_bounds() {
 	return window_bounds;
 }
 void main_game::add_station(float _relX, float _relY, station::STATION_TYPE _type) {
@@ -56,23 +56,30 @@ time_t main_game::get_game_time() {
 void main_game::update() {
 	map_gen->update_until(get_game_time());
 }
-sf::Vector2f main_game::getRelativeBounds() {
-	return map_gen->getRelativeBounds();
+sf::Vector2f main_game::get_relative_bounds() {
+	return map_gen->get_relative_bounds();
 }
 void main_game::render() {
-	main_window::getInstance().draw(background);
+	main_window::get_instance().draw(background);
 	sf::Text txt;
 	txt.setFont(font::consola);
 	txt.setCharacterSize(20);
 	txt.setString("YOU ARE PLAYING THE GAME NOW!!!");
 	txt.setPosition(30, 30);
-	main_window::getInstance().draw(txt);
+	main_window::get_instance().draw(txt);
 
 	for (const station &stn : stations) {
-		main_window::getInstance().draw(stn);
+		main_window::get_instance().draw(stn);
 	}
 }
 
 void main_game::cleanup() {
 	delete map_gen;
 }
+
+
+void main_game::handle_mouse_click(sf::Event::MouseButtonEvent eve) {}
+void main_game::handle_mouse_move(sf::Event::MouseMoveEvent eve) {}
+void main_game::handle_mouse_release(sf::Event::MouseButtonEvent eve) {}
+void main_game::handle_key_press(sf::Event::KeyEvent eve) {}
+void main_game::handle_key_release(sf::Event::KeyEvent eve) {}

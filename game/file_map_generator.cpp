@@ -56,14 +56,11 @@ file_map_generator::file_map_generator(std::string file_name) {
 	}
 }
 
-sf::Vector2f file_map_generator::getRelativeBounds() {
+sf::Vector2f file_map_generator::get_relative_bounds() {
 	return rel_bounds;
 }
 
 void file_map_generator::update_until(long long game_tick) {
-	if (game_tick > 5000) {
-		int x = 3;
-	}
 	while (!points.empty() && game_tick - last_update > 5000) {
 		last_update += 5000;
 		sf::Vector2f to_add = points.front();

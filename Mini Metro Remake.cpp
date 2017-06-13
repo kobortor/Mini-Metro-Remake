@@ -13,18 +13,18 @@ int main() {
 
 	bool leftButtonPressed = false;
 
-	while (main_window::getInstance().isOpen()) {
+	while (main_window::get_instance().isOpen()) {
 		sf::Event eve;
-		while (main_window::getInstance().pollEvent(eve)) {
+		while (main_window::get_instance().pollEvent(eve)) {
 			if (eve.type == sf::Event::Closed) {
-				main_window::getInstance().close();
+				main_window::get_instance().close();
 			}
 			switch (eve.type) {
 			case sf::Event::Resized:
 				main_window::handle_resize(eve.size);
 				break;
 			case sf::Event::Closed:
-				main_window::getInstance().close();
+				main_window::get_instance().close();
 				break;
 			case sf::Event::MouseButtonPressed:
 				main_window::handle_mouse_click(eve.mouseButton);

@@ -7,7 +7,7 @@ station::station(float _relX, float _relY, STATION_TYPE _type):relX(_relX), relY
 }
 
 void station::resize() {
-	sf::IntRect bounds = main_game::getWindowBounds();
+	sf::IntRect bounds = main_game::get_window_bounds();
 
 	posX = bounds.left + bounds.width * relX;
 	posY = bounds.top + bounds.height * relX;

@@ -9,8 +9,8 @@ public:
 	main_game() = delete; //singleton
 
 	static void initialize(map_generator* _map_gen);
-	static sf::Vector2f getRelativeBounds();
-	static sf::IntRect getWindowBounds(); //gets the position within the window
+	static sf::Vector2f get_relative_bounds();
+	static sf::IntRect get_window_bounds(); //gets the position within the window
 	static void resize();
 
 	static void add_station(float _relX, float _relY, station::STATION_TYPE _type);
@@ -18,6 +18,13 @@ public:
 	static void update();
 	static void render(); //always render to main window
 	static void cleanup();
+
+	static void handle_mouse_click(sf::Event::MouseButtonEvent eve);
+	static void handle_mouse_move(sf::Event::MouseMoveEvent eve);
+	static void handle_mouse_release(sf::Event::MouseButtonEvent eve);
+	static void handle_key_press(sf::Event::KeyEvent eve);
+	static void handle_key_release(sf::Event::KeyEvent eve);
+
 protected:
 	static sf::IntRect window_bounds;
 	static sf::RectangleShape background;

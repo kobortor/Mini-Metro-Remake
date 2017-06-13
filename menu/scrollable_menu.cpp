@@ -53,7 +53,7 @@ void scrollable_menu_H::onRelease(int prevX, int prevY, int curX, int curY) {
 }
 
 void scrollable_menu_H::resize() {
-	sf::Vector2u windSz = main_window::getInstance().getSize();
+	sf::Vector2u windSz = main_window::get_instance().getSize();
 	y1 = windSz.y * 0.15;
 	y2 = windSz.y * (1 - 0.15);
 

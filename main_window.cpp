@@ -19,7 +19,7 @@ void main_window::initialize() {
 	RENDER_MODE = MAIN_MENU;
 }
 
-sf::RenderWindow& main_window::getInstance() {
+sf::RenderWindow& main_window::get_instance() {
 	return instance;
 }
 
