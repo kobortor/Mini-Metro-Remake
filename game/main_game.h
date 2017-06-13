@@ -47,7 +47,11 @@ protected:
 		NORTH_WEST = 7,
 		NUM_DIRECTIONS = 8
 	};
+
+	//unit vectors in each of the 8 directions
 	const static sf::Vector2f unit_direction[NUM_DIRECTIONS];
+
+	const static std::string direction_names[NUM_DIRECTIONS];
 
 	static segment selected_segment;
 	static station* selected_station;

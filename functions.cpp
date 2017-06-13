@@ -18,6 +18,6 @@ namespace func {
 		return A.x * B.y - A.y * B.x;
 	}
 	float dot(sf::Vector2f A, sf::Vector2f B) {
-		return A.x*B.x + A.y + B.y;
+		return A.x * B.x + A.y * B.y;
 	}
 }

@@ -3,6 +3,7 @@
 #include"../fonts.h"
 #include<iostream>
 #include"../system/system_func.h"
+#include"../functions.h"
 
 map_generator* main_game::map_gen = nullptr;
 time_t main_game::game_start_time = 0;
@@ -20,6 +21,17 @@ const sf::Vector2f main_game::unit_direction[] = {
 	sf::Vector2f(-1 / sqrtf(2), 1 / sqrtf(2)),	//SW
 	sf::Vector2f(-1.f, 0.f),					//W
 	sf::Vector2f(-1 / sqrtf(2), -1 / sqrtf(2))	//NW
+};
+
+const std::string main_game::direction_names[] = {
+	"north",
+	"north-east",
+	"east",
+	"south-east",
+	"south",
+	"south-west",
+	"west",
+	"north-west"
 };
 
 decltype(main_game::CLICK_MODE) main_game::CLICK_MODE;
@@ -119,6 +131,18 @@ void main_game::handle_mouse_click(sf::Event::MouseButtonEvent eve) {
 void main_game::handle_mouse_move(sf::Event::MouseMoveEvent eve) {
 	if (CLICK_MODE == LINE_EDIT_STATION) {
 		selected_segment.end = sf::Vector2f(eve.x, eve.y);
+
+		if (selected_segment.begin != selected_segment.end) {
+			int best_idx = 0;
+			float best = func::dot(selected_segment.end - selected_segment.begin, unit_direction[0]);
+			for (int a = 1; a < NUM_DIRECTIONS; a++) {
+				float nv = func::dot(selected_segment.end - selected_segment.begin, unit_direction[a]);
+				if (nv > best) {
+					best = nv;
+					best_idx = a;
+				}
+			}
+		}
 	}
 }
 void main_game::handle_mouse_release(sf::Event::MouseButtonEvent eve) {
