@@ -100,7 +100,6 @@ void main_game::handle_mouse_click(sf::Event::MouseButtonEvent eve) {
 			CLICK_MODE = LINE_EDIT_STATION;
 			selected_station = &stn;
 			selected_segment.begin = sf::Vector2f(stn.get_pos());
-			selected_segment.mid = sf::Vector2f(stn.get_pos());
 			selected_segment.end = sf::Vector2f(stn.get_pos());
 		}
 	}
@@ -112,14 +111,18 @@ void main_game::handle_mouse_move(sf::Event::MouseMoveEvent eve) {
 		selected_segment.end = sf::Vector2f(eve.x, eve.y);
 
 		if (selected_segment.begin != selected_segment.end) {
-			int best_idx = 0;
-			float best = func::dot(selected_segment.end - selected_segment.begin, segment::unit_direction[0]);
-			for (int a = 1; a < segment::NUM_DIRECTIONS; a++) {
-				float nv = func::dot(selected_segment.end - selected_segment.begin, segment::unit_direction[a]);
-				if (nv > best) {
-					best = nv;
-					best_idx = a;
-				}
+			sf::Vector2f diff = selected_segment.end - selected_segment.begin;
+			auto& idx = selected_segment.dir;
+			//calculate the values
+			
+			while (func::dot(diff, segment::unit_direction[(idx + 2) % segment::NUM_DIRECTIONS]) >
+				func::dot(diff, segment::unit_direction[idx])) {
+				idx = segment::direction((idx + 1) % segment::NUM_DIRECTIONS); //enums make it difficult to increment
+			}
+
+			while (func::dot(diff, segment::unit_direction[(idx + segment::NUM_DIRECTIONS - 2) % segment::NUM_DIRECTIONS]) >
+				func::dot(diff, segment::unit_direction[idx])) {
+				idx = segment::direction((idx + segment::NUM_DIRECTIONS - 1) % segment::NUM_DIRECTIONS); //enums make it difficult to increment
 			}
 		}
 	}

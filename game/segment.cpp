@@ -23,6 +23,37 @@ const std::string segment::direction_names[] = {
 };
 
 void segment::draw(sf::RenderTarget& targ, sf::RenderStates) const {
-	sf::Vertex ln[3] = { begin, mid, end };
-	targ.draw(ln, 3, sf::LineStrip);
+	if (begin != end) {
+		sf::Vector2f mid = begin;
+		float diffX = abs(end.x - begin.x);
+		float diffY = abs(end.y - begin.y);
+
+		switch (segment::dir) {
+		case NORTH:
+			mid.y -= diffY - diffX;
+			break;
+		case NORTH_EAST:
+			mid.x -= std::min(diffX, diffY);
+			mid.y += std::min(diffX, diffY);
+			break;
+		case EAST:
+			mid.x += diffX - diffY;
+			break;
+		case SOUTH_EAST:
+			break;
+		case SOUTH:
+			break;
+		case SOUTH_WEST:
+			break;
+		case WEST:
+			break;
+		case NORTH_WEST:
+			break;
+		default:
+			break;
+		}
+		sf::Vertex ln[3] = { begin, mid, end };
+
+		targ.draw(ln, 3, sf::LineStrip);
+	}
 }

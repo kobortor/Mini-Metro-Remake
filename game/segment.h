@@ -26,7 +26,7 @@ Y---/
 //When a train goes through a line, it will create temporary segments, then ask the full line for the next station
 class segment : public sf::Drawable {
 public:
-	sf::Vector2f begin, mid, end;
+	sf::Vector2f begin, end;
 	void draw(sf::RenderTarget&, sf::RenderStates) const override;
 
 	enum direction {
@@ -39,7 +39,7 @@ public:
 		WEST = 6,
 		NORTH_WEST = 7,
 		NUM_DIRECTIONS = 8
-	};
+	} dir = NORTH;
 
 	//unit vectors in each of the 8 directions
 	const static sf::Vector2f unit_direction[NUM_DIRECTIONS];
