@@ -14,8 +14,8 @@ void station::resize() {
 }
 
 void station::draw(sf::RenderTarget& targ, sf::RenderStates) const {
-	sf::CircleShape circ{ 30 };
-	circ.setPosition(posX, posY);
+	sf::CircleShape circ{ 20 };
+	circ.setPosition(posX - 10, posY - 10);
 	circ.setFillColor(sf::Color::White);
 	targ.draw(circ);
 }
