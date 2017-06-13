@@ -20,3 +20,9 @@ void station::draw(sf::RenderTarget& targ, sf::RenderStates) const {
 	circ.setFillColor(sf::Color::White);
 	targ.draw(circ);
 }
+
+bool station::contained(int x, int y) {
+	int diffX = x - posX;
+	int diffY = y - posY;
+	return diffX * diffX + diffY * diffY <= 30 * 30;
+}

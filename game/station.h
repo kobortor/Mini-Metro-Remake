@@ -10,6 +10,7 @@ public:
 	station(float _relX, float _relY, STATION_TYPE _type);
 	void resize();
 	void draw(sf::RenderTarget&, sf::RenderStates) const override;
+	bool contained(int x, int y);
 protected:
 
 	STATION_TYPE type;

@@ -29,6 +29,8 @@ void main_window::handle_mouse_click(sf::Event::MouseButtonEvent eve) {
 		if (eve.button == sf::Mouse::Button::Left) {
 			map_menu.try_click(eve.x, eve.y, true);
 		}
+	} else if (RENDER_MODE == IN_GAME) {
+		main_game::handle_mouse_click(eve);
 	}
 }
 void main_window::handle_mouse_move(sf::Event::MouseMoveEvent eve) {

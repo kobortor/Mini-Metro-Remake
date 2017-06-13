@@ -32,7 +32,7 @@ protected:
 	static time_t game_start_time;
 	static map_generator* map_gen;
 
-
+	static enum {NONE, LINE_EDIT, LINE_EDIT_STATION } CLICK_MODE;
 
 	static bool mouse_button_pressed[sf::Mouse::ButtonCount];
 	static bool key_pressed[sf::Keyboard::KeyCount];

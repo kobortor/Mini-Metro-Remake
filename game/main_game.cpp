@@ -10,6 +10,8 @@ std::vector<station> main_game::stations;
 sf::RectangleShape main_game::background;
 sf::IntRect main_game::window_bounds;
 
+decltype(main_game::CLICK_MODE) main_game::CLICK_MODE;
+
 bool main_game::mouse_button_pressed[sf::Mouse::ButtonCount];
 bool main_game::key_pressed[sf::Keyboard::KeyCount];
 
@@ -81,7 +83,9 @@ void main_game::cleanup() {
 
 void main_game::handle_mouse_click(sf::Event::MouseButtonEvent eve) {
 	for (station &stn : stations) {
-		
+		if (stn.contained(eve.x, eve.y)) {
+			std::cout << "Contained!\n";
+		}
 	}
 
 	mouse_button_pressed[eve.button] = true;
