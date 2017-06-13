@@ -2,27 +2,39 @@
 #include"main_game.h"
 #include"../functions.h"
 #include<iostream>
+#include<sstream>
 
 const std::string END_DETAIL = "###END DETAILS###";
 
-file_map_generator::file_map_generator(std::string file_name) :fin(file_name) {
+file_map_generator::file_map_generator(std::string file_name) {
+	std::ifstream fin(file_name);
+	std::vector<std::string> input;
 	if (!fin.is_open()) {
 		std::cout << "CANNOT OPEN FILE " << file_name << "\n";
 		exit(0);
 	}
-	std::string input;
-	while (std::getline(fin, input)) {
-		if (input == END_DETAIL) {
+	std::string str;
+	while (getline(fin, str)) {
+		func::trim(str);
+		if (!str.empty()) {
+			input.push_back(str);
+		}
+	}
+	
+	auto iter = input.begin();
+	while (iter != input.end()) {
+		str = *iter++;
+		if (str == END_DETAIL) {
 			break;
 		}
-		int colon = input.find(':');
+		int colon = str.find(':');
 		if (colon == std::string::npos) {
-			std::cout << "EXPECTED COLON '" << input << "'\n";
+			std::cout << "EXPECTED COLON '" << str << "'\n";
 			exit(0);
 		}
 
-		std::string attrib = input.substr(0, colon);
-		std::string value = input.substr(colon+1);
+		std::string attrib = str.substr(0, colon);
+		std::string value = str.substr(colon+1);
 
 		func::trim(attrib);
 		func::trim(value);
@@ -33,6 +45,15 @@ file_map_generator::file_map_generator(std::string file_name) :fin(file_name) {
 			rel_bounds.y = std::stof(value);
 		}
 	}
+
+	//now to load the coordinates
+	while (iter != input.end()) {
+		//TODO: implement coordinate details
+		std::stringstream ss(*iter++);
+		float x, y;
+		ss >> x >> y;
+		points.push({ x, y });
+	}
 }
 
 sf::Vector2f file_map_generator::getRelativeBounds() {
@@ -40,9 +61,13 @@ sf::Vector2f file_map_generator::getRelativeBounds() {
 }
 
 void file_map_generator::update_until(long long game_tick) {
-	if (!ticked) {
-		std::cout << "Added\n";
-		main_game::add_station(0.5, 0.5, station::TRIANGLE);
+	if (game_tick > 5000) {
+		int x = 3;
 	}
-	ticked = true;
+	while (!points.empty() && game_tick - last_update > 5000) {
+		last_update += 5000;
+		sf::Vector2f to_add = points.front();
+		points.pop();
+		main_game::add_station(to_add.x, to_add.y, station::TRIANGLE);
+	}
 }
