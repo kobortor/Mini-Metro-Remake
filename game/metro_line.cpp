@@ -43,6 +43,10 @@ segment metro_line::get_next_path(station* cur, station* prv) {
 	}
 }
 
+metro_line::HANDLE_CLICK metro_line::click_handle(int posX, int posY) {
+	return NONE;
+}
+
 void metro_line::draw(sf::RenderTarget &targ, sf::RenderStates) const {
 	for (const segment &seg : segments) {
 		targ.draw(seg);
