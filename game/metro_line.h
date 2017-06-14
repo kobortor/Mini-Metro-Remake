@@ -10,5 +10,6 @@ public:
 	std::list<station*> stations;
 	std::list<segment> segments;
 
+	station* get_next_station(station* prev, station* cur);
 	void draw(sf::RenderTarget&, sf::RenderStates) const override;
 };
