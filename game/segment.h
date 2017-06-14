@@ -25,14 +25,22 @@ Y---/
 
 //A short line, many segments joined together will form a full line
 //When a train goes through a line, it will create temporary segments, then ask the full line for the next station
+
+class metro_line;
+
 class segment : public sf::Drawable {
 public:
 	sf::Vector2f begin, end;
 	station *orig = nullptr, *dest = nullptr;
 
+	segment();
+	segment(metro_line *_parent);
+
 	void adjust_dir();
 	void draw(sf::RenderTarget&, sf::RenderStates) const override;
 	void resize();
+
+	metro_line* parent;
 	segment get_reverse() const;
 	sf::Vector2f calc_mid() const;
 

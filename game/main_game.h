@@ -40,6 +40,7 @@ public:
 	static time_t game_start_time;
 	static map_generator* map_gen;
 	static time_t last_update;
+	static std::list<sf::Color> avail_colors;
 
 	static metro_line* edit_line;
 	static segment edit_seg;

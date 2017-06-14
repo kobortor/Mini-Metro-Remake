@@ -16,6 +16,7 @@ sf::IntRect main_game::window_bounds;
 metro_line* main_game::edit_line;
 segment main_game::edit_seg;
 time_t main_game::last_update;
+std::list<sf::Color> main_game::avail_colors;
 
 main_game::CLICK_MODE_TYPE main_game::CLICK_MODE;
 
@@ -26,6 +27,15 @@ bool main_game::mouse_button_pressed[sf::Mouse::ButtonCount];
 bool main_game::key_pressed[sf::Keyboard::KeyCount];
 
 void main_game::initialize(map_generator* _map_gen) {
+	avail_colors = {
+		sf::Color::Green,
+		sf::Color::Blue,
+		sf::Color::Red,
+		sf::Color::Cyan,
+		sf::Color::Magenta,
+		sf::Color::Yellow
+	};
+
 	game_start_time = sys::get_millis();
 	last_update = 0;
 	background.setFillColor(sf::Color(50,50,50));
@@ -168,12 +178,15 @@ void main_game::handle_mouse_click(sf::Event::MouseButtonEvent eve) {
 	}
 
 	if (CLICK_MODE == NONE) {
-		for (station &stn : stations) {
-			if (stn.contained(eve.x, eve.y)) {
-				CLICK_MODE = LINE_EDIT_BACK;
-				lines.push_back(metro_line(&stn));
-				set_edit_line(&lines.back(), LINE_EDIT_BACK);
-				break;
+		if (!avail_colors.empty()) {
+			for (station &stn : stations) {
+				if (stn.contained(eve.x, eve.y)) {
+					CLICK_MODE = LINE_EDIT_BACK;
+					lines.push_back(metro_line(&stn, avail_colors.back()));
+					avail_colors.pop_back();
+					set_edit_line(&lines.back(), LINE_EDIT_BACK);
+					break;
+				}
 			}
 		}
 	}
@@ -209,6 +222,8 @@ void main_game::handle_mouse_move(sf::Event::MouseMoveEvent eve) {
 			if (std::find(edit_line->stations.begin(), edit_line->stations.end(), hover) == edit_line->stations.end()) {
 				edit_seg.end = sf::Vector2f(hover->get_pos());
 				edit_seg.dest = hover;
+				edit_seg.parent = edit_line;
+
 				if (CLICK_MODE == LINE_EDIT_BACK) {
 					edit_line->stations.push_back(hover);
 					edit_line->segments.push_back(edit_seg);
@@ -267,6 +282,7 @@ void main_game::handle_mouse_release(sf::Event::MouseButtonEvent eve) {
 			auto iter = func::find_iter(lines.begin(), lines.end(), edit_line);
 
 			if (iter != lines.end()) {
+				avail_colors.push_back(iter->color);
 				lines.erase(iter);
 			}
 		} else {

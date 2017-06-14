@@ -1,5 +1,6 @@
 #include"segment.h"
 #include"../functions.h"
+#include"metro_line.h"
 
 const sf::Vector2f segment::unit_direction[] = {
 	sf::Vector2f(0.f, -1.f),					//N
@@ -23,6 +24,9 @@ const std::string segment::direction_names[] = {
 	"north-west"
 };
 
+segment::segment():parent(nullptr) {}
+segment::segment(metro_line *_parent) :parent(_parent) {}
+
 void segment::adjust_dir() {
 	if (begin != end) {
 		sf::Vector2f diff = end - begin;
@@ -44,6 +48,11 @@ void segment::adjust_dir() {
 void segment::draw(sf::RenderTarget& targ, sf::RenderStates) const {
 	if (begin != end) {
 		sf::Vertex ln[3] = { begin, calc_mid(), end };
+		if (parent != nullptr) {
+			ln[0].color = parent->color;
+			ln[1].color = parent->color;
+			ln[2].color = parent->color;
+		}
 		targ.draw(ln, 3, sf::LineStrip);
 	}
 }

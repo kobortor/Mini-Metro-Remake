@@ -1,5 +1,6 @@
 #include"handle.h"
 #include"../functions.h"
+#include"metro_line.h"
 
 handle::handle(metro_line* _parent) : parent(_parent), home(nullptr) { }
 
@@ -25,6 +26,18 @@ void handle::draw(sf::RenderTarget &targ, sf::RenderStates) const {
 }
 
 void handle::resize() {
+	if (parent == nullptr) {
+		return;
+	}
+
+	tri[0].color = parent->color;
+	tri[1].color = parent->color;
+	tri[2].color = parent->color;
+
+	if (home == nullptr) {
+		return;
+	}
+
 	const float d1 = 35;
 	const float d2 = 60;
 
@@ -33,8 +46,4 @@ void handle::resize() {
 	tri[0].position = orig;
 	tri[1].position = sf::Vector2f(d2 * sin(angle + 0.2), -d2 * cos(angle + 0.2)) + orig;
 	tri[2].position = sf::Vector2f(d2 * sin(angle - 0.2), -d2 * cos(angle - 0.2)) + orig;
-
-	tri[0].color = sf::Color::Red;
-	tri[1].color = sf::Color::Red;
-	tri[2].color = sf::Color::Red;
 }

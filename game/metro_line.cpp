@@ -1,6 +1,6 @@
 #include"metro_line.h"
 
-metro_line::metro_line(station *begin) : front(this), back(this) {
+metro_line::metro_line(station *begin, sf::Color _color) : front(this), back(this), color(_color) {
 	stations.push_back(begin);
 }
 

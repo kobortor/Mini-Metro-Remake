@@ -11,13 +11,20 @@ public:
 		NONE, FRONT, END
 	};
 
-	metro_line(station* begin);
+	metro_line(station* begin, sf::Color _color);
 	std::list<station*> stations;
 	std::list<segment> segments;
+
+	void push_front(station *stn, segment seg);
+	void push_back(station *stn, segment seg);
+
+	void pop_front();
+	void pop_back();
 
 	segment get_next_path(station* cur, station* prv);
 	HANDLE_CLICK click_handle(int posX, int posY);
 	void draw(sf::RenderTarget&, sf::RenderStates) const override;
 
+	sf::Color color;
 	handle front, back;
 };
