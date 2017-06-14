@@ -35,9 +35,6 @@ protected:
 	static time_t game_start_time;
 	static map_generator* map_gen;
 
-	static station *prv1, *prv2;
-	static segment tmp_line;
-
 	static std::list<metro_line>::iterator edit_line;
 	static segment edit_seg;
 	static enum {NONE, LINE_EDIT_FRONT, LINE_EDIT_BACK } CLICK_MODE;
