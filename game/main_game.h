@@ -30,7 +30,8 @@ public:
 	static void handle_mouse_release(sf::Event::MouseButtonEvent eve);
 	static void handle_key_press(sf::Event::KeyEvent eve);
 	static void handle_key_release(sf::Event::KeyEvent eve);
-protected:
+
+	//make some protected
 	static sf::IntRect window_bounds;
 	static sf::RectangleShape background;
 	static std::list<metro_line> lines;

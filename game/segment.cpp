@@ -52,29 +52,30 @@ void segment::resize() {
 	
 }
 
-segment segment::get_reverse() {
+segment segment::get_reverse() const {
 	segment retv = *this;
 	std::swap(retv.begin, retv.end);
 	std::swap(retv.orig, retv.dest);
 
 	//finally, calculate the reverse direction
 	sf::Vector2f mid = calc_mid();
-	if (mid == end) {
-		retv.dir = direction((dir + 4) % NUM_DIRECTIONS);
+	if (hypotf(mid.x - end.x, mid.y - end.y) < 10) {
 		//a straight line, just reverse it
+		retv.dir = direction((dir + 4) % NUM_DIRECTIONS);
+		return retv;
 	}
 
 	float diffX = end.x - mid.x;
 	float diffY = end.y - mid.y;
 
 	//maybe this has floating point precision errors?
-	if (diffX == 0) {
+	if (abs(diffX) < 3) {
 		if (diffY > 0) {
 			retv.dir = NORTH;
 		} else {
 			retv.dir = SOUTH;
 		}
-	} else if (diffY == 0) {
+	} else if (abs(diffY) < 3) {
 		if (diffX > 0) {
 			retv.dir = WEST;
 		} else {

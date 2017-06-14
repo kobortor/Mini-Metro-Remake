@@ -33,7 +33,7 @@ public:
 	void adjust_dir();
 	void draw(sf::RenderTarget&, sf::RenderStates) const override;
 	void resize();
-	segment get_reverse();
+	segment get_reverse() const;
 	sf::Vector2f calc_mid() const;
 
 	enum direction {

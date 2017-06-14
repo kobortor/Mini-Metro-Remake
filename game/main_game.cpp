@@ -213,6 +213,10 @@ void main_game::handle_mouse_release(sf::Event::MouseButtonEvent eve) {
 			edit_line->front = handle(&*edit_line, edit_line->stations.front(), 0);
 			edit_line->back = handle(&*edit_line, edit_line->stations.back(), 3.14159);
 			trains.emplace_back(&*edit_line);
+
+			for (station* stn : edit_line->stations) {
+				stn->rearrange_handles();
+			}
 		}
 	}
 
@@ -228,3 +232,4 @@ void main_game::handle_key_press(sf::Event::KeyEvent eve) {
 void main_game::handle_key_release(sf::Event::KeyEvent eve) {
 	key_pressed[eve.code] = false;
 }
+
