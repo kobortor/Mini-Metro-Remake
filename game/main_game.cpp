@@ -79,6 +79,16 @@ void main_game::update() {
 	for (train &t : trains) {
 		t.update(delta);
 	}
+	auto iter = trains.begin();
+	while (iter != trains.end()) {
+		if (iter->is_dead()) {
+			auto tmp = iter;
+			iter++;
+			trains.erase(tmp);
+		} else {
+			iter++;
+		}
+	}
 }
 sf::Vector2f main_game::get_relative_bounds() {
 	return map_gen->get_relative_bounds();
@@ -254,13 +264,8 @@ void main_game::handle_mouse_release(sf::Event::MouseButtonEvent eve) {
 
 	if (CLICK_MODE == LINE_EDIT_FRONT || CLICK_MODE == LINE_EDIT_BACK) {
 		if (edit_line->stations.size() == 1) {
-			auto iter = lines.begin();
-			while (iter != lines.end()) {
-				if (&*iter == edit_line) {
-					break;
-				}
-				iter++;
-			}
+			auto iter = func::find_iter(lines.begin(), lines.end(), edit_line);
+
 			if (iter != lines.end()) {
 				lines.erase(iter);
 			}

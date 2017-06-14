@@ -1,5 +1,6 @@
 #include"train.h"
 #include"../functions.h"
+#include"main_game.h"
 #include<iostream>
 
 train::train(metro_line * _home_line):home_line(_home_line) {
@@ -23,7 +24,7 @@ void train::draw(sf::RenderTarget &targ, sf::RenderStates) const {
 }
 
 bool train::is_dead() {
-	return status;
+	return status == DEAD;
 }
 
 void train::update(long long delta) {
@@ -68,6 +69,14 @@ void train::update(long long delta) {
 }
 
 void train::seek() {
-	cur_track = home_line->get_next_path(cur_track.dest, cur_track.orig);
-	status = TOWARDS_MID;
+	if (func::find_iter(main_game::lines.begin(), main_game::lines.end(), home_line) == main_game::lines.end()) {
+		status = DEAD;
+	} else {
+		cur_track = home_line->get_next_path(cur_track.dest, cur_track.orig);
+		if (cur_track.orig == nullptr) {
+			status = DEAD;
+		} else {
+			status = TOWARDS_MID;
+		}
+	}
 }

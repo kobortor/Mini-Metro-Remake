@@ -12,4 +12,15 @@ namespace func {
 	float dot(sf::Vector2f A, sf::Vector2f B);
 
 	sf::Vector2f normalize(sf::Vector2f V);
+
+	template<class iter, class obj>
+	iter find_iter(iter begin, iter end, obj *ptr) {
+		while (begin != end) {
+			if (&*begin == ptr) {
+				return begin;
+			}
+			begin++;
+		}
+		return end;
+	}
 }
