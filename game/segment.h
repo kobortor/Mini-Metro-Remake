@@ -32,7 +32,9 @@ public:
 
 	void adjust_dir();
 	void draw(sf::RenderTarget&, sf::RenderStates) const override;
+	void resize();
 	segment get_reverse();
+	sf::Vector2f calc_mid() const;
 
 	enum direction {
 		NORTH = 0,
@@ -50,7 +52,5 @@ public:
 	const static sf::Vector2f unit_direction[NUM_DIRECTIONS];
 
 	const static std::string direction_names[NUM_DIRECTIONS];
-
 private:
-	sf::Vector2f calc_mid() const;
 };

@@ -8,9 +8,6 @@ segment metro_line::get_next_path(station* cur, station* prv) {
 	if (stations.size() == 1) {
 		return segment(); //null
 	}
-	if (prv == nullptr) {
-		return segment();
-	}
 
 	auto cur_idx = find(stations.begin(), stations.end(), cur);
 	auto prv_idx = find(stations.begin(), stations.end(), prv);

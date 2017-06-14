@@ -48,6 +48,10 @@ void segment::draw(sf::RenderTarget& targ, sf::RenderStates) const {
 	}
 }
 
+void segment::resize() {
+	
+}
+
 segment segment::get_reverse() {
 	segment retv = *this;
 	std::swap(retv.begin, retv.end);

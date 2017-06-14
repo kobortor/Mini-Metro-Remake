@@ -10,4 +10,6 @@ namespace func {
 
 	//if X is the angle between the 2 vectors, dot(A,B) gets |A| * |B| * cos(X)
 	float dot(sf::Vector2f A, sf::Vector2f B);
+
+	sf::Vector2f normalize(sf::Vector2f V);
 }

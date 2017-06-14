@@ -9,10 +9,12 @@ map_generator* main_game::map_gen = nullptr;
 time_t main_game::game_start_time = 0;
 std::list<metro_line> main_game::lines;
 std::list<station> main_game::stations;
+std::list<train> main_game::trains;
 sf::RectangleShape main_game::background;
 sf::IntRect main_game::window_bounds;
 std::list<metro_line>::iterator main_game::edit_line;
 segment main_game::edit_seg;
+time_t main_game::last_update;
 
 decltype(main_game::CLICK_MODE) main_game::CLICK_MODE;
 
@@ -24,6 +26,7 @@ bool main_game::key_pressed[sf::Keyboard::KeyCount];
 
 void main_game::initialize(map_generator* _map_gen) {
 	game_start_time = sys::get_millis();
+	last_update = 0;
 	background.setFillColor(sf::Color(50,50,50));
 	map_gen = _map_gen;
 	resize();
@@ -67,6 +70,14 @@ time_t main_game::get_game_time() {
 }
 void main_game::update() {
 	map_gen->update_until(get_game_time());
+	time_t delta = get_game_time() - last_update;
+	if (delta == 0) {
+		return;
+	}
+	last_update += delta;
+	for (train &t : trains) {
+		t.update(delta);
+	}
 }
 sf::Vector2f main_game::get_relative_bounds() {
 	return map_gen->get_relative_bounds();
@@ -92,6 +103,10 @@ void main_game::render() {
 		main_window::get_instance().draw(stn);
 	}
 
+	for (const train &t : trains) {
+		main_window::get_instance().draw(t);
+	}
+
 }
 void main_game::cleanup() {
 	delete map_gen;
@@ -115,6 +130,7 @@ void main_game::handle_mouse_click(sf::Event::MouseButtonEvent eve) {
 			edit_seg = segment();
 			edit_seg.begin = sf::Vector2f(stn.get_pos());
 			edit_seg.end = sf::Vector2f(stn.get_pos());
+			edit_seg.orig = &stn;
 			lines.push_back(metro_line(&stn));
 			edit_line = std::prev(lines.end());
 			break;
@@ -152,8 +168,11 @@ void main_game::handle_mouse_move(sf::Event::MouseMoveEvent eve) {
 			if (std::find(edit_line->stations.begin(), edit_line->stations.end(), hover) == edit_line->stations.end()) {
 				edit_line->stations.push_back(hover);
 				edit_seg.end = sf::Vector2f(hover->get_pos());
+				edit_seg.dest = hover;
 				edit_line->segments.push_back(edit_seg);
 
+				edit_seg = segment();
+				edit_seg.orig = hover;
 				edit_seg.begin = sf::Vector2f(hover->get_pos());
 				edit_seg.end = sf::Vector2f(eve.x, eve.y);
 
@@ -161,6 +180,9 @@ void main_game::handle_mouse_move(sf::Event::MouseMoveEvent eve) {
 			} else if(edit_line->stations.size() >= 2 && hover == edit_line->stations.back()) {
 				edit_line->segments.pop_back();
 				edit_line->stations.pop_back();
+
+				edit_seg = segment();
+				edit_seg.orig = edit_line->stations.back();
 				edit_seg.begin = sf::Vector2f(edit_line->stations.back()->get_pos());
 				edit_seg.adjust_dir();
 			}
@@ -178,6 +200,8 @@ void main_game::handle_mouse_release(sf::Event::MouseButtonEvent eve) {
 	if (CLICK_MODE == LINE_EDIT_FRONT || CLICK_MODE == LINE_EDIT_BACK) {
 		if (edit_line->stations.size() == 1) {
 			lines.erase(edit_line);
+		} else {
+			trains.emplace_back(&*edit_line);
 		}
 	}
 

@@ -1,7 +1,7 @@
 #pragma once
 #include"map_generator.h"
 #include<SFML\Graphics.hpp>
-#include"metro_line.h"
+#include"train.h"
 
 class main_game {
 public:
@@ -32,8 +32,10 @@ protected:
 	static sf::RectangleShape background;
 	static std::list<metro_line> lines;
 	static std::list<station> stations;
+	static std::list<train> trains;
 	static time_t game_start_time;
 	static map_generator* map_gen;
+	static time_t last_update;
 
 	static std::list<metro_line>::iterator edit_line;
 	static segment edit_seg;
