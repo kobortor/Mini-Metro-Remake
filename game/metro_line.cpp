@@ -4,7 +4,7 @@ metro_line::metro_line(station *begin) {
 	stations.push_back(begin);
 }
 
-segment metro_line::get_next_path(station* prv, station* cur) {
+segment metro_line::get_next_path(station* cur, station* prv) {
 	if (stations.size() == 1) {
 		return segment(); //null
 	}
@@ -30,15 +30,15 @@ segment metro_line::get_next_path(station* prv, station* cur) {
 
 	if (prv_idx == stations.end()) {
 		std::advance(seg_iter, d1);
-		return seg_iter->get_reverse();
+		return *seg_iter;
 	}
 
 	if (d1 > d2) {
 		std::advance(seg_iter, d1);
-		return seg_iter->get_reverse();
+		return *seg_iter;
 	} else {
 		if (d1 == 0) {
-			return seg_iter->get_reverse();
+			return *seg_iter;
 		} else {
 			std::advance(seg_iter, d1 - 1);
 			return seg_iter->get_reverse();
