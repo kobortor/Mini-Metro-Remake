@@ -9,6 +9,7 @@ public:
 	handle(metro_line *_parent);
 	handle(metro_line *_parent, station *_home, float _angle = 0);
 
+	bool contained(int x, int y) const;
 	void draw(sf::RenderTarget&, sf::RenderStates) const override;
 	void resize();
 

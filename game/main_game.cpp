@@ -13,7 +13,7 @@ std::list<station> main_game::stations;
 std::list<train> main_game::trains;
 sf::RectangleShape main_game::background;
 sf::IntRect main_game::window_bounds;
-std::list<metro_line>::iterator main_game::edit_line;
+metro_line* main_game::edit_line;
 segment main_game::edit_seg;
 time_t main_game::last_update;
 
@@ -118,16 +118,22 @@ float main_game::get_station_radius() {
 float main_game::get_station_mouse_limit() {
 	return 30;
 }
-void main_game::set_edit_line(std::list<metro_line>::iterator line, main_game::CLICK_MODE_TYPE mode) {
+void main_game::set_edit_line(metro_line *line, main_game::CLICK_MODE_TYPE mode) {
 	CLICK_MODE = mode;
 	edit_line = line;
 	edit_seg = segment();
 
 	//act as if it was beginning even if mode is editing from the front.
 	//if it is from the front, just reverse it when actually adding the stations
-	edit_seg.begin = sf::Vector2f(edit_line->stations.back()->get_pos());
-	edit_seg.end = sf::Vector2f(edit_line->stations.back()->get_pos());
-	edit_seg.orig = edit_line->stations.back();
+	if (mode == LINE_EDIT_FRONT) {
+		edit_seg.begin = sf::Vector2f(edit_line->stations.front()->get_pos());
+		edit_seg.end = sf::Vector2f(edit_line->stations.front()->get_pos());
+		edit_seg.orig = edit_line->stations.front();
+	} else if (mode == LINE_EDIT_BACK) {
+		edit_seg.begin = sf::Vector2f(edit_line->stations.back()->get_pos());
+		edit_seg.end = sf::Vector2f(edit_line->stations.back()->get_pos());
+		edit_seg.orig = edit_line->stations.back();
+	}
 }
 
 void main_game::handle_mouse_click(sf::Event::MouseButtonEvent eve) {
@@ -136,12 +142,29 @@ void main_game::handle_mouse_click(sf::Event::MouseButtonEvent eve) {
 		prvY = eve.y;
 	}
 
-	for (station &stn : stations) {
-		if (stn.contained(eve.x, eve.y)) {
-			CLICK_MODE = LINE_EDIT_BACK;
-			lines.push_back(metro_line(&stn));
-			set_edit_line(prev(lines.end()), LINE_EDIT_BACK);
+	for (metro_line &ml : lines) {
+		if (ml.front.contained(eve.x, eve.y)) {
+			set_edit_line(&ml, LINE_EDIT_FRONT);
+			edit_seg.end = sf::Vector2f(eve.x, eve.y);
+			edit_seg.adjust_dir();
 			break;
+		}
+		if (ml.back.contained(eve.x, eve.y)) {
+			set_edit_line(&ml, LINE_EDIT_BACK);
+			edit_seg.end = sf::Vector2f(eve.x, eve.y);
+			edit_seg.adjust_dir();
+			break;
+		}
+	}
+
+	if (CLICK_MODE == NONE) {
+		for (station &stn : stations) {
+			if (stn.contained(eve.x, eve.y)) {
+				CLICK_MODE = LINE_EDIT_BACK;
+				lines.push_back(metro_line(&stn));
+				set_edit_line(&lines.back(), LINE_EDIT_BACK);
+				break;
+			}
 		}
 	}
 
@@ -174,10 +197,15 @@ void main_game::handle_mouse_move(sf::Event::MouseMoveEvent eve) {
 		if (hover != nullptr) {
 			//not added before
 			if (std::find(edit_line->stations.begin(), edit_line->stations.end(), hover) == edit_line->stations.end()) {
-				edit_line->stations.push_back(hover);
 				edit_seg.end = sf::Vector2f(hover->get_pos());
 				edit_seg.dest = hover;
-				edit_line->segments.push_back(edit_seg);
+				if (CLICK_MODE == LINE_EDIT_BACK) {
+					edit_line->stations.push_back(hover);
+					edit_line->segments.push_back(edit_seg);
+				} else {
+					edit_line->stations.push_front(hover);
+					edit_line->segments.push_front(edit_seg.get_reverse());
+				}
 
 				edit_seg = segment();
 				edit_seg.orig = hover;
@@ -185,15 +213,33 @@ void main_game::handle_mouse_move(sf::Event::MouseMoveEvent eve) {
 				edit_seg.end = sf::Vector2f(eve.x, eve.y);
 
 				edit_seg.adjust_dir();
-			} else if(edit_line->stations.size() >= 2 && hover == edit_line->stations.back()) {
-				edit_line->segments.pop_back();
-				edit_line->stations.pop_back();
+			} else if(edit_line->stations.size() >= 2) {
+				if (CLICK_MODE == LINE_EDIT_BACK) {
+					if (hover == edit_line->stations.back()) {
+						edit_line->stations.back()->rearrange_handles();
+						edit_line->segments.pop_back();
+						edit_line->stations.pop_back();
 
-				edit_seg = segment();
-				edit_seg.orig = edit_line->stations.back();
-				edit_seg.begin = sf::Vector2f(edit_line->stations.back()->get_pos());
-				edit_seg.end = sf::Vector2f(eve.x, eve.y);
-				edit_seg.adjust_dir();
+						edit_seg = segment();
+						edit_seg.orig = edit_line->stations.back();
+						edit_seg.begin = sf::Vector2f(edit_line->stations.back()->get_pos());
+						edit_seg.end = sf::Vector2f(eve.x, eve.y);
+						edit_seg.adjust_dir();
+					}
+				} else if (CLICK_MODE == LINE_EDIT_FRONT) {
+					if (hover == edit_line->stations.front()) {
+						edit_line->stations.front()->rearrange_handles();
+						edit_line->segments.pop_front();
+						edit_line->stations.pop_front();
+
+						edit_seg = segment();
+						edit_seg.orig = edit_line->stations.front();
+						edit_seg.begin = sf::Vector2f(edit_line->stations.front()->get_pos());
+						edit_seg.end = sf::Vector2f(eve.x, eve.y);
+
+						edit_seg.adjust_dir();
+					}
+				}
 			}
 		}
 	}
@@ -208,7 +254,16 @@ void main_game::handle_mouse_release(sf::Event::MouseButtonEvent eve) {
 
 	if (CLICK_MODE == LINE_EDIT_FRONT || CLICK_MODE == LINE_EDIT_BACK) {
 		if (edit_line->stations.size() == 1) {
-			lines.erase(edit_line);
+			auto iter = lines.begin();
+			while (iter != lines.end()) {
+				if (&*iter == edit_line) {
+					break;
+				}
+				iter++;
+			}
+			if (iter != lines.end()) {
+				lines.erase(iter);
+			}
 		} else {
 			edit_line->front = handle(&*edit_line, edit_line->stations.front(), 0);
 			edit_line->back = handle(&*edit_line, edit_line->stations.back(), 3.14159);

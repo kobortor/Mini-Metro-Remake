@@ -20,7 +20,7 @@ public:
 	static void render(); //always render to main window
 	static void cleanup();
 
-	static void set_edit_line(std::list<metro_line>::iterator line, CLICK_MODE_TYPE mode);
+	static void set_edit_line(metro_line* line, CLICK_MODE_TYPE mode);
 
 	static float get_station_radius();
 	static float get_station_mouse_limit();
@@ -41,7 +41,7 @@ public:
 	static map_generator* map_gen;
 	static time_t last_update;
 
-	static std::list<metro_line>::iterator edit_line;
+	static metro_line* edit_line;
 	static segment edit_seg;
 	static CLICK_MODE_TYPE CLICK_MODE;
 
