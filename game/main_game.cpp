@@ -4,6 +4,7 @@
 #include<iostream>
 #include"../system/system_func.h"
 #include"../functions.h"
+#include"handle.h"
 
 map_generator* main_game::map_gen = nullptr;
 time_t main_game::game_start_time = 0;
@@ -209,6 +210,8 @@ void main_game::handle_mouse_release(sf::Event::MouseButtonEvent eve) {
 		if (edit_line->stations.size() == 1) {
 			lines.erase(edit_line);
 		} else {
+			edit_line->front = handle(edit_line->stations.front(), 0);
+			edit_line->back = handle(edit_line->stations.back(), 3.14159);
 			trains.emplace_back(&*edit_line);
 		}
 	}

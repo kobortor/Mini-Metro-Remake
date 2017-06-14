@@ -2,6 +2,7 @@
 #include<SFML/Graphics.hpp>
 #include"station.h"
 #include"segment.h"
+#include"handle.h"
 #include<list>
 
 class metro_line : public sf::Drawable {
@@ -17,4 +18,6 @@ public:
 	segment get_next_path(station* cur, station* prv);
 	HANDLE_CLICK click_handle(int posX, int posY);
 	void draw(sf::RenderTarget&, sf::RenderStates) const override;
+
+	handle front, back;
 };

@@ -51,4 +51,7 @@ void metro_line::draw(sf::RenderTarget &targ, sf::RenderStates) const {
 	for (const segment &seg : segments) {
 		targ.draw(seg);
 	}
+
+	targ.draw(front);
+	targ.draw(back);
 }
