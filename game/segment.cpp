@@ -1,4 +1,5 @@
 #include"segment.h"
+#include"../functions.h"
 
 const sf::Vector2f segment::unit_direction[] = {
 	sf::Vector2f(0.f, -1.f),					//N
@@ -21,6 +22,24 @@ const std::string segment::direction_names[] = {
 	"west",
 	"north-west"
 };
+
+void segment::adjust_dir() {
+	if (begin != end) {
+		sf::Vector2f diff = end - begin;
+		auto& idx = dir;
+		//calculate the values
+
+		while (func::dot(diff, segment::unit_direction[(idx + 2) % segment::NUM_DIRECTIONS]) >
+			func::dot(diff, segment::unit_direction[idx])) {
+			idx = segment::direction((idx + 1) % segment::NUM_DIRECTIONS); //enums make it difficult to increment
+		}
+
+		while (func::dot(diff, segment::unit_direction[(idx + segment::NUM_DIRECTIONS - 2) % segment::NUM_DIRECTIONS]) >
+			func::dot(diff, segment::unit_direction[idx])) {
+			idx = segment::direction((idx + segment::NUM_DIRECTIONS - 1) % segment::NUM_DIRECTIONS); //enums make it difficult to increment
+		}
+	}
+}
 
 void segment::draw(sf::RenderTarget& targ, sf::RenderStates) const {
 	using std::min;

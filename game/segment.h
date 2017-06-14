@@ -29,6 +29,7 @@ class segment : public sf::Drawable {
 public:
 	sf::Vector2f begin, end;
 	station *orig = nullptr, *dest = nullptr;
+	void adjust_dir();
 	void draw(sf::RenderTarget&, sf::RenderStates) const override;
 
 	enum direction {
