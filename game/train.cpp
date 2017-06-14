@@ -57,7 +57,6 @@ void train::update(long long delta) {
 			status = SEEKING;
 		}
 	}
-	std::cout << posX << "," << posY << "\n\n";
 }
 
 void train::seek() {
