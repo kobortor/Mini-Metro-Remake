@@ -184,6 +184,7 @@ void main_game::handle_mouse_move(sf::Event::MouseMoveEvent eve) {
 				edit_seg = segment();
 				edit_seg.orig = edit_line->stations.back();
 				edit_seg.begin = sf::Vector2f(edit_line->stations.back()->get_pos());
+				edit_seg.end = sf::Vector2f(eve.x, eve.y);
 				edit_seg.adjust_dir();
 			}
 		}
