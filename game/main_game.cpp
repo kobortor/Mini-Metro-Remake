@@ -16,7 +16,7 @@ std::list<metro_line>::iterator main_game::edit_line;
 segment main_game::edit_seg;
 time_t main_game::last_update;
 
-decltype(main_game::CLICK_MODE) main_game::CLICK_MODE;
+main_game::CLICK_MODE_TYPE main_game::CLICK_MODE;
 
 int main_game::prvX = -1;
 int main_game::prvY = -1;
@@ -117,6 +117,17 @@ float main_game::get_station_radius() {
 float main_game::get_station_mouse_limit() {
 	return 30;
 }
+void main_game::set_edit_line(std::list<metro_line>::iterator line, main_game::CLICK_MODE_TYPE mode) {
+	CLICK_MODE = mode;
+	edit_line = line;
+	edit_seg = segment();
+
+	//act as if it was beginning even if mode is editing from the front.
+	//if it is from the front, just reverse it when actually adding the stations
+	edit_seg.begin = sf::Vector2f(edit_line->stations.back()->get_pos());
+	edit_seg.end = sf::Vector2f(edit_line->stations.back()->get_pos());
+	edit_seg.orig = edit_line->stations.back();
+}
 
 void main_game::handle_mouse_click(sf::Event::MouseButtonEvent eve) {
 	if (prvX == -1 && prvY == -1) {
@@ -127,12 +138,8 @@ void main_game::handle_mouse_click(sf::Event::MouseButtonEvent eve) {
 	for (station &stn : stations) {
 		if (stn.contained(eve.x, eve.y)) {
 			CLICK_MODE = LINE_EDIT_BACK;
-			edit_seg = segment();
-			edit_seg.begin = sf::Vector2f(stn.get_pos());
-			edit_seg.end = sf::Vector2f(stn.get_pos());
-			edit_seg.orig = &stn;
 			lines.push_back(metro_line(&stn));
-			edit_line = std::prev(lines.end());
+			set_edit_line(prev(lines.end()), LINE_EDIT_BACK);
 			break;
 		}
 	}

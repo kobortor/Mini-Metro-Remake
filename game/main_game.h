@@ -7,6 +7,8 @@ class main_game {
 public:
 	main_game() = delete; //singleton
 
+	enum CLICK_MODE_TYPE { NONE, LINE_EDIT_FRONT, LINE_EDIT_BACK };
+
 	static void initialize(map_generator* _map_gen);
 	static sf::Vector2f get_relative_bounds();
 	static sf::IntRect get_window_bounds(); //gets the position within the window
@@ -18,6 +20,8 @@ public:
 	static void render(); //always render to main window
 	static void cleanup();
 
+	static void set_edit_line(std::list<metro_line>::iterator line, CLICK_MODE_TYPE mode);
+
 	static float get_station_radius();
 	static float get_station_mouse_limit();
 
@@ -26,7 +30,6 @@ public:
 	static void handle_mouse_release(sf::Event::MouseButtonEvent eve);
 	static void handle_key_press(sf::Event::KeyEvent eve);
 	static void handle_key_release(sf::Event::KeyEvent eve);
-
 protected:
 	static sf::IntRect window_bounds;
 	static sf::RectangleShape background;
@@ -39,7 +42,7 @@ protected:
 
 	static std::list<metro_line>::iterator edit_line;
 	static segment edit_seg;
-	static enum {NONE, LINE_EDIT_FRONT, LINE_EDIT_BACK } CLICK_MODE;
+	static CLICK_MODE_TYPE CLICK_MODE;
 
 	static int prvX, prvY;
 	static bool mouse_button_pressed[sf::Mouse::ButtonCount];
