@@ -35,6 +35,12 @@ int main() {
 			case sf::Event::MouseMoved:
 				main_window::handle_mouse_move(eve.mouseMove);
 				break;
+			case sf::Event::KeyPressed:
+				main_window::handle_key_press(eve.key);
+				break;
+			case sf::Event::KeyReleased:
+				main_window::handle_key_release(eve.key);
+				break;
 			default:
 				break;
 			}

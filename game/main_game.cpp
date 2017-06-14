@@ -83,6 +83,7 @@ void main_game::render() {
 	if (CLICK_MODE == LINE_EDIT_FRONT || CLICK_MODE == LINE_EDIT_BACK) {
 		main_window::get_instance().draw(edit_seg);
 	}
+
 	for (const metro_line &ml : lines) {
 		main_window::get_instance().draw(ml);
 	}
@@ -90,6 +91,7 @@ void main_game::render() {
 	for (const station &stn : stations) {
 		main_window::get_instance().draw(stn);
 	}
+
 }
 void main_game::cleanup() {
 	delete map_gen;
@@ -140,6 +142,7 @@ void main_game::handle_mouse_move(sf::Event::MouseMoveEvent eve) {
 		for (station &stn : stations) {
 			if (stn.contained(eve.x, eve.y) && !stn.contained(prvX, prvY)) {
 				hover = &stn;
+				break;
 			}
 		}
 		//write logic for adding and removing stations
@@ -184,5 +187,9 @@ void main_game::handle_mouse_release(sf::Event::MouseButtonEvent eve) {
 	prvX = eve.x;
 	prvY = eve.y;
 }
-void main_game::handle_key_press(sf::Event::KeyEvent eve) {}
-void main_game::handle_key_release(sf::Event::KeyEvent eve) {}
+void main_game::handle_key_press(sf::Event::KeyEvent eve) {
+	key_pressed[eve.code] = true;
+}
+void main_game::handle_key_release(sf::Event::KeyEvent eve) {
+	key_pressed[eve.code] = false;
+}

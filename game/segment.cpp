@@ -42,46 +42,97 @@ void segment::adjust_dir() {
 }
 
 void segment::draw(sf::RenderTarget& targ, sf::RenderStates) const {
-	using std::min;
 	if (begin != end) {
-		sf::Vector2f mid = begin;
-		float diffX = abs(end.x - begin.x);
-		float diffY = abs(end.y - begin.y);
-
-		switch (segment::dir) {
-		case NORTH:
-			mid.y -= diffY - diffX;
-			break;
-		case NORTH_EAST:
-			mid.x += min(diffX, diffY);
-			mid.y -= min(diffX, diffY);
-			break;
-		case EAST:
-			mid.x += diffX - diffY;
-			break;
-		case SOUTH_EAST:
-			mid.x += min(diffX, diffY);
-			mid.y += min(diffX, diffY);
-			break;
-		case SOUTH:
-			mid.y += diffY - diffX;
-			break;
-		case SOUTH_WEST:
-			mid.x -= min(diffX, diffY);
-			mid.y += min(diffX, diffY);
-			break;
-		case WEST:
-			mid.x -= diffX - diffY;
-			break;
-		case NORTH_WEST:
-			mid.x -= min(diffX, diffY);
-			mid.y -= min(diffX, diffY);
-			break;
-		default:
-			break;
-		}
-		sf::Vertex ln[3] = { begin, mid, end };
-
+		sf::Vertex ln[3] = { begin, calc_mid(), end };
 		targ.draw(ln, 3, sf::LineStrip);
 	}
+}
+
+segment segment::get_reverse() {
+	segment retv = *this;
+	std::swap(retv.begin, retv.end);
+	std::swap(retv.orig, retv.dest);
+
+	//finally, calculate the reverse direction
+	sf::Vector2f mid = calc_mid();
+	if (mid == end) {
+		retv.dir = direction((dir + 4) % NUM_DIRECTIONS);
+		//a straight line, just reverse it
+	}
+
+	float diffX = end.x - mid.x;
+	float diffY = end.y - mid.y;
+
+	//maybe this has floating point precision errors?
+	if (diffX == 0) {
+		if (diffY > 0) {
+			retv.dir = NORTH;
+		} else {
+			retv.dir = SOUTH;
+		}
+	} else if (diffY == 0) {
+		if (diffX > 0) {
+			retv.dir = WEST;
+		} else {
+			retv.dir = EAST;
+		}
+	} else {
+		if (diffX > 0) {
+			if (diffY > 0) {
+				retv.dir = NORTH_WEST;
+			} else {
+				retv.dir = SOUTH_WEST;
+			}
+		} else {
+			if (diffY > 0) {
+				retv.dir = NORTH_EAST;
+			} else {
+				retv.dir = SOUTH_EAST;
+			}
+		}
+	}
+
+	return retv;
+}
+
+sf::Vector2f segment::calc_mid() const {
+	using std::min;
+
+	sf::Vector2f mid = begin;
+	float diffX = abs(end.x - begin.x);
+	float diffY = abs(end.y - begin.y);
+
+	switch (dir) {
+	case NORTH:
+		mid.y -= diffY - diffX;
+		break;
+	case NORTH_EAST:
+		mid.x += min(diffX, diffY);
+		mid.y -= min(diffX, diffY);
+		break;
+	case EAST:
+		mid.x += diffX - diffY;
+		break;
+	case SOUTH_EAST:
+		mid.x += min(diffX, diffY);
+		mid.y += min(diffX, diffY);
+		break;
+	case SOUTH:
+		mid.y += diffY - diffX;
+		break;
+	case SOUTH_WEST:
+		mid.x -= min(diffX, diffY);
+		mid.y += min(diffX, diffY);
+		break;
+	case WEST:
+		mid.x -= diffX - diffY;
+		break;
+	case NORTH_WEST:
+		mid.x -= min(diffX, diffY);
+		mid.y -= min(diffX, diffY);
+		break;
+	default:
+		break;
+	}
+	return mid;
 }

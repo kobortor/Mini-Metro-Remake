@@ -29,8 +29,10 @@ class segment : public sf::Drawable {
 public:
 	sf::Vector2f begin, end;
 	station *orig = nullptr, *dest = nullptr;
+
 	void adjust_dir();
 	void draw(sf::RenderTarget&, sf::RenderStates) const override;
+	segment get_reverse();
 
 	enum direction {
 		NORTH = 0,
@@ -48,4 +50,7 @@ public:
 	const static sf::Vector2f unit_direction[NUM_DIRECTIONS];
 
 	const static std::string direction_names[NUM_DIRECTIONS];
+
+private:
+	sf::Vector2f calc_mid() const;
 };

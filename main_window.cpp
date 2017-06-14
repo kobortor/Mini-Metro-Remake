@@ -52,8 +52,16 @@ void main_window::handle_mouse_release(sf::Event::MouseButtonEvent eve) {
 		main_game::handle_mouse_release(eve);
 	}
 }
-void main_window::handle_key_press(sf::Event::KeyEvent eve) {}
-void main_window::handle_key_release(sf::Event::KeyEvent eve) {}
+void main_window::handle_key_press(sf::Event::KeyEvent eve) {
+	if (RENDER_MODE == IN_GAME) {
+		main_game::handle_key_press(eve);
+	}
+}
+void main_window::handle_key_release(sf::Event::KeyEvent eve) {
+	if (RENDER_MODE == IN_GAME) {
+		main_game::handle_key_release(eve);
+	}
+}
 void main_window::handle_resize(sf::Event::SizeEvent eve) {
 	instance.setView(sf::View(sf::FloatRect(0.f, 0.f, eve.width, eve.height)));
 	if (RENDER_MODE == MAIN_MENU) {
