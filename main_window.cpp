@@ -53,11 +53,17 @@ void main_window::handle_mouse_release(sf::Event::MouseButtonEvent eve) {
 	}
 }
 void main_window::handle_key_press(sf::Event::KeyEvent eve) {
+	if (eve.code == sf::Keyboard::Unknown) {
+		return;
+	}
 	if (RENDER_MODE == IN_GAME) {
 		main_game::handle_key_press(eve);
 	}
 }
 void main_window::handle_key_release(sf::Event::KeyEvent eve) {
+	if (eve.code == sf::Keyboard::Unknown) {
+		return;
+	}
 	if (RENDER_MODE == IN_GAME) {
 		main_game::handle_key_release(eve);
 	}
