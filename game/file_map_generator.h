@@ -12,5 +12,5 @@ public:
 protected:
 	sf::Vector2f rel_bounds;
 	std::queue<sf::Vector2f> points;
-	long long last_update = -15000;
+	long long last_update = 0;
 };

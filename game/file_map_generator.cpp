@@ -61,8 +61,8 @@ sf::Vector2f file_map_generator::get_relative_bounds() {
 }
 
 void file_map_generator::update_until(long long game_tick) {
-	while (!points.empty() && game_tick - last_update > 5000) {
-		last_update += 5000;
+	while (!points.empty() && game_tick - last_update > 1000) {
+		last_update += 1000;
 		sf::Vector2f to_add = points.front();
 		points.pop();
 		main_game::add_station(to_add.x, to_add.y, station::TRIANGLE);
