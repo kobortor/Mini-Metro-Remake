@@ -38,6 +38,14 @@ void train::update(long long delta) {
 	sf::Vector2f &begin = cur_track.begin;
 	sf::Vector2f mid = cur_track.calc_mid();
 	sf::Vector2f &end = cur_track.end;
+
+	if (status == TOWARDS_MID && begin == mid) {
+		status = TOWARDS_END;
+	}
+	if (status == TOWARDS_END && mid == end) {
+		status = SEEKING;
+	}
+
 	if (status == TOWARDS_MID) {
 		sf::Vector2f diff = func::normalize(mid - begin);
 		posX += diff.x * delta / 10;
