@@ -2,15 +2,18 @@
 #include<SFML\Graphics.hpp>
 #include"station.h"
 
+class metro_line;
+
 class handle : public sf::Drawable {
 public:
-	handle();
-	handle(station *_home, float _angle = 0);
+	handle(metro_line *_parent);
+	handle(metro_line *_parent, station *_home, float _angle = 0);
 
 	void draw(sf::RenderTarget&, sf::RenderStates) const override;
 	void resize();
 
-	station* home;
+	station *home;
+	metro_line *parent;
 	float angle;
 	sf::Vertex tri[3];
 };

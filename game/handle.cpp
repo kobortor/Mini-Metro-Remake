@@ -1,8 +1,8 @@
 #include"handle.h"
 
-handle::handle() : home(nullptr) { }
+handle::handle(metro_line* _parent) : parent(_parent), home(nullptr) { }
 
-handle::handle(station* _home, float _angle) : home(_home), angle(_angle) {
+handle::handle(metro_line* _parent, station* _home, float _angle) : parent(_parent), home(_home), angle(_angle) {
 	resize();
 }
 

@@ -1,6 +1,6 @@
 #include"metro_line.h"
 
-metro_line::metro_line(station *begin) {
+metro_line::metro_line(station *begin) : front(this), back(this) {
 	stations.push_back(begin);
 }
 

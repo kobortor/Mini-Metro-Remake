@@ -210,8 +210,8 @@ void main_game::handle_mouse_release(sf::Event::MouseButtonEvent eve) {
 		if (edit_line->stations.size() == 1) {
 			lines.erase(edit_line);
 		} else {
-			edit_line->front = handle(edit_line->stations.front(), 0);
-			edit_line->back = handle(edit_line->stations.back(), 3.14159);
+			edit_line->front = handle(&*edit_line, edit_line->stations.front(), 0);
+			edit_line->back = handle(&*edit_line, edit_line->stations.back(), 3.14159);
 			trains.emplace_back(&*edit_line);
 		}
 	}
