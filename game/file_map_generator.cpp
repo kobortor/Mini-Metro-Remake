@@ -70,11 +70,11 @@ void file_map_generator::update_until(long long game_tick) {
 	if (main_game::stations.empty()) {
 		last_passenger = game_tick;
 	} else {
-		while (game_tick - last_passenger > 250) {
+		while (game_tick - last_passenger > 1500) {
 			//TODO: randomize
 			auto iter = main_game::stations.begin();
 			iter->add_passenger(new passenger(&*iter, station::TRIANGLE));
-			last_passenger += 250;
+			last_passenger += 1500;
 		}
 	}
 }

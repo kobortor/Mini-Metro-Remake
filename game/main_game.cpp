@@ -295,7 +295,7 @@ void main_game::handle_mouse_release(sf::Event::MouseButtonEvent eve) {
 		} else {
 			edit_line->front_handle = handle(&*edit_line, edit_line->stations.front(), 0);
 			edit_line->back_handle = handle(&*edit_line, edit_line->stations.back(), 3.14159);
-			trains.emplace_back(&*edit_line);
+			trains.emplace_back(&*edit_line, edit_line->stations.front());
 
 			for (station* stn : edit_line->stations) {
 				stn->rearrange_handles();

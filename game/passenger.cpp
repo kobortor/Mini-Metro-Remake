@@ -27,12 +27,22 @@ void passenger::unload_to(station * _cur_stn) {
 void passenger::draw(sf::RenderTarget &targ, sf::RenderStates) const {
 	sf::CircleShape circ(icon_size() / 2);
 	circ.setPosition(posX, posY);
-	circ.setFillColor(sf::Color::Red);
+
+	if (MODE == STATION) {
+		circ.setFillColor(sf::Color::Red);
+	} else {
+		circ.setFillColor(sf::Color::Green);
+	}
 
 	targ.draw(circ);
 }
 
 float passenger::icon_size() {
 	return 10;
+}
+
+station::STATION_TYPE passenger::get_type() {
+	//do this to avoid accidentally changing it
+	return type;
 }
 

@@ -3,6 +3,7 @@
 #include<list>
 
 class passenger;
+class train;
 
 class station : public sf::Drawable{
 public:
@@ -16,8 +17,10 @@ public:
 	void draw(sf::RenderTarget&, sf::RenderStates) const override;
 	bool contained(int x, int y);
 	void add_passenger(passenger * pass);
+	void load(train *t);
 	sf::Vector2f get_pos();
 protected:
+	friend class train;
 	void reorg_passengers();
 
 	std::list<passenger*> passengers;

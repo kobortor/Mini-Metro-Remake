@@ -110,6 +110,28 @@ void station::add_passenger(passenger *pass) {
 	reorg_passengers();
 }
 
+void station::load(train *t) {
+	//make this smarter in the future so people will transfer stations
+
+	auto iter = t->passengers.begin();
+	while (iter != t->passengers.end()) {
+		//if ((*iter)->get_type() == this->type) {
+		if(true){
+			printf("unconditionally unload passengers\n");
+			auto tmp = iter;
+			iter++;
+			t->passengers.erase(tmp);
+		} else {
+			iter++;
+		}
+	}
+
+	while (t->space_left() > 0 && !passengers.empty()) {
+		t->add_passenger(passengers.back());
+		passengers.pop_back();
+	}
+}
+
 sf::Vector2f station::get_pos() {
 	return sf::Vector2f(posX, posY);
 }

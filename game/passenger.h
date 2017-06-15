@@ -15,6 +15,7 @@ public:
 
 	//gets the diameter of the icon on the screen
 	static float icon_size();
+	station::STATION_TYPE get_type();
 	float posX, posY;
 protected:
 	enum {STATION, TRAIN} MODE;
