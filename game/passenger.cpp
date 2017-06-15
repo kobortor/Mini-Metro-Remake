@@ -24,7 +24,15 @@ void passenger::unload_to(station * _cur_stn) {
 	cur_stn = _cur_stn;
 }
 
-void passenger::draw(sf::RenderTarget &, sf::RenderStates) const {
+void passenger::draw(sf::RenderTarget &targ, sf::RenderStates) const {
+	sf::CircleShape circ(icon_size() / 2);
+	circ.setPosition(posX, posY);
+	circ.setFillColor(sf::Color::Red);
 
+	targ.draw(circ);
+}
+
+float passenger::icon_size() {
+	return 10;
 }
 

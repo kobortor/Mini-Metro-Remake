@@ -12,6 +12,10 @@ public:
 	void unload_to(station *_cur_stn);
 
 	void draw(sf::RenderTarget&, sf::RenderStates) const override;
+
+	//gets the diameter of the icon on the screen
+	static float icon_size();
+	float posX, posY;
 protected:
 	enum {STATION, TRAIN} MODE;
 	station::STATION_TYPE type;

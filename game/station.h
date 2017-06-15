@@ -18,6 +18,8 @@ public:
 	void add_passenger(passenger * pass);
 	sf::Vector2f get_pos();
 protected:
+	void reorg_passengers();
+
 	std::list<passenger*> passengers;
 
 	STATION_TYPE type;

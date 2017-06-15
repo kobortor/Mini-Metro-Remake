@@ -14,6 +14,8 @@ void station::resize() {
 
 	posX = bounds.left + bounds.width * relX / relBounds.x;
 	posY = bounds.top + bounds.height * relY / relBounds.y;
+
+	reorg_passengers();
 }
 
 void station::rearrange_handles() {
@@ -91,7 +93,9 @@ void station::draw(sf::RenderTarget& targ, sf::RenderStates) const {
 	circ.setFillColor(sf::Color::White);
 	targ.draw(circ);
 
-
+	for (const passenger *pass : passengers) {
+		targ.draw(*pass);
+	}
 }
 
 bool station::contained(int x, int y) {
@@ -103,8 +107,37 @@ bool station::contained(int x, int y) {
 
 void station::add_passenger(passenger *pass) {
 	passengers.push_back(pass);
+	reorg_passengers();
 }
 
 sf::Vector2f station::get_pos() {
 	return sf::Vector2f(posX, posY);
+}
+
+void station::reorg_passengers() {
+	const int PASSENGERS_PER_ROW = 6;
+	const float padding = 0.5;
+	float diam = passenger::icon_size();
+
+	//cheap round up
+	int num_rows = (passengers.size() + PASSENGERS_PER_ROW - 1) / PASSENGERS_PER_ROW;
+	auto iter = passengers.begin();
+	float pXpos = posX + main_game::get_station_radius() / 2 + padding * diam;
+	float pYpos = posY - main_game::get_station_radius() / 2 - num_rows * diam * (1 + padding);
+
+	int idx = 0;
+	while (iter != passengers.end()) {
+		if (idx >= PASSENGERS_PER_ROW) {
+			pXpos -= (PASSENGERS_PER_ROW - 1) * diam * (1 + padding);
+			pYpos += diam * (1 + padding);
+			idx = 0;
+		} else {
+			pXpos += diam * (1 + padding);
+		}
+		(*iter)->posX = pXpos;
+		(*iter)->posY = pYpos;
+
+		idx++;
+		iter++;
+	}
 }
