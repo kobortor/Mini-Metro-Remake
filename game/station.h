@@ -15,7 +15,7 @@ public:
 	void rearrange_handles();
 	void draw(sf::RenderTarget&, sf::RenderStates) const override;
 	bool contained(int x, int y);
-	void add_passenger(STATION_TYPE _type);
+	void add_passenger(passenger * pass);
 	sf::Vector2f get_pos();
 protected:
 	std::list<passenger*> passengers;

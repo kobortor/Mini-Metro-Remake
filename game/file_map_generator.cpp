@@ -73,7 +73,7 @@ void file_map_generator::update_until(long long game_tick) {
 		while (game_tick - last_passenger > 500) {
 			//TODO: randomize
 			auto iter = main_game::stations.begin();
-			iter->add_passenger(station::TRIANGLE);
+			iter->add_passenger(new passenger(&*iter, station::TRIANGLE));
 		}
 	}
 }

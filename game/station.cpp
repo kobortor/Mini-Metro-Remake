@@ -90,6 +90,8 @@ void station::draw(sf::RenderTarget& targ, sf::RenderStates) const {
 	circ.setPosition(posX - radius, posY - radius);
 	circ.setFillColor(sf::Color::White);
 	targ.draw(circ);
+
+
 }
 
 bool station::contained(int x, int y) {
@@ -99,8 +101,8 @@ bool station::contained(int x, int y) {
 	return diffX * diffX + diffY * diffY <= lim * lim;
 }
 
-void station::add_passenger(STATION_TYPE _type) {
-	passengers.push_back(new passenger(this, _type));
+void station::add_passenger(passenger *pass) {
+	passengers.push_back(pass);
 }
 
 sf::Vector2f station::get_pos() {
