@@ -58,7 +58,8 @@ void segment::draw(sf::RenderTarget& targ, sf::RenderStates) const {
 }
 
 void segment::resize() {
-	
+	begin = orig->get_pos();
+	end = dest->get_pos();
 }
 
 segment segment::get_reverse() const {

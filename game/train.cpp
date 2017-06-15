@@ -34,13 +34,13 @@ void train::resize() {
 	if (status == TOWARDS_MID) {
 		sf::Vector2f &begin = cur_track.begin;
 		sf::Vector2f mid = cur_track.calc_mid();
-		sf::Vector2f diff = (mid - begin) * amnt_done;
+		sf::Vector2f diff = begin + (mid - begin) * amnt_done;
 		posX = diff.x;
 		posY = diff.y;
 	} else if (status == TOWARDS_END) {
 		sf::Vector2f mid = cur_track.calc_mid();
 		sf::Vector2f &end = cur_track.end;
-		sf::Vector2f diff = (end - mid) * amnt_done;
+		sf::Vector2f diff = mid + (end - mid) * amnt_done;
 		posX = diff.x;
 		posY = diff.y;
 	}

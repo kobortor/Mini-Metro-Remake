@@ -68,12 +68,12 @@ void main_game::resize() {
 		stn.resize();
 	}
 
-	for (train &t : trains) {
-		t.resize();
-	}
-
 	for (metro_line &ml : lines) {
 		ml.resize();
+	}
+
+	for (train &t : trains) {
+		t.resize();
 	}
 }
 
