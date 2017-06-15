@@ -27,11 +27,11 @@ void station::rearrange_handles() {
 				dirs[seg.get_reverse().dir] = true;
 			}
 		}
-		if (ml.front.home == this) {
-			tofix.push_back(&ml.front);
+		if (ml.front_handle.home == this) {
+			tofix.push_back(&ml.front_handle);
 		}
-		if (ml.back.home == this) {
-			tofix.push_back(&ml.back);
+		if (ml.back_handle.home == this) {
+			tofix.push_back(&ml.back_handle);
 		}
 	}
 

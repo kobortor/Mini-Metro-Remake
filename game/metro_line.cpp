@@ -1,6 +1,6 @@
 #include"metro_line.h"
 
-metro_line::metro_line(station *begin, sf::Color _color) : front(this), back(this), color(_color) {
+metro_line::metro_line(station *begin, sf::Color _color) : front_handle(this), back_handle(this), color(_color) {
 	stations.push_back(begin);
 }
 
@@ -9,6 +9,8 @@ void metro_line::resize() {
 		seg.begin = seg.orig->get_pos();
 		seg.end = seg.dest->get_pos();
 	}
+	front_handle.resize();
+	back_handle.resize();
 }
 
 segment metro_line::get_next_path(station* cur, station* prv) {
@@ -59,6 +61,6 @@ void metro_line::draw(sf::RenderTarget &targ, sf::RenderStates) const {
 		targ.draw(seg);
 	}
 
-	targ.draw(front);
-	targ.draw(back);
+	targ.draw(front_handle);
+	targ.draw(back_handle);
 }

@@ -22,5 +22,5 @@ public:
 	void draw(sf::RenderTarget&, sf::RenderStates) const override;
 
 	sf::Color color;
-	handle front, back;
+	handle front_handle, back_handle;
 };

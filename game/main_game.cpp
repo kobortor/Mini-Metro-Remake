@@ -67,6 +67,11 @@ void main_game::resize() {
 	for (station &stn : stations) {
 		stn.resize();
 	}
+
+	for (train &t : trains) {
+		t.resize();
+	}
+
 	for (metro_line &ml : lines) {
 		ml.resize();
 	}
@@ -166,13 +171,13 @@ void main_game::handle_mouse_click(sf::Event::MouseButtonEvent eve) {
 	}
 
 	for (metro_line &ml : lines) {
-		if (ml.front.contained(eve.x, eve.y)) {
+		if (ml.front_handle.contained(eve.x, eve.y)) {
 			set_edit_line(&ml, LINE_EDIT_FRONT);
 			edit_seg.end = sf::Vector2f(eve.x, eve.y);
 			edit_seg.adjust_dir();
 			break;
 		}
-		if (ml.back.contained(eve.x, eve.y)) {
+		if (ml.back_handle.contained(eve.x, eve.y)) {
 			set_edit_line(&ml, LINE_EDIT_BACK);
 			edit_seg.end = sf::Vector2f(eve.x, eve.y);
 			edit_seg.adjust_dir();
@@ -288,8 +293,8 @@ void main_game::handle_mouse_release(sf::Event::MouseButtonEvent eve) {
 				lines.erase(iter);
 			}
 		} else {
-			edit_line->front = handle(&*edit_line, edit_line->stations.front(), 0);
-			edit_line->back = handle(&*edit_line, edit_line->stations.back(), 3.14159);
+			edit_line->front_handle = handle(&*edit_line, edit_line->stations.front(), 0);
+			edit_line->back_handle = handle(&*edit_line, edit_line->stations.back(), 3.14159);
 			trains.emplace_back(&*edit_line);
 
 			for (station* stn : edit_line->stations) {

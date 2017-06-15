@@ -5,7 +5,7 @@
 
 train::train(metro_line * _home_line):home_line(_home_line) {
 	//by default start at beginning
-	cur_track = home_line->get_next_path(home_line->stations.front(), nullptr); 
+	cur_track = home_line->get_next_path(home_line->stations.front(), nullptr);
 	if (cur_track.orig == nullptr) {
 		status = DEAD;
 	}
@@ -25,6 +25,25 @@ void train::draw(sf::RenderTarget &targ, sf::RenderStates) const {
 
 bool train::is_dead() {
 	return status == DEAD;
+}
+
+void train::resize() {
+	//since this is separate from rest of the tracks, we need to do this
+	cur_track.resize();
+
+	if (status == TOWARDS_MID) {
+		sf::Vector2f &begin = cur_track.begin;
+		sf::Vector2f mid = cur_track.calc_mid();
+		sf::Vector2f diff = (mid - begin) * amnt_done;
+		posX = diff.x;
+		posY = diff.y;
+	} else if (status == TOWARDS_END) {
+		sf::Vector2f mid = cur_track.calc_mid();
+		sf::Vector2f &end = cur_track.end;
+		sf::Vector2f diff = (end - mid) * amnt_done;
+		posX = diff.x;
+		posY = diff.y;
+	}
 }
 
 void train::update(long long delta) {
@@ -51,7 +70,9 @@ void train::update(long long delta) {
 		sf::Vector2f diff = func::normalize(mid - begin);
 		posX += diff.x * delta / 10;
 		posY += diff.y * delta / 10;
-		if (hypot(posX - begin.x, posY - begin.y) >= hypot(mid.x - begin.x, mid.y - begin.y)) {
+		amnt_done = hypot(posX - begin.x, posY - begin.y) / hypot(mid.x - begin.x, mid.y - begin.y);
+
+		if (amnt_done >= 1) {
 			posX = mid.x;
 			posY = mid.y;
 			status = TOWARDS_END;
@@ -60,7 +81,8 @@ void train::update(long long delta) {
 		sf::Vector2f diff = func::normalize(end - mid);
 		posX += diff.x * delta / 10;
 		posY += diff.y * delta / 10;
-		if (hypot(posX - mid.x, posY - mid.y) >= hypot(end.x - mid.x, end.y - mid.y)) {
+		amnt_done = hypot(posX - mid.x, posY - mid.y) / hypot(end.x - mid.x, end.y - mid.y);
+		if (amnt_done >= 1) {
 			posX = end.x;
 			posY = end.y;
 			status = SEEKING;

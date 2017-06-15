@@ -10,12 +10,15 @@ public:
 	//will return true once it can't find any more track to carry on
 	bool is_dead();
 
+	void resize();
+
 	//milliseconds of change
 	void update(long long delta);
 
 protected:
 	float posX, posY;
 	segment cur_track;
+	float amnt_done;
 
 	//tries to find next path in metro line
 	void seek();
