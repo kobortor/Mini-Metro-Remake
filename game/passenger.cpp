@@ -2,7 +2,9 @@
 #include<cstdlib>
 #include<iostream>
 
-passenger::passenger(station * _cur_stn):cur_stn(_cur_stn), MODE(STATION) {}
+passenger::passenger(station * _cur_stn, station::STATION_TYPE _type) :
+	cur_stn(_cur_stn), type(_type), MODE(STATION) {
+}
 
 void passenger::load_to(train * _cur_train) {
 	if (MODE == TRAIN) {

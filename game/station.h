@@ -1,7 +1,8 @@
 #pragma once
 #include<SFML\Graphics.hpp>
 #include<list>
-#include"passenger.h"
+
+class passenger;
 
 class station : public sf::Drawable{
 public:
@@ -14,6 +15,7 @@ public:
 	void rearrange_handles();
 	void draw(sf::RenderTarget&, sf::RenderStates) const override;
 	bool contained(int x, int y);
+	void add_passenger(STATION_TYPE _type);
 	sf::Vector2f get_pos();
 protected:
 	std::list<passenger*> passengers;

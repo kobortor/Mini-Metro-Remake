@@ -67,4 +67,13 @@ void file_map_generator::update_until(long long game_tick) {
 		points.pop();
 		main_game::add_station(to_add.x, to_add.y, station::TRIANGLE);
 	}
+	if (main_game::stations.empty()) {
+		last_passenger = game_tick;
+	} else {
+		while (game_tick - last_passenger > 500) {
+			//TODO: randomize
+			auto iter = main_game::stations.begin();
+			iter->add_passenger(station::TRIANGLE);
+		}
+	}
 }

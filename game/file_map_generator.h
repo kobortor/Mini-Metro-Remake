@@ -12,5 +12,7 @@ public:
 protected:
 	sf::Vector2f rel_bounds;
 	std::queue<sf::Vector2f> points;
+
+	long long last_passenger = 0;
 	long long last_update = 0;
 };

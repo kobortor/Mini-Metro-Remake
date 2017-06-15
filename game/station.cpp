@@ -1,6 +1,7 @@
 #include"station.h"
 #include"main_game.h"
 #include"../main_window.h"
+#include"passenger.h"
 #include<bitset>
 
 station::station(float _relX, float _relY, STATION_TYPE _type):relX(_relX), relY(_relY), type(_type) {
@@ -96,6 +97,10 @@ bool station::contained(int x, int y) {
 	int diffX = x - posX;
 	int diffY = y - posY;
 	return diffX * diffX + diffY * diffY <= lim * lim;
+}
+
+void station::add_passenger(STATION_TYPE _type) {
+	passengers.push_back(new passenger(this, _type));
 }
 
 sf::Vector2f station::get_pos() {
