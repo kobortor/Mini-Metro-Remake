@@ -27,6 +27,10 @@ bool train::is_dead() {
 	return status == DEAD;
 }
 
+sf::Vector2f train::get_pos() {
+	return sf::Vector2f();
+}
+
 void train::resize() {
 	//since this is separate from rest of the tracks, we need to do this
 	cur_track.resize();

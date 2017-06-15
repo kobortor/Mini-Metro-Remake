@@ -1,5 +1,7 @@
 #pragma once
 #include<SFML\Graphics.hpp>
+#include<list>
+#include"passenger.h"
 
 class station : public sf::Drawable{
 public:
@@ -14,6 +16,7 @@ public:
 	bool contained(int x, int y);
 	sf::Vector2f get_pos();
 protected:
+	std::list<passenger*> passengers;
 
 	STATION_TYPE type;
 	float relX, relY;

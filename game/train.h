@@ -1,6 +1,7 @@
 #pragma once
 #include<SFML\Graphics.hpp>
 #include"metro_line.h"
+#include"passenger.h"
 
 class train : public sf::Drawable {
 public:
@@ -10,6 +11,7 @@ public:
 	//will return true once it can't find any more track to carry on
 	bool is_dead();
 
+	sf::Vector2f get_pos();
 	void resize();
 
 	//milliseconds of change
@@ -19,6 +21,7 @@ protected:
 	float posX, posY;
 	segment cur_track;
 	float amnt_done;
+	std::list<passenger*> passengers;
 
 	//tries to find next path in metro line
 	void seek();
