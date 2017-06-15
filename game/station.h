@@ -12,7 +12,7 @@ public:
 	void rearrange_handles();
 	void draw(sf::RenderTarget&, sf::RenderStates) const override;
 	bool contained(int x, int y);
-	sf::Vector2i get_pos();
+	sf::Vector2f get_pos();
 protected:
 
 	STATION_TYPE type;

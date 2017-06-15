@@ -41,7 +41,7 @@ void handle::resize() {
 	const float d1 = 35;
 	const float d2 = 60;
 
-	sf::Vector2f orig = sf::Vector2f(home->get_pos());
+	sf::Vector2f orig = home->get_pos();
 
 	tri[0].position = orig;
 	tri[1].position = sf::Vector2f(d2 * sin(angle + 0.2), -d2 * cos(angle + 0.2)) + orig;

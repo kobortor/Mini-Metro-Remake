@@ -67,6 +67,9 @@ void main_game::resize() {
 	for (station &stn : stations) {
 		stn.resize();
 	}
+	for (metro_line &ml : lines) {
+		ml.resize();
+	}
 }
 
 sf::IntRect main_game::get_window_bounds() {
@@ -146,12 +149,12 @@ void main_game::set_edit_line(metro_line *line, main_game::CLICK_MODE_TYPE mode)
 	//act as if it was beginning even if mode is editing from the front.
 	//if it is from the front, just reverse it when actually adding the stations
 	if (mode == LINE_EDIT_FRONT) {
-		edit_seg.begin = sf::Vector2f(edit_line->stations.front()->get_pos());
-		edit_seg.end = sf::Vector2f(edit_line->stations.front()->get_pos());
+		edit_seg.begin = edit_line->stations.front()->get_pos();
+		edit_seg.end = edit_line->stations.front()->get_pos();
 		edit_seg.orig = edit_line->stations.front();
 	} else if (mode == LINE_EDIT_BACK) {
-		edit_seg.begin = sf::Vector2f(edit_line->stations.back()->get_pos());
-		edit_seg.end = sf::Vector2f(edit_line->stations.back()->get_pos());
+		edit_seg.begin = edit_line->stations.back()->get_pos();
+		edit_seg.end = edit_line->stations.back()->get_pos();
 		edit_seg.orig = edit_line->stations.back();
 	}
 }
@@ -216,11 +219,10 @@ void main_game::handle_mouse_move(sf::Event::MouseMoveEvent eve) {
 			}
 		}
 		//write logic for adding and removing stations
-
 		if (hover != nullptr) {
 			//not added before
 			if (std::find(edit_line->stations.begin(), edit_line->stations.end(), hover) == edit_line->stations.end()) {
-				edit_seg.end = sf::Vector2f(hover->get_pos());
+				edit_seg.end = hover->get_pos();
 				edit_seg.dest = hover;
 				edit_seg.parent = edit_line;
 
@@ -234,7 +236,7 @@ void main_game::handle_mouse_move(sf::Event::MouseMoveEvent eve) {
 
 				edit_seg = segment();
 				edit_seg.orig = hover;
-				edit_seg.begin = sf::Vector2f(hover->get_pos());
+				edit_seg.begin = hover->get_pos();
 				edit_seg.end = sf::Vector2f(eve.x, eve.y);
 
 				edit_seg.adjust_dir();
@@ -247,7 +249,7 @@ void main_game::handle_mouse_move(sf::Event::MouseMoveEvent eve) {
 
 						edit_seg = segment();
 						edit_seg.orig = edit_line->stations.back();
-						edit_seg.begin = sf::Vector2f(edit_line->stations.back()->get_pos());
+						edit_seg.begin = edit_line->stations.back()->get_pos();
 						edit_seg.end = sf::Vector2f(eve.x, eve.y);
 						edit_seg.adjust_dir();
 					}
@@ -259,7 +261,7 @@ void main_game::handle_mouse_move(sf::Event::MouseMoveEvent eve) {
 
 						edit_seg = segment();
 						edit_seg.orig = edit_line->stations.front();
-						edit_seg.begin = sf::Vector2f(edit_line->stations.front()->get_pos());
+						edit_seg.begin = edit_line->stations.front()->get_pos();
 						edit_seg.end = sf::Vector2f(eve.x, eve.y);
 
 						edit_seg.adjust_dir();

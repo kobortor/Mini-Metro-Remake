@@ -98,6 +98,6 @@ bool station::contained(int x, int y) {
 	return diffX * diffX + diffY * diffY <= lim * lim;
 }
 
-sf::Vector2i station::get_pos() {
-	return{ posX, posY };
+sf::Vector2f station::get_pos() {
+	return sf::Vector2f(posX, posY);
 }

@@ -4,6 +4,13 @@ metro_line::metro_line(station *begin, sf::Color _color) : front(this), back(thi
 	stations.push_back(begin);
 }
 
+void metro_line::resize() {
+	for (segment &seg : segments) {
+		seg.begin = seg.orig->get_pos();
+		seg.end = seg.orig->get_pos();
+	}
+}
+
 segment metro_line::get_next_path(station* cur, station* prv) {
 	if (stations.size() == 1) {
 		return segment(); //null
