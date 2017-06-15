@@ -7,7 +7,7 @@ metro_line::metro_line(station *begin, sf::Color _color) : front(this), back(thi
 void metro_line::resize() {
 	for (segment &seg : segments) {
 		seg.begin = seg.orig->get_pos();
-		seg.end = seg.orig->get_pos();
+		seg.end = seg.dest->get_pos();
 	}
 }
 
