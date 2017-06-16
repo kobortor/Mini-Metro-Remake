@@ -5,9 +5,11 @@
 #include"game\main_game.h"
 #include"main_window.h"
 #include"fonts.h"
+#include"textures.h"
 
 int main() {
 	font::consola.loadFromFile("assets/fonts/consola.ttf");
+	textures::load();
 
 	main_window::initialize();
 

@@ -8,7 +8,7 @@ class main_game {
 public:
 	main_game() = delete; //singleton
 
-	enum CLICK_MODE_TYPE { NONE, LINE_EDIT_FRONT, LINE_EDIT_BACK };
+	enum CLICK_MODE_TYPE { NONE, LINE_EDIT_FRONT, LINE_EDIT_BACK, PLACE_TRAIN };
 
 	static void initialize(map_generator* _map_gen);
 	static sf::Vector2f get_relative_bounds();

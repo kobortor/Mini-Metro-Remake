@@ -5,6 +5,7 @@
 #include"../system/system_func.h"
 #include"../functions.h"
 #include"handle.h"
+#include"../textures.h"
 
 map_generator* main_game::map_gen = nullptr;
 time_t main_game::game_start_time = 0;
@@ -146,6 +147,17 @@ void main_game::render() {
 	}
 
 	main_window::get_instance().draw(*train_btn);
+
+	if (CLICK_MODE == PLACE_TRAIN) {
+		sf::RectangleShape rect;
+		float ybnd = window_bounds.height;
+		float radius = 0.025;
+		rect.setPosition(prvX - radius * ybnd, prvY - radius * ybnd);
+		//intentionally both height to make square
+		rect.setSize(sf::Vector2f(2 * radius * window_bounds.height, 2 * radius * window_bounds.height));
+		rect.setTexture(&textures::train_cursor);
+		main_window::get_instance().draw(rect);
+	}
 }
 void main_game::cleanup() {
 	delete map_gen;
@@ -180,15 +192,16 @@ void main_game::handle_mouse_click(sf::Event::MouseButtonEvent eve) {
 		prvY = eve.y;
 	}
 
-
-	if (!avail_colors.empty()) {
-		for (station &stn : stations) {
-			if (stn.contained(eve.x, eve.y)) {
-				CLICK_MODE = LINE_EDIT_BACK;
-				lines.push_back(metro_line(&stn, avail_colors.back()));
-				avail_colors.pop_back();
-				set_edit_line(&lines.back(), LINE_EDIT_BACK);
-				break;
+	if (CLICK_MODE == NONE) {
+		if (!avail_colors.empty()) {
+			for (station &stn : stations) {
+				if (stn.contained(eve.x, eve.y)) {
+					CLICK_MODE = LINE_EDIT_BACK;
+					lines.push_back(metro_line(&stn, avail_colors.back()));
+					avail_colors.pop_back();
+					set_edit_line(&lines.back(), LINE_EDIT_BACK);
+					break;
+				}
 			}
 		}
 	}
@@ -210,6 +223,10 @@ void main_game::handle_mouse_click(sf::Event::MouseButtonEvent eve) {
 		}
 	}
 
+	if (CLICK_MODE == NONE || CLICK_MODE == PLACE_TRAIN) {
+		train_btn->try_click(eve.x, eve.y, true);
+	}
+
 	mouse_button_pressed[eve.button] = true;
 
 	prvX = eve.x;
@@ -221,71 +238,76 @@ void main_game::handle_mouse_move(sf::Event::MouseMoveEvent eve) {
 		prvY = eve.y;
 	}
 
-	if (CLICK_MODE == LINE_EDIT_FRONT || CLICK_MODE == LINE_EDIT_BACK) {
-		edit_seg.end.x = eve.x;
-		edit_seg.end.y = eve.y;
+	if (mouse_button_pressed[sf::Mouse::Left]) {
+		if (CLICK_MODE == LINE_EDIT_FRONT || CLICK_MODE == LINE_EDIT_BACK) {
+			edit_seg.end.x = eve.x;
+			edit_seg.end.y = eve.y;
 
-		edit_seg.adjust_dir();
+			edit_seg.adjust_dir();
 
-		station *hover = nullptr;
-		for (station &stn : stations) {
-			if (stn.contained(eve.x, eve.y) && !stn.contained(prvX, prvY)) {
-				hover = &stn;
-				break;
-			}
-		}
-		//write logic for adding and removing stations
-		if (hover != nullptr) {
-			//not added before
-			if (std::find(edit_line->stations.begin(), edit_line->stations.end(), hover) == edit_line->stations.end()) {
-				edit_seg.end = hover->get_pos();
-				edit_seg.dest = hover;
-				edit_seg.parent = edit_line;
-
-				if (CLICK_MODE == LINE_EDIT_BACK) {
-					edit_line->stations.push_back(hover);
-					edit_line->segments.push_back(edit_seg);
-				} else {
-					edit_line->stations.push_front(hover);
-					edit_line->segments.push_front(edit_seg.get_reverse());
-				}
-
-				edit_seg = segment();
-				edit_seg.orig = hover;
-				edit_seg.begin = hover->get_pos();
-				edit_seg.end = sf::Vector2f(eve.x, eve.y);
-
-				edit_seg.adjust_dir();
-			} else if (edit_line->stations.size() >= 2) {
-				if (CLICK_MODE == LINE_EDIT_BACK) {
-					if (hover == edit_line->stations.back()) {
-						edit_line->stations.back()->rearrange_handles();
-						edit_line->segments.pop_back();
-						edit_line->stations.pop_back();
-
-						edit_seg = segment();
-						edit_seg.orig = edit_line->stations.back();
-						edit_seg.begin = edit_line->stations.back()->get_pos();
-						edit_seg.end = sf::Vector2f(eve.x, eve.y);
-						edit_seg.adjust_dir();
-					}
-				} else if (CLICK_MODE == LINE_EDIT_FRONT) {
-					if (hover == edit_line->stations.front()) {
-						edit_line->stations.front()->rearrange_handles();
-						edit_line->segments.pop_front();
-						edit_line->stations.pop_front();
-
-						edit_seg = segment();
-						edit_seg.orig = edit_line->stations.front();
-						edit_seg.begin = edit_line->stations.front()->get_pos();
-						edit_seg.end = sf::Vector2f(eve.x, eve.y);
-
-						edit_seg.adjust_dir();
-					}
+			station *hover = nullptr;
+			for (station &stn : stations) {
+				if (stn.contained(eve.x, eve.y) && !stn.contained(prvX, prvY)) {
+					hover = &stn;
+					break;
 				}
 			}
+			//write logic for adding and removing stations
+			if (hover != nullptr) {
+				//not added before
+				if (std::find(edit_line->stations.begin(), edit_line->stations.end(), hover) == edit_line->stations.end()) {
+					edit_seg.end = hover->get_pos();
+					edit_seg.dest = hover;
+					edit_seg.parent = edit_line;
+
+					if (CLICK_MODE == LINE_EDIT_BACK) {
+						edit_line->stations.push_back(hover);
+						edit_line->segments.push_back(edit_seg);
+					} else {
+						edit_line->stations.push_front(hover);
+						edit_line->segments.push_front(edit_seg.get_reverse());
+					}
+
+					edit_seg = segment();
+					edit_seg.orig = hover;
+					edit_seg.begin = hover->get_pos();
+					edit_seg.end = sf::Vector2f(eve.x, eve.y);
+
+					edit_seg.adjust_dir();
+				} else if (edit_line->stations.size() >= 2) {
+					if (CLICK_MODE == LINE_EDIT_BACK) {
+						if (hover == edit_line->stations.back()) {
+							edit_line->stations.back()->rearrange_handles();
+							edit_line->segments.pop_back();
+							edit_line->stations.pop_back();
+
+							edit_seg = segment();
+							edit_seg.orig = edit_line->stations.back();
+							edit_seg.begin = edit_line->stations.back()->get_pos();
+							edit_seg.end = sf::Vector2f(eve.x, eve.y);
+							edit_seg.adjust_dir();
+						}
+					} else if (CLICK_MODE == LINE_EDIT_FRONT) {
+						if (hover == edit_line->stations.front()) {
+							edit_line->stations.front()->rearrange_handles();
+							edit_line->segments.pop_front();
+							edit_line->stations.pop_front();
+
+							edit_seg = segment();
+							edit_seg.orig = edit_line->stations.front();
+							edit_seg.begin = edit_line->stations.front()->get_pos();
+							edit_seg.end = sf::Vector2f(eve.x, eve.y);
+
+							edit_seg.adjust_dir();
+						}
+					}
+				}
+			}
+		} else if (CLICK_MODE == NONE || CLICK_MODE == PLACE_TRAIN) {
+			train_btn->try_click(eve.x, eve.y, false);
 		}
 	}
+
 	prvX = eve.x;
 	prvY = eve.y;
 }
@@ -311,9 +333,11 @@ void main_game::handle_mouse_release(sf::Event::MouseButtonEvent eve) {
 				stn->rearrange_handles();
 			}
 		}
+		CLICK_MODE = NONE;
+	} else if(CLICK_MODE == NONE || CLICK_MODE == PLACE_TRAIN) {
+		train_btn->try_release(eve.x, eve.y);
 	}
 
-	CLICK_MODE = NONE;
 	mouse_button_pressed[eve.button] = false;
 
 	prvX = eve.x;
