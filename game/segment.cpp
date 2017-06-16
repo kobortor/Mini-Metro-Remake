@@ -48,13 +48,10 @@ void segment::adjust_dir() {
 void segment::draw(sf::RenderTarget& targ, sf::RenderStates) const {
 	if (begin != end) {
 		sf::Vector2f mid = calc_mid();
-		if (parent != nullptr) {
-			func::draw_thick_line(begin, mid, 6, parent->color, targ);
-			func::draw_thick_line(mid, end, 6, parent->color, targ);
-		} else {
-			func::draw_thick_line(begin, mid, 6, sf::Color::White, targ);
-			func::draw_thick_line(mid, end, 6, sf::Color::White, targ);
-		}
+		sf::Color col = parent ? parent->color : sf::Color::White;
+		float wid = highlighted ? 15 : 6;
+		func::draw_thick_line(begin, mid, wid, col, targ);
+		func::draw_thick_line(mid, end, wid, col, targ);
 	}
 }
 

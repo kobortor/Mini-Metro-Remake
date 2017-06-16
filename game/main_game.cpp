@@ -307,6 +307,16 @@ void main_game::handle_mouse_move(sf::Event::MouseMoveEvent eve) {
 			train_btn->try_click(eve.x, eve.y, false);
 		}
 	}
+	if (CLICK_MODE == PLACE_TRAIN) {
+		for (metro_line &ml : lines) {
+			for (segment &segs : ml.segments) {
+				sf::Vector2f mid = segs.calc_mid();
+				float dist_to = std::min(func::dist_to_line(segs.begin, mid, sf::Vector2f(prvX, prvY)),
+					func::dist_to_line(mid, segs.end, sf::Vector2f(prvX, prvY)));
+				segs.highlighted = dist_to < 15;
+			}
+		}
+	}
 
 	prvX = eve.x;
 	prvY = eve.y;

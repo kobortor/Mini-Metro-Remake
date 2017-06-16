@@ -33,6 +33,9 @@ public:
 	sf::Vector2f begin, end;
 	station *orig = nullptr, *dest = nullptr;
 
+	//checked true if the cursor is the train and is hovering over it
+	bool highlighted = false;
+
 	segment();
 	segment(metro_line *_parent);
 
