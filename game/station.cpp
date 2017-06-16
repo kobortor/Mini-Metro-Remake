@@ -127,6 +127,7 @@ void station::load(train *t) {
 	}
 
 	while (t->space_left() > 0 && !passengers.empty()) {
+		passengers.back()->MODE = passenger::TRAIN;
 		t->add_passenger(passengers.back());
 		passengers.pop_back();
 	}
