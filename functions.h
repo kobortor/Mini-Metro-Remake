@@ -23,4 +23,6 @@ namespace func {
 		}
 		return end;
 	}
+
+	void draw_thick_line(sf::Vector2f begin, sf::Vector2f end, float wid, sf::Color col, sf::RenderTarget &targ);
 }

@@ -24,4 +24,34 @@ namespace func {
 		float len = hypot(V.x, V.y);
 		return{ V.x / len, V.y / len };
 	}
+
+	void draw_thick_line(sf::Vector2f begin, sf::Vector2f end, float wid, sf::Color col, sf::RenderTarget &targ) {
+		float radius = wid / 2;
+
+		sf::CircleShape circ{ radius };
+		circ.setFillColor(col);
+
+		circ.setPosition(begin.x - radius, begin.y - radius);
+		targ.draw(circ);
+		
+		circ.setPosition(end.x - radius, end.y - radius);
+		targ.draw(circ);
+
+		sf::Vector2f diff = end - begin;
+		if (diff.x == 0 && diff.y == 0) {
+			return;
+		}
+
+		diff = normalize(diff);
+		diff *= radius;
+		std::swap(diff.x, diff.y);
+		diff.y *= -1;
+
+		sf::Vertex vert[] = { begin + diff, end + diff, end - diff, begin - diff };
+		for (int a = 0; a < 4; a++) {
+			vert[a].color = col;
+		}
+
+		targ.draw(vert, 4, sf::TriangleFan);
+	}
 }
