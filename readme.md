@@ -5,14 +5,6 @@ The game is available through a variet of outlets, all of which you can find on 
 ## File Specifications
 maplist.txt will contain the name of the map on a line, followed by the location of the file on the next line
 
-The maps themselves will contain 2 floating point numbers describing the ratio of the map
-A map beginning with `2.00 1.00` will ## Project Description
-This is an remake of the game "Mini Metro" for an ICS 4U project.
-The game is available through a variet of outlets, all of which you can find on the game's [official page](https://dinopoloclub.com/minimetro/).
-
-## File Specifications
-maplist.txt will contain the name of the map on a line, followed by the location of the file on the next line
-
 ## Map File Details
 
 The file will first give details. Details will be in the format
