@@ -25,6 +25,10 @@ namespace func {
 		return{ V.x / len, V.y / len };
 	}
 
+	float hypotf(sf::Vector2f V) {
+		return ::hypotf(V.x, V.y);
+	}
+
 	void draw_thick_line(sf::Vector2f begin, sf::Vector2f end, float wid, sf::Color col, sf::RenderTarget &targ) {
 		float radius = wid / 2;
 
@@ -53,5 +57,16 @@ namespace func {
 		}
 
 		targ.draw(vert, 4, sf::TriangleFan);
+	}
+
+	float dist_to_line(sf::Vector2f begin, sf::Vector2f end, sf::Vector2f point) {
+		float ans = hypotf(point - begin);
+		ans = std::min(ans, hypotf(point - end));
+		
+		bool within_range = dot(point - begin, end - begin) >= 0 && dot(point - end, begin - end) >= 0;
+		if (within_range) {
+			ans = std::min(ans, cross(point - begin, end - begin) / hypotf(begin));
+		}
+		return ans;
 	}
 }

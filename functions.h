@@ -13,6 +13,8 @@ namespace func {
 
 	sf::Vector2f normalize(sf::Vector2f V);
 
+	float hypotf(sf::Vector2f V);
+	
 	template<class iter, class obj>
 	iter find_iter(iter begin, iter end, obj *ptr) {
 		while (begin != end) {
@@ -25,4 +27,6 @@ namespace func {
 	}
 
 	void draw_thick_line(sf::Vector2f begin, sf::Vector2f end, float wid, sf::Color col, sf::RenderTarget &targ);
+
+	float dist_to_line(sf::Vector2f begin, sf::Vector2f end, sf::Vector2f point);
 }
