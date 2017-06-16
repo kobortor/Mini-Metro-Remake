@@ -38,7 +38,7 @@ void main_game::initialize(map_generator* _map_gen) {
 
 	game_start_time = sys::get_millis();
 	last_update = 0;
-	background.setFillColor(sf::Color(50,50,50));
+	background.setFillColor(sf::Color(50, 50, 50));
 	map_gen = _map_gen;
 	resize();
 }
@@ -170,31 +170,32 @@ void main_game::handle_mouse_click(sf::Event::MouseButtonEvent eve) {
 		prvY = eve.y;
 	}
 
-	for (metro_line &ml : lines) {
-		if (ml.front_handle.contained(eve.x, eve.y)) {
-			set_edit_line(&ml, LINE_EDIT_FRONT);
-			edit_seg.end = sf::Vector2f(eve.x, eve.y);
-			edit_seg.adjust_dir();
-			break;
-		}
-		if (ml.back_handle.contained(eve.x, eve.y)) {
-			set_edit_line(&ml, LINE_EDIT_BACK);
-			edit_seg.end = sf::Vector2f(eve.x, eve.y);
-			edit_seg.adjust_dir();
-			break;
+
+	if (!avail_colors.empty()) {
+		for (station &stn : stations) {
+			if (stn.contained(eve.x, eve.y)) {
+				CLICK_MODE = LINE_EDIT_BACK;
+				lines.push_back(metro_line(&stn, avail_colors.back()));
+				avail_colors.pop_back();
+				set_edit_line(&lines.back(), LINE_EDIT_BACK);
+				break;
+			}
 		}
 	}
 
 	if (CLICK_MODE == NONE) {
-		if (!avail_colors.empty()) {
-			for (station &stn : stations) {
-				if (stn.contained(eve.x, eve.y)) {
-					CLICK_MODE = LINE_EDIT_BACK;
-					lines.push_back(metro_line(&stn, avail_colors.back()));
-					avail_colors.pop_back();
-					set_edit_line(&lines.back(), LINE_EDIT_BACK);
-					break;
-				}
+		for (metro_line &ml : lines) {
+			if (ml.front_handle.contained(eve.x, eve.y)) {
+				set_edit_line(&ml, LINE_EDIT_FRONT);
+				edit_seg.end = sf::Vector2f(eve.x, eve.y);
+				edit_seg.adjust_dir();
+				break;
+			}
+			if (ml.back_handle.contained(eve.x, eve.y)) {
+				set_edit_line(&ml, LINE_EDIT_BACK);
+				edit_seg.end = sf::Vector2f(eve.x, eve.y);
+				edit_seg.adjust_dir();
+				break;
 			}
 		}
 	}
@@ -245,7 +246,7 @@ void main_game::handle_mouse_move(sf::Event::MouseMoveEvent eve) {
 				edit_seg.end = sf::Vector2f(eve.x, eve.y);
 
 				edit_seg.adjust_dir();
-			} else if(edit_line->stations.size() >= 2) {
+			} else if (edit_line->stations.size() >= 2) {
 				if (CLICK_MODE == LINE_EDIT_BACK) {
 					if (hover == edit_line->stations.back()) {
 						edit_line->stations.back()->rearrange_handles();
