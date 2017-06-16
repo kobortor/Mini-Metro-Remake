@@ -1,11 +1,12 @@
-#include"main_game.h"
-#include"../main_window.h"
-#include"../fonts.h"
-#include<iostream>
-#include"../system/system_func.h"
-#include"../functions.h"
-#include"handle.h"
-#include"../textures.h"
+#include "main_game.h"
+#include "../main_window.h"
+#include "../fonts.h"
+#include <iostream>
+#include "../system/system_func.h"
+#include "../functions.h"
+#include "handle.h"
+#include "../textures.h"
+#include "graph.h"
 
 map_generator* main_game::map_gen = nullptr;
 time_t main_game::game_start_time = 0;
@@ -262,9 +263,11 @@ void main_game::handle_mouse_move(sf::Event::MouseMoveEvent eve) {
 					edit_seg.parent = edit_line;
 
 					if (CLICK_MODE == LINE_EDIT_BACK) {
+						graph::add_link(edit_line->stations.back(), hover);
 						edit_line->stations.push_back(hover);
 						edit_line->segments.push_back(edit_seg);
 					} else {
+						graph::add_link(edit_line->stations.front(), hover);
 						edit_line->stations.push_front(hover);
 						edit_line->segments.push_front(edit_seg.get_reverse());
 					}
@@ -279,6 +282,7 @@ void main_game::handle_mouse_move(sf::Event::MouseMoveEvent eve) {
 					if (CLICK_MODE == LINE_EDIT_BACK) {
 						if (hover == edit_line->stations.back()) {
 							edit_line->stations.back()->rearrange_handles();
+							graph::erase_link(edit_line->segments.back().orig, edit_line->segments.back().dest);
 							edit_line->segments.pop_back();
 							edit_line->stations.pop_back();
 
@@ -291,6 +295,7 @@ void main_game::handle_mouse_move(sf::Event::MouseMoveEvent eve) {
 					} else if (CLICK_MODE == LINE_EDIT_FRONT) {
 						if (hover == edit_line->stations.front()) {
 							edit_line->stations.front()->rearrange_handles();
+							graph::erase_link(edit_line->segments.front().orig, edit_line->segments.front().dest);
 							edit_line->segments.pop_front();
 							edit_line->stations.pop_front();
 
