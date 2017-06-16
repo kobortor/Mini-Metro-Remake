@@ -2,6 +2,7 @@
 #include"map_generator.h"
 #include<SFML\Graphics.hpp>
 #include"train.h"
+#include"../menu/buttons/train_button.h"
 
 class main_game {
 public:
@@ -49,4 +50,6 @@ public:
 	static int prvX, prvY;
 	static bool mouse_button_pressed[sf::Mouse::ButtonCount];
 	static bool key_pressed[sf::Keyboard::KeyCount];
+
+	static train_button *train_btn;
 };

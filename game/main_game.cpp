@@ -17,6 +17,7 @@ metro_line* main_game::edit_line;
 segment main_game::edit_seg;
 time_t main_game::last_update;
 std::list<sf::Color> main_game::avail_colors;
+train_button* main_game::train_btn;
 
 main_game::CLICK_MODE_TYPE main_game::CLICK_MODE;
 
@@ -40,6 +41,12 @@ void main_game::initialize(map_generator* _map_gen) {
 	last_update = 0;
 	background.setFillColor(sf::Color(50, 50, 50));
 	map_gen = _map_gen;
+	
+	auto rel_bound = get_relative_bounds();
+
+	train_btn = new train_button((rel_bound.x - 0.25 * rel_bound.y), 0.05 * rel_bound.y, 
+		0.2 * rel_bound.y, 0.1 * rel_bound.y);
+
 	resize();
 }
 void main_game::resize() {
@@ -75,6 +82,8 @@ void main_game::resize() {
 	for (train &t : trains) {
 		t.resize();
 	}
+
+	train_btn->resize();
 }
 
 sf::IntRect main_game::get_window_bounds() {
@@ -136,6 +145,7 @@ void main_game::render() {
 		main_window::get_instance().draw(t);
 	}
 
+	main_window::get_instance().draw(*train_btn);
 }
 void main_game::cleanup() {
 	delete map_gen;
@@ -296,7 +306,6 @@ void main_game::handle_mouse_release(sf::Event::MouseButtonEvent eve) {
 		} else {
 			edit_line->front_handle = handle(&*edit_line, edit_line->stations.front(), 0);
 			edit_line->back_handle = handle(&*edit_line, edit_line->stations.back(), 3.14159);
-			trains.emplace_back(&*edit_line, edit_line->stations.front());
 
 			for (station* stn : edit_line->stations) {
 				stn->rearrange_handles();
