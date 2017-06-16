@@ -1,7 +1,7 @@
-#include"main_window.h"
-#include"game\main_game.h"
-#include"fonts.h"
-#include"system\system_func.h"
+#include "main_window.h"
+#include "game/main_game.h"
+#include "fonts.h"
+#include "system/system_func.h"
 
 //static variables
 sf::RenderWindow main_window::instance;
