@@ -45,6 +45,7 @@ public:
 
 	static metro_line* edit_line;
 	static segment edit_seg;
+	static segment* selected_seg;
 	static CLICK_MODE_TYPE CLICK_MODE;
 
 	static int prvX, prvY;

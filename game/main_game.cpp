@@ -16,6 +16,7 @@ sf::RectangleShape main_game::background;
 sf::IntRect main_game::window_bounds;
 metro_line* main_game::edit_line;
 segment main_game::edit_seg;
+segment* main_game::selected_seg;
 time_t main_game::last_update;
 std::list<sf::Color> main_game::avail_colors;
 train_button* main_game::train_btn;
@@ -308,12 +309,21 @@ void main_game::handle_mouse_move(sf::Event::MouseMoveEvent eve) {
 		}
 	}
 	if (CLICK_MODE == PLACE_TRAIN) {
+		selected_seg = nullptr;
 		for (metro_line &ml : lines) {
 			for (segment &segs : ml.segments) {
+				segs.highlighted = false;
+				if (selected_seg != nullptr) {
+					continue;
+				}
 				sf::Vector2f mid = segs.calc_mid();
 				float dist_to = std::min(func::dist_to_line(segs.begin, mid, sf::Vector2f(prvX, prvY)),
 					func::dist_to_line(mid, segs.end, sf::Vector2f(prvX, prvY)));
-				segs.highlighted = dist_to < 15;
+				if (dist_to < 6) {
+					//essentially a break and reset statement
+					selected_seg = &segs;
+					segs.highlighted = true;
+				}
 			}
 		}
 	}

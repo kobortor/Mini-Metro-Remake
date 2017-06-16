@@ -15,6 +15,18 @@ train::train(metro_line * _home_line, station *_cur_stn) :
 	posY = cur_stn->posY;
 }
 
+train::train(metro_line * _home_line, segment track) :
+	home_line(_home_line), cur_track(track), cur_stn(track.dest), prv_stn(track.orig) {
+	//by default start at beginning
+	status = TOWARDS_MID;
+	delay_for = 500;
+	sf::Vector2f &begin = cur_track.begin;
+	sf::Vector2f &end = cur_track.end;
+
+	posX = prv_stn->posX;
+	posY = prv_stn->posY;
+}
+
 void train::draw(sf::RenderTarget &targ, sf::RenderStates) const {
 	if (status != DEAD) {
 		float radius = icon_size() / 2;
@@ -70,6 +82,12 @@ void train::update(long long delta) {
 	}
 
 	if (status == TOWARDS_MID) {
+		if (delay_for <= 0) {
+			//carry on
+		} else {
+			delay_for -= delta;
+			return;
+		}
 		if (hypotf(begin.x - mid.x, begin.y - mid.y) < 3) {
 			posX = mid.x;
 			posY = mid.y;
@@ -87,6 +105,12 @@ void train::update(long long delta) {
 			}
 		}
 	} else if (status == TOWARDS_END) {
+		if (delay_for <= 0) {
+			//carry on
+		} else {
+			delay_for -= delta;
+			return;
+		}
 		if (hypotf(mid.x - end.x, mid.y - end.y) < 3) {
 			posX = end.x;
 			posY = end.y;

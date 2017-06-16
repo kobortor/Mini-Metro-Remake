@@ -6,6 +6,8 @@
 class train : public sf::Drawable {
 public:
 	train(metro_line *_home_line, station *_cur_stn);
+	train(metro_line *_home_line, segment track);
+
 	void draw(sf::RenderTarget&, sf::RenderStates) const override;
 
 	//will return true once it can't find any more track to carry on

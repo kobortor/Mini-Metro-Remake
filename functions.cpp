@@ -65,7 +65,7 @@ namespace func {
 		
 		bool within_range = dot(point - begin, end - begin) >= 0 && dot(point - end, begin - end) >= 0;
 		if (within_range) {
-			ans = std::min(ans, abs(cross(point - begin, end - begin) / hypotf(begin)));
+			ans = std::min(ans, abs(cross(point - begin, end - begin) / hypotf(end - begin)));
 		}
 		return ans;
 	}
