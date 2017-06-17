@@ -16,7 +16,7 @@ public:
 	float posX, posY;
 	enum { STATION, TRAIN } MODE;
 
-	float screen_size() const;
+	static float screen_size();
 protected:
 	station::STATION_TYPE type;
 };

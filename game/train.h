@@ -23,7 +23,7 @@ public:
 
 	void add_passenger(passenger*);
 
-	float screen_size() const;
+	static float screen_size();
 protected:
 	friend class station;
 

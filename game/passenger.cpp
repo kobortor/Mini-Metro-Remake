@@ -41,7 +41,7 @@ station::STATION_TYPE passenger::get_type() {
 	return type;
 }
 
-float passenger::screen_size() const {
+float passenger::screen_size() {
 	return main_game::get_unit_length() * 0.5;
 }
 

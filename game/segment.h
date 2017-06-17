@@ -42,7 +42,7 @@ public:
 	void adjust_dir();
 	void draw(sf::RenderTarget&, sf::RenderStates) const override;
 	void resize();
-	float screen_size() const;
+	static float screen_size();
 
 	metro_line* parent;
 	segment get_reverse() const;

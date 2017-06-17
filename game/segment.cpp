@@ -66,7 +66,7 @@ void segment::resize() {
 	end = dest->get_pos();
 }
 
-float segment::screen_size() const {
+float segment::screen_size() {
 	return main_game::get_unit_length() * 0.25;
 }
 

@@ -213,7 +213,7 @@ sf::Vector2f station::get_pos() {
 	return sf::Vector2f(posX, posY);
 }
 
-float station::screen_size() const {
+float station::screen_size() {
 	return main_game::get_unit_length() * 1.0;
 }
 
@@ -224,17 +224,17 @@ void station::reorg_passengers() {
 	//cheap round up
 	int num_rows = (passengers.size() + PASSENGERS_PER_ROW - 1) / PASSENGERS_PER_ROW;
 	auto iter = passengers.begin();
-	float pXpos = posX + screen_size() / 2 + padding * screen_size();
-	float pYpos = posY - screen_size() / 2 - num_rows * screen_size() * (1 + padding);
+	float pXpos = posX + screen_size() / 2 - passenger::screen_size() * (1 + padding);
+	float pYpos = posY - num_rows * passenger::screen_size() * (1 + padding);
 
 	int idx = 0;
 	while (iter != passengers.end()) {
 		if (idx >= PASSENGERS_PER_ROW) {
-			pXpos -= (PASSENGERS_PER_ROW - 1) * screen_size() * (1 + padding);
-			pYpos += screen_size() * (1 + padding);
+			pXpos -= (PASSENGERS_PER_ROW - 1) * passenger::screen_size() * (1 + padding);
+			pYpos += passenger::screen_size() * (1 + padding);
 			idx = 0;
 		} else {
-			pXpos += screen_size() * (1 + padding);
+			pXpos += passenger::screen_size() * (1 + padding);
 		}
 		(*iter)->posX = pXpos;
 		(*iter)->posY = pYpos;
