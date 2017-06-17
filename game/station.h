@@ -18,6 +18,7 @@ public:
 	bool contained(int x, int y);
 	void add_passenger(passenger * pass);
 	void load(train *t);
+	STATION_TYPE get_type();
 	sf::Vector2f get_pos();
 protected:
 	friend class train;

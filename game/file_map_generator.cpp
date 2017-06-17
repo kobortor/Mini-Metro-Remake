@@ -65,15 +65,25 @@ void file_map_generator::update_until(long long game_tick) {
 		last_update += 1000;
 		sf::Vector2f to_add = points.front();
 		points.pop();
-		main_game::add_station(to_add.x, to_add.y, station::TRIANGLE);
+
+		//cheap way to cycle through
+		station::STATION_TYPE type[] = { station::TRIANGLE, station::SQUARE, station::CIRCLE };
+
+		main_game::add_station(to_add.x, to_add.y, type[last_update % 3]);
 	}
 	if (main_game::stations.empty()) {
 		last_passenger = game_tick;
 	} else {
 		while (game_tick - last_passenger > 1500) {
-			//TODO: randomize
+			
+			//cheap way to cycle through
+			station::STATION_TYPE type[] = { station::TRIANGLE, station::SQUARE, station::CIRCLE };
+
 			auto iter = main_game::stations.begin();
-			iter->add_passenger(new passenger(&*iter, station::TRIANGLE));
+			std::advance(iter, rand() % main_game::stations.size());
+			if (iter->get_type() != type[last_passenger % 3]) {
+				iter->add_passenger(new passenger(&*iter, type[last_passenger % 3]));
+			}
 			last_passenger += 1500;
 		}
 	}

@@ -86,9 +86,26 @@ void station::rearrange_handles() {
 	}
 }
 
+station::STATION_TYPE station::get_type() {
+	return type;
+}
+
 void station::draw(sf::RenderTarget& targ, sf::RenderStates) const {
 	float radius = main_game::get_station_radius();
 	sf::CircleShape circ{ radius };
+
+	switch (type) {
+	case TRIANGLE:
+		circ.setPointCount(3);
+		break;
+	case CIRCLE:
+		circ.setPointCount(30);
+		break;
+	case SQUARE:
+		circ.setPointCount(4);
+		break;
+	}
+
 	circ.setPosition(posX - radius, posY - radius);
 	circ.setFillColor(sf::Color::White);
 	targ.draw(circ);
