@@ -7,9 +7,7 @@ class train;
 
 class passenger : public sf::Drawable {
 public:
-	passenger(station *_cur_stn, station::STATION_TYPE _type);
-	void load_to(train *_cur_train);
-	void unload_to(station *_cur_stn);
+	passenger(station::STATION_TYPE _type);
 
 	void draw(sf::RenderTarget&, sf::RenderStates) const override;
 
@@ -22,6 +20,4 @@ public:
 
 protected:
 	station::STATION_TYPE type;
-	station* cur_stn;
-	train *cur_train;
 };

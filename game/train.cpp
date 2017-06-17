@@ -154,6 +154,7 @@ int train::space_left() {
 }
 
 void train::add_passenger(passenger *pass) {
+	pass->MODE = passenger::TRAIN;
 	passengers.push_back(pass);
 	reorg_passengers();
 }

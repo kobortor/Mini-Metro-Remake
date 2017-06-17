@@ -124,6 +124,7 @@ bool station::contained(int x, int y) {
 }
 
 void station::add_passenger(passenger *pass) {
+	pass->MODE = passenger::STATION;
 	passengers.push_back(pass);
 	reorg_passengers();
 }
@@ -139,7 +140,34 @@ void station::load(train *t) {
 			iter++;
 			t->passengers.erase(tmp);
 		} else {
-			iter++;
+			std::list<station*> other_stn;
+			std::list<station*> destinations;
+			for (station &stn : main_game::stations) {
+				if (stn.type == (*iter)->get_type()) {
+					destinations.push_back(&stn);
+				}
+			}
+
+			for (station *stn : t->home_line->stations) {
+				if (stn != this) {
+					other_stn.push_back(stn);
+				}
+			}
+
+			//inefficient, might optimize later
+			int other_dist = graph::shortest_dist(other_stn, destinations);
+			int this_dist = graph::shortest_dist(std::list<station*>{this}, destinations);
+
+
+			if (this_dist == -1 || this_dist <= other_dist) {
+				printf("Unload passenger because they cannot benefit from riding further\n");
+				auto tmp = iter;
+				iter++;
+				add_passenger(*tmp);
+				t->passengers.erase(tmp);
+			} else {
+				iter++;
+			}
 		}
 	}
 
@@ -168,7 +196,7 @@ void station::load(train *t) {
 		int other_dist = graph::shortest_dist(other_stn, destinations);
 		int this_dist = graph::shortest_dist(std::list<station*>{this}, destinations);
 
-		if (other_dist < this_dist) {
+		if (this_dist != -1 && other_dist < this_dist) {
 			auto tmp = iter;
 			iter++;
 			(*tmp)->MODE = passenger::TRAIN;
@@ -178,6 +206,9 @@ void station::load(train *t) {
 			iter++;
 		}
 	}
+
+	reorg_passengers();
+	t->reorg_passengers();
 }
 
 sf::Vector2f station::get_pos() {
