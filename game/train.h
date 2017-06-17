@@ -24,6 +24,9 @@ public:
 	void add_passenger(passenger*);
 
 	static float screen_size();
+
+	//returns the distance travelled by the train in relative units per millisecond
+	static float get_speed();
 protected:
 	friend class station;
 

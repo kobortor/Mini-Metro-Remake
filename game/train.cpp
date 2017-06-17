@@ -96,9 +96,9 @@ void train::update(long long delta) {
 			posY = mid.y;
 			status = TOWARDS_END;
 		} else {
-			sf::Vector2f diff = func::normalize(mid - begin);
-			posX += diff.x * delta / 10;
-			posY += diff.y * delta / 10;
+			sf::Vector2f diff = func::normalize(mid - begin) * get_speed();
+			posX += diff.x * delta;
+			posY += diff.y * delta;
 			amnt_done = hypot(posX - begin.x, posY - begin.y) / hypot(mid.x - begin.x, mid.y - begin.y);
 
 			if (amnt_done >= 1) {
@@ -120,9 +120,9 @@ void train::update(long long delta) {
 			status = STOPPING;
 			delay_for = 500;
 		} else {
-			sf::Vector2f diff = func::normalize(end - mid);
-			posX += diff.x * delta / 10;
-			posY += diff.y * delta / 10;
+			sf::Vector2f diff = func::normalize(end - mid) * get_speed();
+			posX += diff.x * delta;
+			posY += diff.y * delta;
 			amnt_done = hypot(posX - mid.x, posY - mid.y) / hypot(end.x - mid.x, end.y - mid.y);
 			if (amnt_done >= 1) {
 				posX = end.x;
@@ -164,6 +164,13 @@ void train::add_passenger(passenger *pass) {
 
 float train::screen_size() {
 	return main_game::get_unit_length() * 0.5;
+}
+
+float train::get_speed() {
+	//aim for something around 1 relative unit per 0.2 seconds
+	//=5 units / second
+	//=0.005 units per millisecond
+	return 0.005f * main_game::get_unit_length();
 }
 
 void train::reorg_passengers() {
