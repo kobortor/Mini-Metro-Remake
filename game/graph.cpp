@@ -34,6 +34,7 @@ int graph::shortest_dist(std::list<station*> source, std::list<station*> dest) {
 
 	while (!pq.empty()) {
 		auto fr = pq.top();
+		pq.pop();
 		auto links = adj.find(fr.second);
 
 		if (fr.first > distances[fr.second]) {

@@ -143,10 +143,40 @@ void station::load(train *t) {
 		}
 	}
 
-	while (t->space_left() > 0 && !passengers.empty()) {
-		passengers.back()->MODE = passenger::TRAIN;
-		t->add_passenger(passengers.back());
-		passengers.pop_back();
+	iter = passengers.begin();
+	while(iter != passengers.end()) {
+		//lets hope it doesnt go negative
+		if (t->space_left() <= 0) {
+			break;
+		}
+
+		std::list<station*> other_stn;
+		std::list<station*> destinations;
+		for (station &stn : main_game::stations) {
+			if (stn.type == (*iter)->get_type()) {
+				destinations.push_back(&stn);
+			}
+		}
+
+		for (station *stn : t->home_line->stations) {
+			if (stn != this) {
+				other_stn.push_back(stn);
+			}
+		}
+
+		//inefficient, might optimize later
+		int other_dist = graph::shortest_dist(other_stn, destinations);
+		int this_dist = graph::shortest_dist(std::list<station*>{this}, destinations);
+
+		if (other_dist < this_dist) {
+			auto tmp = iter;
+			iter++;
+			(*tmp)->MODE = passenger::TRAIN;
+			t->add_passenger(*tmp);
+			passengers.erase(tmp);
+		} else {
+			iter++;
+		}
 	}
 }
 
