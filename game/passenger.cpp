@@ -25,7 +25,23 @@ void passenger::unload_to(station * _cur_stn) {
 }
 
 void passenger::draw(sf::RenderTarget &targ, sf::RenderStates) const {
-	sf::CircleShape circ(icon_size() / 2);
+	int num_sides;
+	switch (type) {
+	case station::TRIANGLE:
+		num_sides = 3;
+		break;
+	case station::SQUARE:
+		num_sides = 4;
+		break;
+	case station::CIRCLE:
+		num_sides = 30;
+		break;
+	default:
+		printf("This should not happen!\n");
+		break;
+	}
+
+	sf::CircleShape circ(icon_size() / 2, num_sides);
 	circ.setPosition(posX, posY);
 
 	if (MODE == STATION) {

@@ -3,8 +3,9 @@
 #include"../main_window.h"
 #include"passenger.h"
 #include<bitset>
+#include"graph.h"
 
-station::station(float _relX, float _relY, STATION_TYPE _type):relX(_relX), relY(_relY), type(_type) {
+station::station(float _relX, float _relY, STATION_TYPE _type) :relX(_relX), relY(_relY), type(_type) {
 	resize();
 }
 
@@ -132,9 +133,8 @@ void station::load(train *t) {
 
 	auto iter = t->passengers.begin();
 	while (iter != t->passengers.end()) {
-		//if ((*iter)->get_type() == this->type) {
-		if(true){
-			printf("unconditionally unload passengers\n");
+		if (type == (*iter)->get_type()) {
+			printf("Unload passenger because same type\n");
 			auto tmp = iter;
 			iter++;
 			t->passengers.erase(tmp);

@@ -81,8 +81,8 @@ void file_map_generator::update_until(long long game_tick) {
 
 			auto iter = main_game::stations.begin();
 			std::advance(iter, rand() % main_game::stations.size());
-			if (iter->get_type() != type[last_passenger % 3]) {
-				iter->add_passenger(new passenger(&*iter, type[last_passenger % 3]));
+			if (iter->get_type() != type[last_passenger / 3 % 3]) {
+				iter->add_passenger(new passenger(&*iter, type[last_passenger / 3 % 3]));
 			}
 			last_passenger += 1500;
 		}
