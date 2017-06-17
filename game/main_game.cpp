@@ -22,6 +22,7 @@ time_t main_game::last_update;
 std::list<sf::Color> main_game::avail_colors;
 train_button* main_game::train_btn;
 int main_game::trains_left;
+delete_train_button* main_game::del_train_btn;
 
 main_game::CLICK_MODE_TYPE main_game::CLICK_MODE;
 
@@ -51,6 +52,8 @@ void main_game::initialize(map_generator* _map_gen) {
 	auto rel_bound = get_relative_bounds();
 
 	train_btn = new train_button((rel_bound.x - 0.25 * rel_bound.y), 0.05 * rel_bound.y, 
+		0.2 * rel_bound.y, 0.1 * rel_bound.y);
+	del_train_btn = new delete_train_button((rel_bound.x - 0.25 * rel_bound.y), 0.15 * rel_bound.y,
 		0.2 * rel_bound.y, 0.1 * rel_bound.y);
 
 	resize();
@@ -90,6 +93,7 @@ void main_game::resize() {
 	}
 
 	train_btn->resize();
+	del_train_btn->resize();
 }
 
 sf::IntRect main_game::get_window_bounds() {
@@ -153,6 +157,7 @@ void main_game::render() {
 	}
 
 	main_window::get_instance().draw(*train_btn);
+	main_window::get_instance().draw(*del_train_btn);
 
 	if (CLICK_MODE == PLACE_TRAIN) {
 		sf::RectangleShape rect;

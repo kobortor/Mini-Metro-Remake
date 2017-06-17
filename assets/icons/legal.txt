@@ -1,1 +1,2 @@
 "train cursor.png" and "train button.png" was obtained from https://pixabay.com/p-1962323/?no_redirect. Licensed as Free for commercial use.
+"delete train button" was obtained from https://pixabay.com/p-2091534/?no_redirect. Licensed as Free for commercial use.

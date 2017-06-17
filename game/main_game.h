@@ -3,6 +3,7 @@
 #include<SFML\Graphics.hpp>
 #include"train.h"
 #include"../menu/buttons/train_button.h"
+#include"../menu/buttons/delete_train_button.h"
 
 class main_game {
 public:
@@ -54,4 +55,5 @@ public:
 	static bool key_pressed[sf::Keyboard::KeyCount];
 
 	static train_button *train_btn;
+	static delete_train_button *del_train_btn;
 };
