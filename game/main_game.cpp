@@ -21,6 +21,7 @@ segment* main_game::selected_seg;
 time_t main_game::last_update;
 std::list<sf::Color> main_game::avail_colors;
 train_button* main_game::train_btn;
+int main_game::trains_left;
 
 main_game::CLICK_MODE_TYPE main_game::CLICK_MODE;
 
@@ -45,6 +46,8 @@ void main_game::initialize(map_generator* _map_gen) {
 	background.setFillColor(sf::Color(50, 50, 50));
 	map_gen = _map_gen;
 	
+	trains_left = 5;
+
 	auto rel_bound = get_relative_bounds();
 
 	train_btn = new train_button((rel_bound.x - 0.25 * rel_bound.y), 0.05 * rel_bound.y, 
@@ -114,6 +117,7 @@ void main_game::update() {
 		if (iter->is_dead()) {
 			auto tmp = iter;
 			iter++;
+			trains_left++;
 			trains.erase(tmp);
 		} else {
 			iter++;

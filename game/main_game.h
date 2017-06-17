@@ -43,6 +43,7 @@ public:
 	static time_t last_update;
 	static std::list<sf::Color> avail_colors;
 
+	static int trains_left;
 	static metro_line* edit_line;
 	static segment edit_seg;
 	static segment* selected_seg;
