@@ -92,9 +92,7 @@ station::STATION_TYPE station::get_type() {
 }
 
 void station::draw(sf::RenderTarget& targ, sf::RenderStates) const {
-	float radius = main_game::get_station_radius();
-	sf::CircleShape circ{ radius };
-
+	sf::CircleShape circ{ screen_size() / 2 };
 	switch (type) {
 	case TRIANGLE:
 		circ.setPointCount(3);
@@ -107,7 +105,7 @@ void station::draw(sf::RenderTarget& targ, sf::RenderStates) const {
 		break;
 	}
 
-	circ.setPosition(posX - radius, posY - radius);
+	circ.setPosition(posX - screen_size() / 2, posY - screen_size() / 2);
 	circ.setFillColor(sf::Color::White);
 	targ.draw(circ);
 
@@ -215,25 +213,28 @@ sf::Vector2f station::get_pos() {
 	return sf::Vector2f(posX, posY);
 }
 
+float station::screen_size() const {
+	return main_game::get_unit_length() * 1.0;
+}
+
 void station::reorg_passengers() {
 	const int PASSENGERS_PER_ROW = 6;
-	const float padding = 0.5;
-	float diam = passenger::icon_size();
+	const float padding = 0.25;
 
 	//cheap round up
 	int num_rows = (passengers.size() + PASSENGERS_PER_ROW - 1) / PASSENGERS_PER_ROW;
 	auto iter = passengers.begin();
-	float pXpos = posX + main_game::get_station_radius() / 2 + padding * diam;
-	float pYpos = posY - main_game::get_station_radius() / 2 - num_rows * diam * (1 + padding);
+	float pXpos = posX + screen_size() / 2 + padding * screen_size();
+	float pYpos = posY - screen_size() / 2 - num_rows * screen_size() * (1 + padding);
 
 	int idx = 0;
 	while (iter != passengers.end()) {
 		if (idx >= PASSENGERS_PER_ROW) {
-			pXpos -= (PASSENGERS_PER_ROW - 1) * diam * (1 + padding);
-			pYpos += diam * (1 + padding);
+			pXpos -= (PASSENGERS_PER_ROW - 1) * screen_size() * (1 + padding);
+			pYpos += screen_size() * (1 + padding);
 			idx = 0;
 		} else {
-			pXpos += diam * (1 + padding);
+			pXpos += screen_size() * (1 + padding);
 		}
 		(*iter)->posX = pXpos;
 		(*iter)->posY = pYpos;

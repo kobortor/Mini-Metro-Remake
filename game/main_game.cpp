@@ -23,6 +23,7 @@ std::list<sf::Color> main_game::avail_colors;
 train_button* main_game::train_btn;
 int main_game::trains_left;
 delete_train_button* main_game::del_train_btn;
+float main_game::unit_length;
 
 main_game::CLICK_MODE_TYPE main_game::CLICK_MODE;
 
@@ -59,26 +60,28 @@ void main_game::initialize(map_generator* _map_gen) {
 	resize();
 }
 void main_game::resize() {
-	sf::Vector2f bounds = get_relative_bounds();
+	sf::Vector2f rel_bounds = get_relative_bounds();
 	//find which side is limiting
 	sf::Vector2u window = main_window::get_instance().getSize();
-	float calcWid = window.y * bounds.x / bounds.y;
-	float calcHt = window.x * bounds.y / bounds.x;
+	float calcWid = window.y * rel_bounds.x / rel_bounds.y;
+	float calcHt = window.x * rel_bounds.y / rel_bounds.x;
 	if (calcWid > window.x) {
-		window_bounds.width = calcHt * bounds.x / bounds.y;
+		window_bounds.width = calcHt * rel_bounds.x / rel_bounds.y;
 		window_bounds.height = calcHt;
 
 		window_bounds.top = window.y / 2 - window_bounds.height / 2;
 		window_bounds.left = 0;
 	} else {
 		window_bounds.width = calcWid;
-		window_bounds.height = calcWid * bounds.y / bounds.x;
+		window_bounds.height = calcWid * rel_bounds.y / rel_bounds.x;
 
 		window_bounds.top = 0;
 		window_bounds.left = window.x / 2 - window_bounds.width / 2;
 	}
 	background.setPosition(window_bounds.left, window_bounds.top);
 	background.setSize(sf::Vector2f(window_bounds.width, window_bounds.height));
+
+	unit_length = (window_bounds.width / rel_bounds.x) * map_gen->get_relative_unit();
 
 	for (station &stn : stations) {
 		stn.resize();
@@ -173,11 +176,11 @@ void main_game::render() {
 void main_game::cleanup() {
 	delete map_gen;
 }
-float main_game::get_station_radius() {
-	return 20;
-}
 float main_game::get_station_mouse_limit() {
 	return 30;
+}
+float main_game::get_unit_length() {
+	return unit_length;
 }
 void main_game::set_edit_line(metro_line *line, main_game::CLICK_MODE_TYPE mode) {
 	CLICK_MODE = mode;

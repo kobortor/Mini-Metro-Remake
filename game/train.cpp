@@ -3,6 +3,8 @@
 #include"main_game.h"
 #include<iostream>
 
+const float train::unit_ratio = 0.5;
+
 train::train(metro_line * _home_line, station *_cur_stn) :
 	home_line(_home_line), cur_stn(_cur_stn), prv_stn(nullptr) {
 	//by default start at beginning
@@ -29,7 +31,8 @@ train::train(metro_line * _home_line, segment track) :
 
 void train::draw(sf::RenderTarget &targ, sf::RenderStates) const {
 	if (status != DEAD) {
-		float radius = icon_size() / 2;
+		float icon_size = main_game::get_unit_length() * unit_ratio;
+		float radius = icon_size / 2;
 		sf::CircleShape circ{ radius };
 		circ.setFillColor(sf::Color::Green);
 		circ.setPosition(posX - radius, posY - radius);
@@ -159,29 +162,28 @@ void train::add_passenger(passenger *pass) {
 	reorg_passengers();
 }
 
-float train::icon_size() {
-	return 15;
+float train::screen_size() const {
+	return main_game::get_unit_length() * 0.5;
 }
 
 void train::reorg_passengers() {
 	const int PASSENGERS_PER_ROW = 3;
 	const float padding = 0.5;
-	float diam = passenger::icon_size();
 
 	//cheap round up
 	int num_rows = (passengers.size() + PASSENGERS_PER_ROW - 1) / PASSENGERS_PER_ROW;
 	auto iter = passengers.begin();
-	float pXpos = posX + icon_size() / 2 + padding * diam;
-	float pYpos = posY - icon_size() / 2 - num_rows * diam * (1 + padding);
+	float pXpos = posX + screen_size() / 2 + padding * screen_size();
+	float pYpos = posY - screen_size() / 2 - num_rows * screen_size() * (1 + padding);
 
 	int idx = 0;
 	while (iter != passengers.end()) {
 		if (idx >= PASSENGERS_PER_ROW) {
-			pXpos -= (PASSENGERS_PER_ROW - 1) * diam * (1 + padding);
-			pYpos += diam * (1 + padding);
+			pXpos -= (PASSENGERS_PER_ROW - 1) * screen_size() * (1 + padding);
+			pYpos += screen_size() * (1 + padding);
 			idx = 0;
 		} else {
-			pXpos += diam * (1 + padding);
+			pXpos += screen_size() * (1 + padding);
 		}
 		(*iter)->posX = pXpos;
 		(*iter)->posY = pYpos;

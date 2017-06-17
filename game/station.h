@@ -20,6 +20,8 @@ public:
 	void load(train *t);
 	STATION_TYPE get_type();
 	sf::Vector2f get_pos();
+
+	float screen_size() const;
 protected:
 	friend class train;
 	void reorg_passengers();

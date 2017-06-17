@@ -23,12 +23,13 @@ public:
 
 	void add_passenger(passenger*);
 
-	static float icon_size();
+	float screen_size() const;
 protected:
 	friend class station;
 
 	void reorg_passengers();
 
+	const static float unit_ratio;
 	float posX, posY;
 	segment cur_track;
 	float amnt_done;

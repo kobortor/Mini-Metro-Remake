@@ -43,6 +43,8 @@ file_map_generator::file_map_generator(std::string file_name) {
 			rel_bounds.x = std::stof(value);
 		} else if (attrib == "HEIGHT") {
 			rel_bounds.y = std::stof(value);
+		} else if (attrib == "RELATIVE UNIT") {
+			rel_unit = std::stof(value);
 		}
 	}
 
@@ -58,6 +60,10 @@ file_map_generator::file_map_generator(std::string file_name) {
 
 sf::Vector2f file_map_generator::get_relative_bounds() {
 	return rel_bounds;
+}
+
+float file_map_generator::get_relative_unit() {
+	return rel_unit;
 }
 
 void file_map_generator::update_until(long long game_tick) {

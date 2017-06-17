@@ -1,6 +1,7 @@
 #include "passenger.h"
 #include<cstdlib>
 #include<iostream>
+#include"main_game.h"
 
 passenger::passenger(station::STATION_TYPE _type) :
 	type(_type), MODE(STATION) {
@@ -23,7 +24,7 @@ void passenger::draw(sf::RenderTarget &targ, sf::RenderStates) const {
 		break;
 	}
 
-	sf::CircleShape circ(icon_size() / 2, num_sides);
+	sf::CircleShape circ(screen_size() / 2, num_sides);
 	circ.setPosition(posX, posY);
 
 	if (MODE == STATION) {
@@ -35,12 +36,12 @@ void passenger::draw(sf::RenderTarget &targ, sf::RenderStates) const {
 	targ.draw(circ);
 }
 
-float passenger::icon_size() {
-	return 10;
-}
-
 station::STATION_TYPE passenger::get_type() {
 	//do this to avoid accidentally changing it
 	return type;
+}
+
+float passenger::screen_size() const {
+	return main_game::get_unit_length() * 0.5;
 }
 

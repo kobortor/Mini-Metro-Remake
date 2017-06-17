@@ -42,6 +42,7 @@ public:
 	void adjust_dir();
 	void draw(sf::RenderTarget&, sf::RenderStates) const override;
 	void resize();
+	float screen_size() const;
 
 	metro_line* parent;
 	segment get_reverse() const;
@@ -63,5 +64,7 @@ public:
 	const static sf::Vector2f unit_direction[NUM_DIRECTIONS];
 
 	const static std::string direction_names[NUM_DIRECTIONS];
+
+	const static float hover_ratio;
 private:
 };

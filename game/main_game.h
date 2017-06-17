@@ -24,8 +24,12 @@ public:
 
 	static void set_edit_line(metro_line* line, CLICK_MODE_TYPE mode);
 
-	static float get_station_radius();
 	static float get_station_mouse_limit();
+
+	//As a general rule of thumb, a station should be 1 unit length in diameter
+	//scale approximately according the original game
+	//https://i.imgur.com/CbsM78B.png as an example
+	static float get_unit_length();
 
 	static void handle_mouse_click(sf::Event::MouseButtonEvent eve);
 	static void handle_mouse_move(sf::Event::MouseMoveEvent eve);
@@ -43,6 +47,7 @@ public:
 	static map_generator* map_gen;
 	static time_t last_update;
 	static std::list<sf::Color> avail_colors;
+	static float unit_length;
 
 	static int trains_left;
 	static metro_line* edit_line;

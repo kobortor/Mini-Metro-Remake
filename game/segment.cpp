@@ -1,6 +1,7 @@
 #include"segment.h"
 #include"../functions.h"
 #include"metro_line.h"
+#include"main_game.h"
 
 const sf::Vector2f segment::unit_direction[] = {
 	sf::Vector2f(0.f, -1.f),					//N
@@ -23,6 +24,8 @@ const std::string segment::direction_names[] = {
 	"west",
 	"north-west"
 };
+
+const float segment::hover_ratio = 2.5;
 
 segment::segment():parent(nullptr) {}
 segment::segment(metro_line *_parent) :parent(_parent) {}
@@ -49,7 +52,10 @@ void segment::draw(sf::RenderTarget& targ, sf::RenderStates) const {
 	if (begin != end) {
 		sf::Vector2f mid = calc_mid();
 		sf::Color col = parent ? parent->color : sf::Color::White;
-		float wid = highlighted ? 15 : 6;
+		float wid = screen_size();
+		if (highlighted) {
+			wid *= hover_ratio;
+		}
 		func::draw_thick_line(begin, mid, wid, col, targ);
 		func::draw_thick_line(mid, end, wid, col, targ);
 	}
@@ -58,6 +64,10 @@ void segment::draw(sf::RenderTarget& targ, sf::RenderStates) const {
 void segment::resize() {
 	begin = orig->get_pos();
 	end = dest->get_pos();
+}
+
+float segment::screen_size() const {
+	return main_game::get_unit_length() * 0.25;
 }
 
 segment segment::get_reverse() const {
