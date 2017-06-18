@@ -27,8 +27,9 @@ void train_button::draw(sf::RenderTarget &targ, sf::RenderStates) const {
 	targ.draw(rect);
 
 	if (main_game::MAX_TRAINS == main_game::trains.size()) {
-		func::draw_thick_line(sf::Vector2f(x, y), sf::Vector2f(x + wid, y + ht), 5, sf::Color::Red, targ);
-		func::draw_thick_line(sf::Vector2f(x + wid, y), sf::Vector2f(x, y + ht), 5, sf::Color::Red, targ);
+		float thickness = main_game::get_unit_length() * 0.15;
+		func::draw_thick_line(sf::Vector2f(x, y), sf::Vector2f(x + wid, y + ht), thickness, sf::Color::Red, targ);
+		func::draw_thick_line(sf::Vector2f(x + wid, y), sf::Vector2f(x, y + ht), thickness, sf::Color::Red, targ);
 	}
 }
 

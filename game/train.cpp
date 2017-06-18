@@ -38,6 +38,17 @@ void train::draw(sf::RenderTarget &targ, sf::RenderStates) const {
 		circ.setPosition(posX - radius, posY - radius);
 		targ.draw(circ);
 
+		if (marked_for_death) {
+			float thickness = main_game::get_unit_length() * 0.20;
+			func::draw_thick_line(sf::Vector2f(posX - radius, posY - radius), sf::Vector2f(posX + radius, posY + radius), thickness, sf::Color::Red, targ);
+			func::draw_thick_line(sf::Vector2f(posX - radius, posY + radius), sf::Vector2f(posX + radius, posY - radius), thickness, sf::Color::Red, targ);
+		} else if (highlighted) {
+			float thickness = main_game::get_unit_length() * 0.15;
+			sf::Color pink = { 255, 128, 255 };
+			func::draw_thick_line(sf::Vector2f(posX - radius, posY - radius), sf::Vector2f(posX + radius, posY + radius), thickness, pink, targ);
+			func::draw_thick_line(sf::Vector2f(posX - radius, posY + radius), sf::Vector2f(posX + radius, posY - radius), thickness, pink, targ);
+		}
+
 		for (passenger *p : passengers) {
 			targ.draw(*p);
 		}

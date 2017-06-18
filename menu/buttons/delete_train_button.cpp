@@ -20,6 +20,11 @@ void delete_train_button::draw(sf::RenderTarget &targ, sf::RenderStates) const {
 void delete_train_button::on_click(int prevX, int prevY, int curX, int curY, bool initClick) {
 	if (initClick) {
 		main_game::CLICK_MODE = main_game::DELETE_TRAIN;
+	} else {
+		for (train &t : main_game::trains) {
+			float dist = func::hypotf(t.get_pos() - sf::Vector2f(curX, curY));
+			t.highlighted = dist < select_range();
+		}
 	}
 }
 
@@ -27,6 +32,7 @@ void delete_train_button::on_release(int prevX, int prevY, int curX, int curY) {
 	auto iter = main_game::trains.begin();
 	//destroys all trains close enough to it
 	while (iter != main_game::trains.end()) {
+		iter->highlighted = false;
 		float dist = func::hypotf(iter->get_pos() - sf::Vector2f(curX, curY));
 		if (dist < select_range()) {
 			iter->mark_for_death();

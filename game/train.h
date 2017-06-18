@@ -29,6 +29,8 @@ public:
 	static float get_speed();
 
 	void mark_for_death();
+
+	bool highlighted = false;
 protected:
 	friend class station;
 
