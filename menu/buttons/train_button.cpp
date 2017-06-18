@@ -5,14 +5,10 @@
 #include"../../fonts.h"
 
 train_button::train_button(float _rel_wid, float _rel_ht) :
-rel_button(_rel_wid, _rel_ht) {
-	texture = &textures::train_button;
-}
+rel_button(_rel_wid, _rel_ht) {}
 
 train_button::train_button(float _relX, float _relY, float _rel_wid, float _rel_ht) :
-rel_button(_relX, _relY, _rel_wid, _rel_ht) {
-	texture = &textures::train_button;
-}
+rel_button(_relX, _relY, _rel_wid, _rel_ht) {}
 
 void train_button::draw(sf::RenderTarget &targ, sf::RenderStates) const {
 	const int char_size = ht * 2 / 3;
@@ -27,7 +23,7 @@ void train_button::draw(sf::RenderTarget &targ, sf::RenderStates) const {
 
 	sf::RectangleShape rect{ sf::Vector2f(wid, ht) };
 	rect.setPosition(x, y);
-	rect.setTexture(texture);
+	rect.setTexture(&textures::train_button);
 	targ.draw(rect);
 
 	if (main_game::MAX_TRAINS == main_game::trains.size()) {

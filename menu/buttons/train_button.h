@@ -10,6 +10,4 @@ public:
 
 	void on_click(int prevX, int prevY, int curX, int curY, bool initClick) override;
 	void on_release(int prevX, int prevY, int curX, int curY) override;
-protected:
-	sf::Texture *texture;
 };
