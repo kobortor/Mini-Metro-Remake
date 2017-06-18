@@ -133,12 +133,6 @@ sf::Vector2f main_game::get_relative_bounds() {
 }
 void main_game::render() {
 	main_window::get_instance().draw(background);
-	sf::Text txt;
-	txt.setFont(font::consola);
-	txt.setCharacterSize(20);
-	txt.setString("YOU ARE PLAYING THE GAME NOW!!!");
-	txt.setPosition(30, 30);
-	main_window::get_instance().draw(txt);
 
 	if (CLICK_MODE == LINE_EDIT_FRONT || CLICK_MODE == LINE_EDIT_BACK) {
 		main_window::get_instance().draw(edit_seg);
