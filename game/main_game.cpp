@@ -188,6 +188,8 @@ void main_game::cleanup() {
 	memset(mouse_button_pressed, false, sizeof(mouse_button_pressed));
 	memset(key_pressed, false, sizeof(key_pressed));
 
+	delete train_btn;
+	delete del_train_btn;
 	delete map_gen;
 }
 float main_game::get_station_mouse_limit() {
