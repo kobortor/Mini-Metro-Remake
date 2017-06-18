@@ -5,15 +5,27 @@
 
 class train : public sf::Drawable {
 public:
+
+	//The line that this train runs on
+	//What station the train should start at
 	train(metro_line *_home_line, station *_cur_stn);
+
+	//The line that this train runs on
+	//Which piece of track the train originally starts at
 	train(metro_line *_home_line, segment track);
 
+	//Draws the object onto the render target
+	//Render state is never used, advanced shaders are out of the scope of this program
+	//This is a library function
 	void draw(sf::RenderTarget&, sf::RenderStates) const override;
 
 	//will return true once it can't find any more track to carry on
 	bool is_dead();
 
+	//Gets the position of the train (in pixels position)
 	sf::Vector2f get_pos();
+
+	//Resizes this object to the new screen size
 	void resize();
 
 	//milliseconds of change

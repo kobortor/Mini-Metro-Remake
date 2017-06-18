@@ -40,7 +40,13 @@ public:
 	segment(metro_line *_parent);
 
 	void adjust_dir();
+
+	//Draws the object onto the render target
+	//Render state is never used, advanced shaders are out of the scope of this program
+	//This is a library function
 	void draw(sf::RenderTarget&, sf::RenderStates) const override;
+
+	//Resizes this object to the new screen size
 	void resize();
 	static float screen_size();
 

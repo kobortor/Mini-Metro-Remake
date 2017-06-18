@@ -9,6 +9,9 @@
 #include "../textures.h"
 #include "graph.h"
 
+//-----------------------------------------
+//---The great block of static variables---
+//-----------------------------------------
 map_generator* main_game::map_gen = nullptr;
 time_t main_game::game_start_time = 0;
 std::list<metro_line> main_game::lines;
@@ -25,12 +28,9 @@ train_button* main_game::train_btn;
 delete_train_button* main_game::del_train_btn;
 float main_game::unit_length;
 int main_game::trains_left;
-
 main_game::CLICK_MODE_TYPE main_game::CLICK_MODE;
-
 int main_game::prvX = -1;
 int main_game::prvY = -1;
-
 bool main_game::mouse_button_pressed[sf::Mouse::ButtonCount];
 bool main_game::key_pressed[sf::Keyboard::KeyCount];
 
@@ -60,6 +60,7 @@ void main_game::initialize(map_generator* _map_gen) {
 
 	resize();
 }
+
 void main_game::resize() {
 	sf::Vector2f rel_bounds = get_relative_bounds();
 	//find which side is limiting
@@ -103,13 +104,16 @@ void main_game::resize() {
 sf::IntRect main_game::get_window_bounds() {
 	return window_bounds;
 }
+
 void main_game::add_station(float _relX, float _relY, station::STATION_TYPE _type) {
 	stations.emplace_back(_relX, _relY, _type);
 }
+
 time_t main_game::get_game_time() {
 	//edit later to pause
 	return sys::get_millis() - game_start_time;
 }
+
 void main_game::update() {
 	map_gen->update_until(get_game_time());
 	time_t delta = get_game_time() - last_update;
@@ -151,6 +155,7 @@ int main_game::num_trains_left() {
 sf::Vector2f main_game::get_relative_bounds() {
 	return map_gen->get_relative_bounds();
 }
+
 void main_game::render() {
 	main_window::get_instance().draw(background);
 
@@ -188,6 +193,7 @@ void main_game::render() {
 		func::draw_ring(sf::Vector2f(prvX, prvY), radius, radius * 1.1, 30, sf::Color::Red, main_window::get_instance());
 	}
 }
+
 void main_game::cleanup() {
 	trains.clear();
 	stations.clear();
@@ -199,9 +205,11 @@ void main_game::cleanup() {
 	delete del_train_btn;
 	delete map_gen;
 }
+
 float main_game::get_unit_length() {
 	return unit_length;
 }
+
 void main_game::set_edit_line(metro_line *line, main_game::CLICK_MODE_TYPE mode) {
 	CLICK_MODE = mode;
 	edit_line = line;
@@ -269,6 +277,7 @@ void main_game::handle_mouse_click(sf::Event::MouseButtonEvent eve) {
 	prvX = eve.x;
 	prvY = eve.y;
 }
+
 void main_game::handle_mouse_move(sf::Event::MouseMoveEvent eve) {
 	if (prvX == -1 && prvY == -1) {
 		prvX = eve.x;
@@ -358,6 +367,7 @@ void main_game::handle_mouse_move(sf::Event::MouseMoveEvent eve) {
 	prvX = eve.x;
 	prvY = eve.y;
 }
+
 void main_game::handle_mouse_release(sf::Event::MouseButtonEvent eve) {
 	if (prvX == -1 && prvY == -1) {
 		prvX = eve.x;
@@ -393,9 +403,11 @@ void main_game::handle_mouse_release(sf::Event::MouseButtonEvent eve) {
 	prvX = eve.x;
 	prvY = eve.y;
 }
+
 void main_game::handle_key_press(sf::Event::KeyEvent eve) {
 	key_pressed[eve.code] = true;
 }
+
 void main_game::handle_key_release(sf::Event::KeyEvent eve) {
 	key_pressed[eve.code] = false;
 }

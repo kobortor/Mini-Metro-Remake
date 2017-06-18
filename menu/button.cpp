@@ -13,8 +13,13 @@ void button::setSize(int _wid, int _ht) {
 	ht = _ht;
 }
 
-int button::getX() { return x; }
-int button::getY() { return y; }
+sf::Vector2f button::get_pos() {
+	return sf::Vector2f(x, y);
+}
+
+sf::Vector2f button::get_size() {
+	return sf::Vector2f(wid, ht);
+}
 
 bool button::contained(int _x, int _y) {
 	return x <= _x && _x <= x + wid && y <= _y && _y <= y + ht;

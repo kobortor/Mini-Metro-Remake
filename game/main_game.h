@@ -14,6 +14,7 @@ public:
 	enum CLICK_MODE_TYPE { NONE, LINE_EDIT_FRONT, LINE_EDIT_BACK, PLACE_TRAIN, DELETE_TRAIN };
 
 	//Starts the class
+	//_map_gen is the object that generates the map for us
 	static void initialize(map_generator* _map_gen);
 
 	//Gets relative ratio of window
@@ -41,6 +42,7 @@ public:
 	static time_t get_game_time();
 
 	//Set this line to be the one currently edited
+	//mode should be either EDIT_LINE_BACK or EDIT_LINE_FRONT to specify which side is being edited
 	static void set_edit_line(metro_line* line, CLICK_MODE_TYPE mode);
 
 	//Returns true of the game is over, false otherwise
@@ -78,9 +80,17 @@ public:
 	static std::list<station> stations;
 	static std::list<train> trains;
 
+	//the line that is currently being edited
 	static metro_line* edit_line;
+
+	//the segment that is currently being edited
 	static segment edit_seg;
+
+	//the segment that is currently being selected (to place a train on)
 	static segment* selected_seg;
+
+	//what mode is the user's mouse in
+	//aka what action is it doing
 	static CLICK_MODE_TYPE CLICK_MODE;
 private:
 	static int trains_left;

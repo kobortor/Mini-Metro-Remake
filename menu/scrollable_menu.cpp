@@ -12,7 +12,7 @@ scrollable_menu_H::scrollable_menu_H(int _y1, int _y2) :y1(_y1), y2(_y2) {
 	while (getline(mapFile, mapName)){
 		getline(mapFile, mapFileName);
 		//allow dummy sizes, will resize later
-		vec.push_back(map_button(0, 0, 1, 1, mapName, mapFileName));
+		buttons.push_back(map_button(0, 0, 1, 1, mapName, mapFileName));
 	}
 	resize();
 }
@@ -25,8 +25,8 @@ void scrollable_menu_H::draw(sf::RenderTarget &targ, sf::RenderStates) const {
 
 	targ.draw(rect);
 
-	for (int a = 0; a < vec.size(); a++) {
-		targ.draw(vec[a]);
+	for (int a = 0; a < buttons.size(); a++) {
+		targ.draw(buttons[a]);
 	}
 }
 
@@ -38,17 +38,17 @@ void scrollable_menu_H::on_click(int prevX, int prevY, int curX, int curY, bool 
 	//TODO: shift the blocks as the mouse drags
 	//be sure to adjust for the block sizes, as that determines how much we can scroll
 	int diffX = curX - prevX;
-	for (int a = 0; a < vec.size(); a++) {
-		vec[a].setPos(vec[a].getX() + diffX, vec[a].getY());
-		vec[a].try_click(curX, curY, isInitial);
+	for (int a = 0; a < buttons.size(); a++) {
+		buttons[a].setPos(buttons[a].get_pos().x + diffX, buttons[a].get_pos().y);
+		buttons[a].try_click(curX, curY, isInitial);
 	}
 }
 
 void scrollable_menu_H::on_release(int prevX, int prevY, int curX, int curY) {
 	int diffX = curX - prevX;
-	for (int a = 0; a < vec.size(); a++) {
-		vec[a].setPos(vec[a].getX() + diffX, vec[a].getY());
-		vec[a].try_release(curX, curY);
+	for (int a = 0; a < buttons.size(); a++) {
+		buttons[a].setPos(buttons[a].get_pos().x + diffX, buttons[a].get_pos().y);
+		buttons[a].try_release(curX, curY);
 	}
 }
 
@@ -61,9 +61,9 @@ void scrollable_menu_H::resize() {
 	int left = margin;
 	int top = y1 + margin;
 
-	for (int a = 0; a < vec.size(); a++) {
-		vec[a].setPos(left, top);
-		vec[a].setSize(boxSz, boxSz);
+	for (int a = 0; a < buttons.size(); a++) {
+		buttons[a].setPos(left, top);
+		buttons[a].setSize(boxSz, boxSz);
 		left += boxSz + padding;
 	}
 }
