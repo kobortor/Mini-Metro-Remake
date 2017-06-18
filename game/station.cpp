@@ -4,6 +4,7 @@
 #include"passenger.h"
 #include<bitset>
 #include"graph.h"
+#include"../functions.h"
 
 station::station(float _relX, float _relY, STATION_TYPE _type) :relX(_relX), relY(_relY), type(_type) {
 	resize();
@@ -92,20 +93,29 @@ station::STATION_TYPE station::get_type() {
 }
 
 void station::draw(sf::RenderTarget& targ, sf::RenderStates) const {
-	sf::CircleShape circ{ screen_size() / 2 };
+	int point_count;
 	switch (type) {
 	case TRIANGLE:
-		circ.setPointCount(3);
+		point_count = 3;
 		break;
 	case CIRCLE:
-		circ.setPointCount(30);
+		point_count = 30;
 		break;
 	case SQUARE:
-		circ.setPointCount(4);
+		point_count = 4;
 		break;
 	}
 
-	circ.setPosition(posX - screen_size() / 2, posY - screen_size() / 2);
+	float inner_radius = screen_size() / 2 * 0.75;
+	float outer_radius = screen_size() / 2;
+
+	sf::CircleShape circ(outer_radius, point_count);
+	circ.setPosition(posX - outer_radius, posY - outer_radius);
+	circ.setFillColor(sf::Color::Black);
+	targ.draw(circ);
+
+	circ.setPosition(posX - inner_radius, posY - inner_radius);
+	circ.setRadius(inner_radius);
 	circ.setFillColor(sf::Color::White);
 	targ.draw(circ);
 

@@ -45,7 +45,7 @@ void main_game::initialize(map_generator* _map_gen) {
 
 	game_start_time = sys::get_millis();
 	last_update = 0;
-	background.setFillColor(sf::Color(50, 50, 50));
+	background.setFillColor(sf::Color::White);
 	map_gen = _map_gen;
 
 	auto rel_bound = get_relative_bounds();

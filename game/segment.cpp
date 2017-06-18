@@ -51,7 +51,7 @@ void segment::adjust_dir() {
 void segment::draw(sf::RenderTarget& targ, sf::RenderStates) const {
 	if (begin != end) {
 		sf::Vector2f mid = calc_mid();
-		sf::Color col = parent ? parent->get_color() : sf::Color::White;
+		sf::Color col = parent ? parent->get_color() : sf::Color::Black;
 		float wid = screen_size();
 		if (highlighted) {
 			wid *= hover_ratio;
