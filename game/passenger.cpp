@@ -42,6 +42,11 @@ station::STATION_TYPE passenger::get_type() {
 	return type;
 }
 
+void passenger::set_pos(sf::Vector2f pos) {
+	posX = pos.x;
+	posY = pos.y;
+}
+
 float passenger::screen_size() {
 	return main_game::get_unit_length() * 0.5;
 }

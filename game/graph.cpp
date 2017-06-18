@@ -5,10 +5,6 @@
 
 std::unordered_map<station*, std::list<station*>> graph::adj;
 
-void graph::initalize() {
-
-}
-
 void graph::add_station(station *stn) {
 	adj[stn];
 }

@@ -4,6 +4,8 @@
 class game_variables {
 public:
 	game_variables() = delete;
+
+	//Getters, detailed description in the variables below
 	static int get_max_passengers();
 	static int get_overflow_limit();
 	static float get_overflow_recovery_rate();

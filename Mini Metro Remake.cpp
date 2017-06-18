@@ -7,14 +7,14 @@
 #include"fonts.h"
 #include"textures.h"
 
+//Program starts here
 int main() {
-	font::consola.loadFromFile("assets/fonts/consola.ttf");
+	font::load();
 	textures::load();
 
 	main_window::initialize();
 
-	bool leftButtonPressed = false;
-
+	//Main event loop
 	while (main_window::get_instance().isOpen()) {
 		sf::Event eve;
 		while (main_window::get_instance().pollEvent(eve)) {

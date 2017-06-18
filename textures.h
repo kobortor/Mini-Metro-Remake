@@ -7,5 +7,6 @@ namespace textures {
 	extern Texture train_cursor;
 	extern Texture delete_train_button;
 
+	//Loads the textures for the game
 	void load();
 }

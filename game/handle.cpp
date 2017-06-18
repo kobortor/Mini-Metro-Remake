@@ -2,10 +2,11 @@
 #include"../functions.h"
 #include"metro_line.h"
 
-handle::handle(metro_line* _parent) : parent(_parent), home(nullptr) { }
-
-handle::handle(metro_line* _parent, station* _home, float _angle) : parent(_parent), home(_home), angle(_angle) {
-	resize();
+handle::handle(metro_line* _parent, station *_home) : parent(_parent), home(_home) { 
+	if (home != nullptr) {
+		home->rearrange_handles();
+		resize();
+	}
 }
 
 bool handle::contained(int x, int y) const {
@@ -46,4 +47,12 @@ void handle::resize() {
 	tri[0].position = orig;
 	tri[1].position = sf::Vector2f(d2 * sin(angle + 0.2), -d2 * cos(angle + 0.2)) + orig;
 	tri[2].position = sf::Vector2f(d2 * sin(angle - 0.2), -d2 * cos(angle - 0.2)) + orig;
+}
+
+station * handle::located_at() {
+	return home;
+}
+
+void handle::set_angle(float ang) {
+	angle = ang;
 }

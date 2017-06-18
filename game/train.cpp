@@ -276,7 +276,7 @@ float train::screen_size() {
 	return main_game::get_unit_length() * 0.5;
 }
 
-int train::num_passengers() {
+int train::get_num_passengers() {
 	return passengers.size();
 }
 
@@ -312,8 +312,7 @@ void train::reorg_passengers() {
 
 	bool left_side = true;
 	for (passenger *pass : passengers) {
-		pass->posX = curPos.x;
-		pass->posY = curPos.y;
+		pass->set_pos(curPos);
 
 		if (left_side) {
 			curPos += perp;

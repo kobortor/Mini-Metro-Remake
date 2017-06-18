@@ -19,7 +19,8 @@ public:
 	//This is a library function
 	void draw(sf::RenderTarget&, sf::RenderStates) const override;
 
-	//will return true once it can't find any more track to carry on
+	//will return true once it can't find any more track to carry on and should be deleted
+	//false otherwise
 	bool is_dead();
 
 	//Gets the position of the train (in pixels position)
@@ -28,28 +29,39 @@ public:
 	//Resizes this object to the new screen size
 	void resize();
 
-	//milliseconds of change
+	//Updates the station
+	//[delta] is the number of milliseconds since last update
 	void update(long long delta);
 
+	//Adds the passenger onto the train
 	void add_passenger(passenger*);
 
+	//Unload all passengers that stop or transfer at this station
 	void unload(station *stn);
 
+	//Returns the size of the train on the screen in pixels
 	static float screen_size();
 
-	int num_passengers();
+	//Returns the number of passengers on the train
+	int get_num_passengers();
 
 	//returns the distance travelled by the train in relative units per millisecond
 	static float get_speed();
 
+	//Gets the metro_line that the train runs on
 	metro_line* get_home_line();
 
+	//the the train to drop off all passengers at the next station, and go to the scrapyard afterwards
 	void mark_for_death();
 
+	//Returns true if marked for death, false otherwise
 	bool is_marked_for_death();
 
+	//Is the train highlighted?
+	//If true, the train is within the "kill radius" of the delete button and should display a warning X
 	bool highlighted = false;
 protected:
+	//Reorganizes the passengers in the train to fit a certain pattern
 	void reorg_passengers();
 
 	float posX, posY;

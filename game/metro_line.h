@@ -11,6 +11,7 @@ public:
 		NONE, FRONT, END
 	};
 
+	//Constructs a metro_line beginning at [begin] with the color [_color]
 	metro_line(station* begin, sf::Color _color);
 
 	//Resizes this object to the new screen size
@@ -24,9 +25,10 @@ public:
 	//This is a library function
 	void draw(sf::RenderTarget&, sf::RenderStates) const override;
 
-	handle front_handle, back_handle;
-
+	//Returns the color of the metro line
 	sf::Color get_color();
+
+	handle front_handle, back_handle;
 
 	std::list<station*> stations;
 	std::list<segment> segments;

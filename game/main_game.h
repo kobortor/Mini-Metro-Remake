@@ -51,24 +51,25 @@ public:
 	//Returns the number of trains that the player is still allowed to place
 	static int num_trains_left();
 
+	//Returns the length of a single "unit" in pixels
 	//As a general rule of thumb, a station should be 1 unit length in diameter
 	//scale approximately according the original game
 	//https://i.imgur.com/CbsM78B.png as an example
 	static float get_unit_length();
 
-	//Self explanatory
+	//Handler for when the user clicks on their mouse
 	static void handle_mouse_click(sf::Event::MouseButtonEvent eve);
 
-	//Self explanatory
+	//Handler for when the user moves their mouse
 	static void handle_mouse_move(sf::Event::MouseMoveEvent eve);
 
-	//Self explanatory
+	//Handler for when the user releases a key on their mouse
 	static void handle_mouse_release(sf::Event::MouseButtonEvent eve);
 
-	//Self explanatory
+	//Handler for when the user presses a key on the keyboard
 	static void handle_key_press(sf::Event::KeyEvent eve);
 
-	//Self explanatory
+	//Handler for when the user releases a key on the keyboard
 	static void handle_key_release(sf::Event::KeyEvent eve);
 
 	/*

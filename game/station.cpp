@@ -33,10 +33,10 @@ void station::rearrange_handles() {
 				dirs[seg.get_reverse().dir] = true;
 			}
 		}
-		if (ml.front_handle.home == this) {
+		if (ml.front_handle.located_at() == this) {
 			tofix.push_back(&ml.front_handle);
 		}
-		if (ml.back_handle.home == this) {
+		if (ml.back_handle.located_at() == this) {
 			tofix.push_back(&ml.back_handle);
 		}
 	}
@@ -83,7 +83,7 @@ void station::rearrange_handles() {
 		float curAng = 3.141592 / 4 * angles[a].first;
 		for (handle *h : handles[a]) {
 			curAng += deltaAng;
-			h->angle = curAng;
+			h->set_angle(curAng);
 			h->resize();
 		}
 	}
@@ -160,7 +160,7 @@ void station::load(train *t) {
 
 	auto iter = passengers.begin();
 	while(iter != passengers.end()) {
-		if (t->num_passengers() >= game_variables::get_train_capacity()) {
+		if (t->get_num_passengers() >= game_variables::get_train_capacity()) {
 			break;
 		}
 
@@ -240,8 +240,7 @@ void station::reorg_passengers() {
 		} else {
 			pXpos += passenger::screen_size() * (1 + padding);
 		}
-		(*iter)->posX = pXpos;
-		(*iter)->posY = pYpos;
+		(*iter)->set_pos(sf::Vector2f(pXpos, pYpos));
 
 		idx++;
 		iter++;
