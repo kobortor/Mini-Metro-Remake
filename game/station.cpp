@@ -101,7 +101,7 @@ void station::draw(sf::RenderTarget& targ, sf::RenderStates) const {
 		break;
 	case SQUARE:
 		point_count = 4;
-		break;
+		break  ;
 	}
 
 	float inner_radius = screen_size() / 2 * 0.75;

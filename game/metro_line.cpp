@@ -1,4 +1,5 @@
 #include"metro_line.h"
+#include"main_game.h"
 
 metro_line::metro_line(station *begin, sf::Color _color, sf::Vector2f rel_bounds, sf::IntRect window_bounds) :
 	front_handle(this, begin, rel_bounds, window_bounds), back_handle(this, begin, rel_bounds, window_bounds), color(_color) {
@@ -65,8 +66,12 @@ void metro_line::draw(sf::RenderTarget &targ, sf::RenderStates) const {
 		targ.draw(seg);
 	}
 
-	targ.draw(front_handle);
-	targ.draw(back_handle);
+	if(!(main_game::CLICK_MODE == main_game::CLICK_MODE_TYPE::LINE_EDIT_BACK ||
+		main_game::CLICK_MODE == main_game::CLICK_MODE_TYPE::LINE_EDIT_FRONT) ||
+		main_game::edit_line != this){
+		targ.draw(front_handle);
+		targ.draw(back_handle);
+	}
 }
 
 sf::Color metro_line::get_color() {
