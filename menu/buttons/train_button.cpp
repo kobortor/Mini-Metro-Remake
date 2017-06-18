@@ -50,7 +50,7 @@ void train_button::on_click(int prevX, int prevY, int curX, int curY, bool initC
 				sf::Vector2f mid = segs.calc_mid();
 				float dist_to = std::min(func::dist_to_line(segs.begin, mid, sf::Vector2f(curX, curY)),
 					func::dist_to_line(mid, segs.end, sf::Vector2f(curX, curY)));
-				if (dist_to < 6) {
+				if (dist_to < select_range()) {
 					//essentially a break and reset statement
 					main_game::selected_seg = &segs;
 					segs.highlighted = true;
@@ -61,18 +61,20 @@ void train_button::on_click(int prevX, int prevY, int curX, int curY, bool initC
 }
 
 void train_button::on_release(int prevX, int prevY, int curX, int curY) {
-	if (main_game::CLICK_MODE == main_game::PLACE_TRAIN) {
-		if (main_game::selected_seg != nullptr) {
-			float d1 = func::hypotf(main_game::selected_seg->begin - sf::Vector2f(curX, curY));
-			float d2 = func::hypotf(main_game::selected_seg->end - sf::Vector2f(curX, curY));
-			if (d1 < d2) {
-				main_game::trains.emplace_back(main_game::selected_seg->parent, *main_game::selected_seg);
-			} else {
-				main_game::trains.emplace_back(main_game::selected_seg->parent, main_game::selected_seg->get_reverse());
-			}
-			main_game::selected_seg->highlighted = false;
+	if (main_game::selected_seg != nullptr) {
+		float d1 = func::hypotf(main_game::selected_seg->begin - sf::Vector2f(curX, curY));
+		float d2 = func::hypotf(main_game::selected_seg->end - sf::Vector2f(curX, curY));
+		if (d1 < d2) {
+			main_game::trains.emplace_back(main_game::selected_seg->parent, *main_game::selected_seg);
+		} else {
+			main_game::trains.emplace_back(main_game::selected_seg->parent, main_game::selected_seg->get_reverse());
 		}
-		main_game::selected_seg = nullptr;
-		main_game::CLICK_MODE = main_game::NONE;
+		main_game::selected_seg->highlighted = false;
 	}
+	main_game::selected_seg = nullptr;
+	main_game::CLICK_MODE = main_game::NONE;
+}
+
+float train_button::select_range() {
+	return main_game::get_unit_length() * 0.75;
 }

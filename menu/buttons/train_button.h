@@ -10,4 +10,6 @@ public:
 
 	void on_click(int prevX, int prevY, int curX, int curY, bool initClick) override;
 	void on_release(int prevX, int prevY, int curX, int curY) override;
+private:
+	static float select_range();
 };

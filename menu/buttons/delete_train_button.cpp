@@ -28,10 +28,14 @@ void delete_train_button::on_release(int prevX, int prevY, int curX, int curY) {
 	//destroys all trains close enough to it
 	while (iter != main_game::trains.end()) {
 		float dist = func::hypotf(iter->get_pos() - sf::Vector2f(curX, curY));
-		if (dist < 50) {
+		if (dist < select_range()) {
 			iter->mark_for_death();
 		}
 		iter++;
 	}
 	main_game::CLICK_MODE = main_game::NONE;
+}
+
+float delete_train_button::select_range() {
+	return main_game::get_unit_length() * 1.25;
 }
