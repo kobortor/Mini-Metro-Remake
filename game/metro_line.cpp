@@ -64,3 +64,7 @@ void metro_line::draw(sf::RenderTarget &targ, sf::RenderStates) const {
 	targ.draw(front_handle);
 	targ.draw(back_handle);
 }
+
+sf::Color metro_line::get_color() {
+	return color;
+}

@@ -21,6 +21,9 @@ public:
 	HANDLE_CLICK click_handle(int posX, int posY);
 	void draw(sf::RenderTarget&, sf::RenderStates) const override;
 
-	sf::Color color;
 	handle front_handle, back_handle;
+
+	sf::Color get_color();
+protected:
+	sf::Color color;
 };

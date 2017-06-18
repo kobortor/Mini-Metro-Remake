@@ -36,8 +36,8 @@ protected:
 
 	void reorg_passengers();
 
-	const static float unit_ratio;
 	float posX, posY;
+	float prvX, prvY;
 	segment cur_track;
 	float amnt_done;
 	station* cur_stn;
@@ -47,6 +47,7 @@ protected:
 	//tries to find next path in metro line
 	void seek();
 
+	sf::Color color;
 	metro_line *home_line;
 	long long delay_for;
 

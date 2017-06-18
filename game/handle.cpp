@@ -30,9 +30,9 @@ void handle::resize() {
 		return;
 	}
 
-	tri[0].color = parent->color;
-	tri[1].color = parent->color;
-	tri[2].color = parent->color;
+	tri[0].color = parent->get_color();
+	tri[1].color = parent->get_color();
+	tri[2].color = parent->get_color();
 
 	if (home == nullptr) {
 		return;

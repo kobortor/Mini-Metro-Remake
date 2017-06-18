@@ -344,7 +344,7 @@ void main_game::handle_mouse_release(sf::Event::MouseButtonEvent eve) {
 			auto iter = func::find_iter(lines.begin(), lines.end(), edit_line);
 
 			if (iter != lines.end()) {
-				avail_colors.push_back(iter->color);
+				avail_colors.push_back(iter->get_color());
 				lines.erase(iter);
 			}
 		} else {

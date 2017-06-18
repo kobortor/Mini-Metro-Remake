@@ -3,8 +3,6 @@
 #include"main_game.h"
 #include<iostream>
 
-const float train::unit_ratio = 0.5;
-
 train::train(metro_line * _home_line, station *_cur_stn) :
 	home_line(_home_line), cur_stn(_cur_stn), prv_stn(nullptr) {
 	//by default start at beginning
@@ -15,6 +13,11 @@ train::train(metro_line * _home_line, station *_cur_stn) :
 
 	posX = cur_stn->posX;
 	posY = cur_stn->posY;
+
+	prvX = posX;
+	prvY = posY;
+
+	color = func::opposite_color(home_line->get_color());
 }
 
 train::train(metro_line * _home_line, segment track) :
@@ -22,20 +25,26 @@ train::train(metro_line * _home_line, segment track) :
 	//by default start at beginning
 	status = TOWARDS_MID;
 	delay_for = 500;
-	sf::Vector2f &begin = cur_track.begin;
-	sf::Vector2f &end = cur_track.end;
 
 	posX = prv_stn->posX;
 	posY = prv_stn->posY;
+
+	prvX = posX;
+	prvY = posY;
+
+	color = func::opposite_color(home_line->get_color());
 }
 
 void train::draw(sf::RenderTarget &targ, sf::RenderStates) const {
 	if (status != DEAD) {
-		float icon_size = main_game::get_unit_length() * unit_ratio;
+		float icon_size = screen_size();
 		float radius = icon_size / 2;
-		sf::CircleShape circ{ radius };
-		circ.setFillColor(sf::Color::Green);
+
+		sf::CircleShape circ;
+
+		circ.setRadius(radius);
 		circ.setPosition(posX - radius, posY - radius);
+		circ.setFillColor(color);
 		targ.draw(circ);
 
 		if (marked_for_death) {
@@ -47,6 +56,25 @@ void train::draw(sf::RenderTarget &targ, sf::RenderStates) const {
 			sf::Color pink = { 255, 128, 255 };
 			func::draw_thick_line(sf::Vector2f(posX - radius, posY - radius), sf::Vector2f(posX + radius, posY + radius), thickness, pink, targ);
 			func::draw_thick_line(sf::Vector2f(posX - radius, posY + radius), sf::Vector2f(posX + radius, posY - radius), thickness, pink, targ);
+		}
+
+		if (posX != prvX || posY != prvY) {
+			float arrow_tip = screen_size() * 2;
+			float arrow_near = screen_size();
+			float base_angle = atan2f(posY - prvY, posX - prvX);
+			float arrow_angle = 3.141592 / 6;
+
+			sf::Vector2f dir(posX - prvX, posY - prvY);
+			sf::Vertex vert[3];
+			vert[0] = sf::Vector2f(posX + arrow_near * sin(base_angle - arrow_angle), posY + arrow_near * cos(base_angle - arrow_angle));
+			vert[1] = sf::Vector2f(posX + arrow_tip * sin(base_angle), posY + arrow_tip * cos(base_angle));
+			vert[2] = sf::Vector2f(posX + arrow_near * sin(base_angle + arrow_angle), posY + arrow_near * cos(base_angle + arrow_angle));
+
+			for (int a = 0; a < 3; a++) {
+				vert[a].color = color;
+			}
+
+			targ.draw(vert, 3, sf::Triangles);
 		}
 
 		for (passenger *p : passengers) {
@@ -103,11 +131,17 @@ void train::update(long long delta) {
 			return;
 		}
 		if (hypotf(begin.x - mid.x, begin.y - mid.y) < 3) {
+			prvX = posX;
+			prvY = posY;
+
 			posX = mid.x;
 			posY = mid.y;
 			status = TOWARDS_END;
 		} else {
 			sf::Vector2f diff = func::normalize(mid - begin) * get_speed();
+			prvX = posX;
+			prvY = posY;
+
 			posX += diff.x * delta;
 			posY += diff.y * delta;
 			amnt_done = hypot(posX - begin.x, posY - begin.y) / hypot(mid.x - begin.x, mid.y - begin.y);
@@ -126,12 +160,18 @@ void train::update(long long delta) {
 			return;
 		}
 		if (hypotf(mid.x - end.x, mid.y - end.y) < 3) {
+			prvX = posX;
+			prvY = posY;
+
 			posX = end.x;
 			posY = end.y;
 			status = STOPPING;
 			delay_for = 500;
 		} else {
 			sf::Vector2f diff = func::normalize(end - mid) * get_speed();
+			prvX = posX;
+			prvY = posY;
+
 			posX += diff.x * delta;
 			posY += diff.y * delta;
 			amnt_done = hypot(posX - mid.x, posY - mid.y) / hypot(end.x - mid.x, end.y - mid.y);

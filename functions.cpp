@@ -95,4 +95,7 @@ namespace func {
 		}
 		return ans;
 	}
+	sf::Color opposite_color(sf::Color col) {
+		return sf::Color(255 - col.r, 255 - col.g, 255 - col.b, col.a);
+	}
 }
