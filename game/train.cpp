@@ -66,9 +66,9 @@ void train::draw(sf::RenderTarget &targ, sf::RenderStates) const {
 
 			sf::Vector2f dir(posX - prvX, posY - prvY);
 			sf::Vertex vert[3];
-			vert[0] = sf::Vector2f(posX + arrow_near * sin(base_angle - arrow_angle), posY + arrow_near * cos(base_angle - arrow_angle));
-			vert[1] = sf::Vector2f(posX + arrow_tip * sin(base_angle), posY + arrow_tip * cos(base_angle));
-			vert[2] = sf::Vector2f(posX + arrow_near * sin(base_angle + arrow_angle), posY + arrow_near * cos(base_angle + arrow_angle));
+			vert[0] = sf::Vector2f(posX + arrow_near * cos(base_angle - arrow_angle), posY + arrow_near * sin(base_angle - arrow_angle));
+			vert[1] = sf::Vector2f(posX + arrow_tip * cos(base_angle), posY + arrow_tip * sin(base_angle));
+			vert[2] = sf::Vector2f(posX + arrow_near * cos(base_angle + arrow_angle), posY + arrow_near * sin(base_angle + arrow_angle));
 
 			for (int a = 0; a < 3; a++) {
 				vert[a].color = color;
