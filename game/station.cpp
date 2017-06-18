@@ -182,8 +182,6 @@ void station::load(train *t) {
 		int other_dist = graph::shortest_dist(other_stn, destinations);
 		int this_dist = graph::shortest_dist(std::list<station*>{this}, destinations);
 
-		printf("%i %i\n", other_dist, this_dist);
-
 		if (this_dist != -1 && other_dist < this_dist) {
 			auto tmp = iter;
 			iter++;

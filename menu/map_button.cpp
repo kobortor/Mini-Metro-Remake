@@ -4,7 +4,6 @@
 #include"../main_window.h"
 #include"../game/main_game.h"
 #include"../game/file_map_generator.h"
-#include<iostream>
 
 map_button::map_button(int _x, int _y, int _wid, int _ht, std::string _display_name, std::string _map_file_name)
 	: button(_x,_y,_wid,_ht), display_name(_display_name), map_file_name(_map_file_name) {
@@ -40,7 +39,6 @@ void map_button::on_click(int prevX, int prevY, int curX, int curY, bool isIniti
 
 void map_button::on_release(int prevX, int prevY, int curX, int curY) {
 	if (contained(curX, curY) && !moved) {
-		std::cout << "CLICK MAP " << display_name << "\n";
 		main_window::RENDER_MODE = main_window::IN_GAME;
 		main_game::initialize(new file_map_generator(map_file_name));
 	}

@@ -2,7 +2,6 @@
 #include<SFML\Graphics.hpp>
 #include<fstream>
 #include<string>
-#include<iostream>
 #include"../main_window.h"
 
 scrollable_menu_H::scrollable_menu_H(int _y1, int _y2) :y1(_y1), y2(_y2) {

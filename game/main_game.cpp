@@ -2,7 +2,6 @@
 #include"game_variables.h"
 #include "../main_window.h"
 #include "../fonts.h"
-#include <iostream>
 #include "../system/system_func.h"
 #include "../functions.h"
 #include "handle.h"
@@ -394,7 +393,6 @@ void main_game::handle_mouse_release(sf::Event::MouseButtonEvent eve) {
 	} else if(CLICK_MODE == PLACE_TRAIN) {
 		train_btn->try_release(eve.x, eve.y);
 	} else if (CLICK_MODE == DELETE_TRAIN) {
-		printf("try release\n");
 		del_train_btn->try_release(eve.x, eve.y);
 	}
 

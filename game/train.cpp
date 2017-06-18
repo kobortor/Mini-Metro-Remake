@@ -3,7 +3,6 @@
 #include"game_variables.h"
 #include"main_game.h"
 #include"graph.h"
-#include<iostream>
 
 train::train(metro_line * _home_line, station *_cur_stn) :
 	home_line(_home_line), cur_stn(_cur_stn), prv_stn(nullptr) {
@@ -234,7 +233,6 @@ void train::unload(station * stn) {
 	auto iter = passengers.begin();
 	while (iter != passengers.end()) {
 		if ((*iter)->get_type() == stn->get_type()) {
-			printf("Unload passenger because same type\n");
 			auto tmp = iter;
 			iter++;
 			passengers.erase(tmp);
@@ -258,7 +256,6 @@ void train::unload(station * stn) {
 			int this_dist = graph::shortest_dist(std::list<station*>{stn}, destinations);
 
 			if (this_dist == -1 || this_dist <= other_dist) {
-				printf("Unload passenger because they cannot benefit from riding further\n");
 				auto tmp = iter;
 				iter++;
 				stn->add_passenger(*tmp);
