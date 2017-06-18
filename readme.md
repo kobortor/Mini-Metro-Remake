@@ -2,6 +2,16 @@
 This is an remake of the game "Mini Metro" for an ICS 4U project.
 The game is available through a variet of outlets, all of which you can find on the game's [official page](https://dinopoloclub.com/minimetro/).
 
+## How to install (Visual Studio only)
+This project uses SFML (Simple & Fast Media Library) to render graphics in C++.
+Go to [the sfml download page](https://www.sfml-dev.org/download.php), and download the most recent version for your compiler. MAKE SURE YOU ARE USING THE CORRECT BIT VERSION (32-bit and 64-bit is different)
+Afterwards, in your Visual Studio project go under `Project -> C/C++ -> General -> Additional Include Directories` and add `sfml folder>/include/`.
+Next, include the libraries by going under `Project -> Linker -> Additional Library Directories` and include `<sfml folder>/lib/`.
+Next, specify the .lib files you want to include by adding them under `Project -> Linker -> Input`. You should include `sfml-graphics-d.lib`, `sfml-system-d.lib`, `sfml-main-d.lib`, `sfml-window-d.lib`. If you want to build for **RELEASE** rather than **DEBUG**, then just remove the appended `-d`.
+Once you are done, you should be able to build the project, but if you run, you will get an error. This is because your executable cannot find the run-time libraries needed. To help it find it, move the libraries from `<sfml folder>/bin/` next to your executable.
+
+If you are still confused, there are official tutorials available for [Visual Studio](https://www.sfml-dev.org/tutorials/2.0/start-vc.php) (or if you reeeeeeallllllyyy prefer) [Code::Blocks MinGW](https://www.sfml-dev.org/tutorials/2.0/start-cb.php).
+
 ## File Specifications
 maplist.txt will contain the name of the map on a line, followed by the location of the file on the next line
 
@@ -21,15 +31,7 @@ The coordinates will then be given in pairs of floating point numbers separated 
     1.00 1.00
     2.00 3.00
     0.50 0.12
+	
+## Notices
 
-Optional arguments can be attached to the coordinates by appending a colon at the end of the coordinates, putting details, then appending the details with
-
-    ###END DETAILS###
-
-For example:
-
-    1.00 2.00:
-    COLOR:RED
-    SIZE:BIG
-    IMPORTANCE:HIGH
-    ###END DETAILS###
+Only the NYC map is playable, typing coordinates off PDFs is very hard and tedious, but if you'd like you can type in your own maps.
