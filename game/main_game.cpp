@@ -1,4 +1,5 @@
 #include "main_game.h"
+#include"game_variables.h"
 #include "../main_window.h"
 #include "../fonts.h"
 #include <iostream>
@@ -23,7 +24,7 @@ std::list<sf::Color> main_game::avail_colors;
 train_button* main_game::train_btn;
 delete_train_button* main_game::del_train_btn;
 float main_game::unit_length;
-const int main_game::MAX_TRAINS = 10;
+int main_game::trains_left;
 
 main_game::CLICK_MODE_TYPE main_game::CLICK_MODE;
 
@@ -55,6 +56,7 @@ void main_game::initialize(map_generator* _map_gen) {
 		0.2 * rel_bound.y, 0.1 * rel_bound.y);
 	del_train_btn = new delete_train_button((rel_bound.x - 0.25 * rel_bound.y), 0.15 * rel_bound.y,
 		0.2 * rel_bound.y, 0.1 * rel_bound.y);
+	trains_left = game_variables::get_max_train_count();
 
 	resize();
 }
@@ -142,6 +144,10 @@ bool main_game::is_game_over() {
 	return false;
 }
 
+int main_game::num_trains_left() {
+	return trains_left;
+}
+
 sf::Vector2f main_game::get_relative_bounds() {
 	return map_gen->get_relative_bounds();
 }
@@ -192,9 +198,6 @@ void main_game::cleanup() {
 	delete train_btn;
 	delete del_train_btn;
 	delete map_gen;
-}
-float main_game::get_station_mouse_limit() {
-	return 30;
 }
 float main_game::get_unit_length() {
 	return unit_length;

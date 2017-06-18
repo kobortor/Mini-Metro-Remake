@@ -9,54 +9,88 @@ class main_game {
 public:
 	main_game() = delete; //singleton
 
+	//what mode is the user's mouse in
+	//aka what action is it doing
 	enum CLICK_MODE_TYPE { NONE, LINE_EDIT_FRONT, LINE_EDIT_BACK, PLACE_TRAIN, DELETE_TRAIN };
 
+	//Starts the class
 	static void initialize(map_generator* _map_gen);
-	static sf::Vector2f get_relative_bounds();
-	static sf::IntRect get_window_bounds(); //gets the position within the window
-	static void resize();
 
-	static void add_station(float _relX, float _relY, station::STATION_TYPE _type);
-	static time_t get_game_time();
-	static void update();
+	//Gets relative ratio of window
+	static sf::Vector2f get_relative_bounds();
+
+	//Gets the bounds of the game window within the actual window. Measured in pixels.
+	static sf::IntRect get_window_bounds(); //gets the position within the window
+
+	//Draws the game state
 	static void render(); //always render to main window
+
+	//Cleans up the game state to get ready for another game
 	static void cleanup();
 
+	//Resizes everything in the game to be relative to the new window size
+	static void resize();
+
+	//Updates the game state
+	static void update();
+
+	//Adds a station at that coordinate
+	static void add_station(float _relX, float _relY, station::STATION_TYPE _type);
+
+	//Gets milliseconds since the start of the game
+	static time_t get_game_time();
+
+	//Set this line to be the one currently edited
 	static void set_edit_line(metro_line* line, CLICK_MODE_TYPE mode);
+
+	//Returns true of the game is over, false otherwise
 	static bool is_game_over();
 
-	static float get_station_mouse_limit();
+	//Returns the number of trains that the player is still allowed to place
+	static int num_trains_left();
 
 	//As a general rule of thumb, a station should be 1 unit length in diameter
 	//scale approximately according the original game
 	//https://i.imgur.com/CbsM78B.png as an example
 	static float get_unit_length();
 
+	//Self explanatory
 	static void handle_mouse_click(sf::Event::MouseButtonEvent eve);
+
+	//Self explanatory
 	static void handle_mouse_move(sf::Event::MouseMoveEvent eve);
+
+	//Self explanatory
 	static void handle_mouse_release(sf::Event::MouseButtonEvent eve);
+
+	//Self explanatory
 	static void handle_key_press(sf::Event::KeyEvent eve);
+
+	//Self explanatory
 	static void handle_key_release(sf::Event::KeyEvent eve);
 
-	//make some protected
-	static sf::IntRect window_bounds;
-	static sf::RectangleShape background;
+	/*
+	---------------
+	---VARIABLES---
+	---------------
+	*/
 	static std::list<metro_line> lines;
 	static std::list<station> stations;
 	static std::list<train> trains;
-	static time_t game_start_time;
-	static map_generator* map_gen;
-	static time_t last_update;
-	static std::list<sf::Color> avail_colors;
-	static float unit_length;
-
-	const static int MAX_TRAINS;
 
 	static metro_line* edit_line;
 	static segment edit_seg;
 	static segment* selected_seg;
 	static CLICK_MODE_TYPE CLICK_MODE;
-
+private:
+	static int trains_left;
+	static std::list<sf::Color> avail_colors;
+	static float unit_length;
+	static time_t game_start_time;
+	static time_t last_update;
+	static map_generator* map_gen;
+	static sf::RectangleShape background;
+	static sf::IntRect window_bounds;
 	static int prvX, prvY;
 	static bool mouse_button_pressed[sf::Mouse::ButtonCount];
 	static bool key_pressed[sf::Keyboard::KeyCount];

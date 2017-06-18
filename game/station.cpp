@@ -141,7 +141,7 @@ void station::draw(sf::RenderTarget& targ, sf::RenderStates) const {
 }
 
 bool station::contained(int x, int y) {
-	float lim = main_game::get_station_mouse_limit();
+	float lim = screen_size() / 2;
 	int diffX = x - posX;
 	int diffY = y - posY;
 	return diffX * diffX + diffY * diffY <= lim * lim;
