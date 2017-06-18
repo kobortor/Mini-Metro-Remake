@@ -49,8 +49,8 @@ void train_button::on_click(int prevX, int prevY, int curX, int curY, bool initC
 					continue;
 				}
 				sf::Vector2f mid = segs.calc_mid();
-				float dist_to = std::min(func::dist_to_line(segs.begin, mid, sf::Vector2f(curX, curY)),
-					func::dist_to_line(mid, segs.end, sf::Vector2f(curX, curY)));
+				float dist_to = std::min(func::dist_to_line(segs.get_begin_point(), mid, sf::Vector2f(curX, curY)),
+					func::dist_to_line(mid, segs.get_end_point(), sf::Vector2f(curX, curY)));
 				if (dist_to < select_range()) {
 					//essentially a break and reset statement
 					main_game::selected_seg = &segs;
@@ -63,8 +63,8 @@ void train_button::on_click(int prevX, int prevY, int curX, int curY, bool initC
 
 void train_button::on_release(int prevX, int prevY, int curX, int curY) {
 	if (main_game::selected_seg != nullptr) {
-		float d1 = func::hypotf(main_game::selected_seg->begin - sf::Vector2f(curX, curY));
-		float d2 = func::hypotf(main_game::selected_seg->end - sf::Vector2f(curX, curY));
+		float d1 = func::hypotf(main_game::selected_seg->get_begin_point() - sf::Vector2f(curX, curY));
+		float d2 = func::hypotf(main_game::selected_seg->get_end_point() - sf::Vector2f(curX, curY));
 		if (d1 < d2) {
 			main_game::trains.emplace_back(main_game::selected_seg->get_parent_line(), *main_game::selected_seg);
 		} else {

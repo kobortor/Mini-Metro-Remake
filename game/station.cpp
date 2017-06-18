@@ -26,10 +26,10 @@ void station::rearrange_handles() {
 	std::vector<handle*> tofix;
 	for (metro_line &ml : main_game::lines) {
 		for (segment &seg : ml.segments) {
-			if (seg.orig == this) {
+			if (seg.get_origin() == this) {
 				dirs[seg.dir] = true;
 			}
-			if (seg.dest == this) {
+			if (seg.get_destination() == this) {
 				dirs[seg.get_reverse().dir] = true;
 			}
 		}

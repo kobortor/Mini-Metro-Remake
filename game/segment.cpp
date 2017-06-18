@@ -168,3 +168,35 @@ sf::Vector2f segment::calc_mid() const {
 	}
 	return mid;
 }
+
+void segment::set_begin_point(sf::Vector2f v) {
+	begin = v;
+}
+
+void segment::set_end_point(sf::Vector2f v) {
+	end = v;
+}
+
+void segment::set_origin(station * stn) {
+	orig = stn;
+}
+
+void segment::set_destination(station * stn) {
+	dest = stn;
+}
+
+sf::Vector2f segment::get_begin_point() {
+	return begin;
+}
+
+sf::Vector2f segment::get_end_point() {
+	return end;
+}
+
+station * segment::get_origin() {
+	return orig;
+}
+
+station * segment::get_destination() {
+	return dest;
+}

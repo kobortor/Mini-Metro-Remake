@@ -10,8 +10,8 @@ train::train(metro_line * _home_line, station *_cur_stn) :
 	//by default start at beginning
 	status = LOADING;
 
-	cur_track.begin = cur_stn->get_pos();
-	cur_track.end = cur_stn->get_pos();
+	cur_track.set_begin_point(cur_stn->get_pos());
+	cur_track.set_end_point(cur_stn->get_pos());
 
 	posX = cur_stn->get_pos().x;
 	posY = cur_stn->get_pos().y;
@@ -23,7 +23,7 @@ train::train(metro_line * _home_line, station *_cur_stn) :
 }
 
 train::train(metro_line * _home_line, segment track) :
-	home_line(_home_line), cur_track(track), cur_stn(track.dest), prv_stn(track.orig) {
+	home_line(_home_line), cur_track(track), cur_stn(track.get_destination()), prv_stn(track.get_origin()) {
 	//by default start at beginning
 	status = TOWARDS_MID;
 	delay_for = 500;
@@ -100,14 +100,14 @@ void train::resize() {
 	cur_track.resize();
 
 	if (status == TOWARDS_MID) {
-		sf::Vector2f &begin = cur_track.begin;
+		sf::Vector2f &begin = cur_track.get_begin_point();
 		sf::Vector2f mid = cur_track.calc_mid();
 		sf::Vector2f diff = begin + (mid - begin) * amnt_done;
 		posX = diff.x;
 		posY = diff.y;
 	} else if (status == TOWARDS_END) {
 		sf::Vector2f mid = cur_track.calc_mid();
-		sf::Vector2f &end = cur_track.end;
+		sf::Vector2f &end = cur_track.get_end_point();
 		sf::Vector2f diff = mid + (end - mid) * amnt_done;
 		posX = diff.x;
 		posY = diff.y;
@@ -123,9 +123,9 @@ void train::update(long long delta) {
 		mark_for_death();
 	}
 
-	sf::Vector2f &begin = cur_track.begin;
+	sf::Vector2f begin = cur_track.get_begin_point();
 	sf::Vector2f mid = cur_track.calc_mid();
-	sf::Vector2f &end = cur_track.end;
+	sf::Vector2f end = cur_track.get_end_point();
 
 	if (status == TOWARDS_MID && begin == mid) {
 		status = TOWARDS_END;
@@ -332,14 +332,14 @@ void train::seek() {
 		status = DEAD;
 	} else {
 		cur_track = home_line->get_next_path(cur_stn, prv_stn);
-		if (cur_track.orig == nullptr) {
+		if (cur_track.get_origin() == nullptr) {
 			status = DEAD;
 		} else {
-			if (cur_track.orig != cur_stn) {
+			if (cur_track.get_origin() != cur_stn) {
 				printf("THIS IS NOT SUPPOSED TO HAPPEN!\n");
 			}
-			cur_stn = cur_track.dest;
-			prv_stn = cur_track.orig;
+			cur_stn = cur_track.get_destination();
+			prv_stn = cur_track.get_origin();
 			status = TOWARDS_MID;
 		}
 	}

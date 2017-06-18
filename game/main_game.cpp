@@ -218,13 +218,13 @@ void main_game::set_edit_line(metro_line *line, main_game::CLICK_MODE_TYPE mode)
 	//act as if it was beginning even if mode is editing from the front.
 	//if it is from the front, just reverse it when actually adding the stations
 	if (mode == LINE_EDIT_FRONT) {
-		edit_seg.begin = edit_line->stations.front()->get_pos();
-		edit_seg.end = edit_line->stations.front()->get_pos();
-		edit_seg.orig = edit_line->stations.front();
+		edit_seg.set_begin_point(edit_line->stations.front()->get_pos());
+		edit_seg.set_end_point(edit_line->stations.front()->get_pos());
+		edit_seg.set_origin(edit_line->stations.front());
 	} else if (mode == LINE_EDIT_BACK) {
-		edit_seg.begin = edit_line->stations.back()->get_pos();
-		edit_seg.end = edit_line->stations.back()->get_pos();
-		edit_seg.orig = edit_line->stations.back();
+		edit_seg.set_begin_point(edit_line->stations.back()->get_pos());
+		edit_seg.set_end_point(edit_line->stations.back()->get_pos());
+		edit_seg.set_origin(edit_line->stations.back());
 	}
 }
 
@@ -252,13 +252,13 @@ void main_game::handle_mouse_click(sf::Event::MouseButtonEvent eve) {
 		for (metro_line &ml : lines) {
 			if (ml.front_handle.contained(eve.x, eve.y)) {
 				set_edit_line(&ml, LINE_EDIT_FRONT);
-				edit_seg.end = sf::Vector2f(eve.x, eve.y);
+				edit_seg.set_end_point(sf::Vector2f(eve.x, eve.y));
 				edit_seg.adjust_dir();
 				break;
 			}
 			if (ml.back_handle.contained(eve.x, eve.y)) {
 				set_edit_line(&ml, LINE_EDIT_BACK);
-				edit_seg.end = sf::Vector2f(eve.x, eve.y);
+				edit_seg.set_end_point(sf::Vector2f(eve.x, eve.y));
 				edit_seg.adjust_dir();
 				break;
 			}
@@ -286,8 +286,7 @@ void main_game::handle_mouse_move(sf::Event::MouseMoveEvent eve) {
 
 	if (mouse_button_pressed[sf::Mouse::Left]) {
 		if (CLICK_MODE == LINE_EDIT_FRONT || CLICK_MODE == LINE_EDIT_BACK) {
-			edit_seg.end.x = eve.x;
-			edit_seg.end.y = eve.y;
+			edit_seg.set_end_point(sf::Vector2f(eve.x, eve.y));
 
 			edit_seg.adjust_dir();
 
@@ -302,8 +301,8 @@ void main_game::handle_mouse_move(sf::Event::MouseMoveEvent eve) {
 			if (hover != nullptr) {
 				//not added before
 				if (std::find(edit_line->stations.begin(), edit_line->stations.end(), hover) == edit_line->stations.end()) {
-					edit_seg.end = hover->get_pos();
-					edit_seg.dest = hover;
+					edit_seg.set_end_point(hover->get_pos());
+					edit_seg.set_destination(hover);
 					edit_seg.set_parent_line(edit_line);
 
 					if (CLICK_MODE == LINE_EDIT_BACK) {
@@ -317,36 +316,36 @@ void main_game::handle_mouse_move(sf::Event::MouseMoveEvent eve) {
 					}
 
 					edit_seg = segment();
-					edit_seg.orig = hover;
-					edit_seg.begin = hover->get_pos();
-					edit_seg.end = sf::Vector2f(eve.x, eve.y);
+					edit_seg.set_origin(hover);
+					edit_seg.set_begin_point(hover->get_pos());
+					edit_seg.set_end_point(sf::Vector2f(eve.x, eve.y));
 
 					edit_seg.adjust_dir();
 				} else if (edit_line->stations.size() >= 2) {
 					if (CLICK_MODE == LINE_EDIT_BACK) {
 						if (hover == edit_line->stations.back()) {
 							edit_line->stations.back()->rearrange_handles();
-							graph::erase_link(edit_line->segments.back().orig, edit_line->segments.back().dest);
+							graph::erase_link(edit_line->segments.back().get_origin(), edit_line->segments.back().get_destination());
 							edit_line->segments.pop_back();
 							edit_line->stations.pop_back();
 
 							edit_seg = segment();
-							edit_seg.orig = edit_line->stations.back();
-							edit_seg.begin = edit_line->stations.back()->get_pos();
-							edit_seg.end = sf::Vector2f(eve.x, eve.y);
+							edit_seg.set_origin(edit_line->stations.back());
+							edit_seg.set_begin_point(edit_line->stations.back()->get_pos());
+							edit_seg.set_end_point(sf::Vector2f(eve.x, eve.y));
 							edit_seg.adjust_dir();
 						}
 					} else if (CLICK_MODE == LINE_EDIT_FRONT) {
 						if (hover == edit_line->stations.front()) {
 							edit_line->stations.front()->rearrange_handles();
-							graph::erase_link(edit_line->segments.front().orig, edit_line->segments.front().dest);
+							graph::erase_link(edit_line->segments.front().get_origin(), edit_line->segments.front().get_destination());
 							edit_line->segments.pop_front();
 							edit_line->stations.pop_front();
 
 							edit_seg = segment();
-							edit_seg.orig = edit_line->stations.front();
-							edit_seg.begin = edit_line->stations.front()->get_pos();
-							edit_seg.end = sf::Vector2f(eve.x, eve.y);
+							edit_seg.set_origin(edit_line->stations.front());
+							edit_seg.set_begin_point(edit_line->stations.front()->get_pos());
+							edit_seg.set_end_point(sf::Vector2f(eve.x, eve.y));
 
 							edit_seg.adjust_dir();
 						}

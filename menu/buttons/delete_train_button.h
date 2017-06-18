@@ -3,7 +3,10 @@
 
 class delete_train_button : public rel_button {
 public:
+	//Same constructor as rel_button
 	delete_train_button(float _rel_wid, float _rel_ht);
+
+	//Same constructor as rel_button
 	delete_train_button(float _relX, float _relY, float _rel_wid, float _rel_ht);
 
 	//Draws the object onto the render target

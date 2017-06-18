@@ -6,6 +6,8 @@
 
 class scrollable_menu_H : public sf::Drawable, public clickable {
 public:
+	//_y1 is the top y coordinate of the menu, _y2 is the bottom y coordinate
+	//The menu is infinite in the x direction
 	scrollable_menu_H(int _y1, int _y2);
 
 	//Draws the object onto the render target

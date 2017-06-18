@@ -11,7 +11,11 @@ public:
 	//Render state is never used, advanced shaders are out of the scope of this program
 	//This is a library function
 	void draw(sf::RenderTarget&, sf::RenderStates) const override;
+
+	//Overridden function
 	void on_click(int prevX, int prevY, int curX, int curY, bool isInitial) override;
+
+	//Overridden function
 	void on_release(int prevX, int prevY, int curX, int curY) override;
 protected:
 	std::string display_name;
