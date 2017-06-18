@@ -27,8 +27,8 @@ const std::string segment::direction_names[] = {
 
 const float segment::hover_ratio = 2.5;
 
-segment::segment():parent(nullptr) {}
-segment::segment(metro_line *_parent) :parent(_parent) {}
+segment::segment():parent_line(nullptr) {}
+segment::segment(metro_line *_parent) : parent_line(_parent) {}
 
 void segment::adjust_dir() {
 	if (begin != end) {
@@ -51,7 +51,7 @@ void segment::adjust_dir() {
 void segment::draw(sf::RenderTarget& targ, sf::RenderStates) const {
 	if (begin != end) {
 		sf::Vector2f mid = calc_mid();
-		sf::Color col = parent ? parent->get_color() : sf::Color::Black;
+		sf::Color col = parent_line ? parent_line->get_color() : sf::Color::Black;
 		float wid = screen_size();
 		if (highlighted) {
 			wid *= hover_ratio;
@@ -69,6 +69,15 @@ void segment::resize() {
 float segment::screen_size() {
 	return main_game::get_unit_length() * 0.25;
 }
+
+void segment::set_parent_line(metro_line * ml) {
+	parent_line = ml;
+}
+
+metro_line * segment::get_parent_line() {
+	return parent_line;
+}
+
 
 segment segment::get_reverse() const {
 	segment retv = *this;

@@ -39,6 +39,7 @@ public:
 	segment();
 	segment(metro_line *_parent);
 
+	//Adjusts the direction the the segment based on changes to the end coordinate
 	void adjust_dir();
 
 	//Draws the object onto the render target
@@ -48,9 +49,13 @@ public:
 
 	//Resizes this object to the new screen size
 	void resize();
+
 	static float screen_size();
 
-	metro_line* parent;
+	void set_parent_line(metro_line *ml);
+
+	metro_line* get_parent_line();
+
 	segment get_reverse() const;
 	sf::Vector2f calc_mid() const;
 
@@ -73,4 +78,5 @@ public:
 
 	const static float hover_ratio;
 private:
+	metro_line* parent_line;
 };

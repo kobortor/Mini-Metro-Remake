@@ -11,8 +11,12 @@ public:
 	//This is a library function
 	void draw(sf::RenderTarget&, sf::RenderStates) const override;
 
+	//Overridden function
 	void on_click(int prevX, int prevY, int curX, int curY, bool initClick) override;
+
+	//Overridden function
 	void on_release(int prevX, int prevY, int curX, int curY) override;
 
+	//Returns the radius in which this function is still effective in pixel
 	static float select_range();
 };

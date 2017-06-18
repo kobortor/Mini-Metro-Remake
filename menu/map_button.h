@@ -4,6 +4,7 @@
 
 class map_button : public button {
 public:
+	//x position, y position, width, height, the string to be displayed to the user, the location of the map data file
 	map_button(int _x, int _y, int _wid, int _ht, std::string _display_name, std::string _map_file_name);
 
 	//Draws the object onto the render target

@@ -304,7 +304,7 @@ void main_game::handle_mouse_move(sf::Event::MouseMoveEvent eve) {
 				if (std::find(edit_line->stations.begin(), edit_line->stations.end(), hover) == edit_line->stations.end()) {
 					edit_seg.end = hover->get_pos();
 					edit_seg.dest = hover;
-					edit_seg.parent = edit_line;
+					edit_seg.set_parent_line(edit_line);
 
 					if (CLICK_MODE == LINE_EDIT_BACK) {
 						graph::add_link(edit_line->stations.back(), hover);

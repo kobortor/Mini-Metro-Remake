@@ -12,8 +12,14 @@ public:
 	//Render state is never used, advanced shaders are out of the scope of this program
 	//This is a library function
 	void draw(sf::RenderTarget&, sf::RenderStates) const override;
-	bool contained(int x, int y);
+
+	//Overridden function
+	bool contained(int x, int y) override;
+
+	//Overridden function
 	void on_click(int prevX, int prevY, int curX, int curY, bool initClick) override;
+
+	//Overridden function
 	void on_release(int prevX, int prevY, int curX, int curY) override;
 
 	//recalculates the size of the object depending on the size of the new window
