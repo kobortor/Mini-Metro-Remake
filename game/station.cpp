@@ -138,7 +138,13 @@ void station::add_passenger(passenger *pass) {
 }
 
 void station::load(train *t) {
-	//make this smarter in the future so people will transfer stations
+	if (t->is_marked_for_death()) {
+		for (passenger *pass : t->passengers) {
+			add_passenger(pass);
+		}
+		t->passengers.clear();
+		return;
+	}
 
 	auto iter = t->passengers.begin();
 	while (iter != t->passengers.end()) {

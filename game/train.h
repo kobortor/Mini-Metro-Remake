@@ -30,6 +30,8 @@ public:
 
 	void mark_for_death();
 
+	bool is_marked_for_death();
+
 	bool highlighted = false;
 protected:
 	friend class station;

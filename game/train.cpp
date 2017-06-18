@@ -115,6 +115,10 @@ void train::update(long long delta) {
 		return;
 	}
 
+	if (!marked_for_death && func::find_iter(main_game::lines.begin(), main_game::lines.end(), home_line) == main_game::lines.end()) {
+		mark_for_death();
+	}
+
 	sf::Vector2f &begin = cur_track.begin;
 	sf::Vector2f mid = cur_track.calc_mid();
 	sf::Vector2f &end = cur_track.end;
@@ -230,6 +234,10 @@ float train::get_speed() {
 
 void train::mark_for_death() {
 	marked_for_death = true;
+}
+
+bool train::is_marked_for_death() {
+	return marked_for_death;
 }
 
 void train::reorg_passengers() {
