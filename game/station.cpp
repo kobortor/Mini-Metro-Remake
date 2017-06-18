@@ -155,56 +155,12 @@ void station::add_passenger(passenger *pass) {
 
 void station::load(train *t) {
 	if (t->is_marked_for_death()) {
-		for (passenger *pass : t->passengers) {
-			add_passenger(pass);
-		}
-		t->passengers.clear();
 		return;
 	}
 
-	auto iter = t->passengers.begin();
-	while (iter != t->passengers.end()) {
-		if (type == (*iter)->get_type()) {
-			printf("Unload passenger because same type\n");
-			auto tmp = iter;
-			iter++;
-			t->passengers.erase(tmp);
-		} else {
-			std::list<station*> other_stn;
-			std::list<station*> destinations;
-			for (station &stn : main_game::stations) {
-				if (stn.type == (*iter)->get_type()) {
-					destinations.push_back(&stn);
-				}
-			}
-
-			for (station *stn : t->home_line->stations) {
-				if (stn != this) {
-					other_stn.push_back(stn);
-				}
-			}
-
-			//inefficient, might optimize later
-			int other_dist = graph::shortest_dist(other_stn, destinations);
-			int this_dist = graph::shortest_dist(std::list<station*>{this}, destinations);
-
-
-			if (this_dist == -1 || this_dist <= other_dist) {
-				printf("Unload passenger because they cannot benefit from riding further\n");
-				auto tmp = iter;
-				iter++;
-				add_passenger(*tmp);
-				t->passengers.erase(tmp);
-			} else {
-				iter++;
-			}
-		}
-	}
-
-	iter = passengers.begin();
+	auto iter = passengers.begin();
 	while(iter != passengers.end()) {
-		//lets hope it doesnt go negative
-		if (t->space_left() <= 0) {
+		if (t->num_passengers() >= game_variables::get_train_capacity()) {
 			break;
 		}
 
@@ -216,7 +172,7 @@ void station::load(train *t) {
 			}
 		}
 
-		for (station *stn : t->home_line->stations) {
+		for (station *stn : t->get_home_line()->stations) {
 			if (stn != this) {
 				other_stn.push_back(stn);
 			}
@@ -225,6 +181,8 @@ void station::load(train *t) {
 		//inefficient, might optimize later
 		int other_dist = graph::shortest_dist(other_stn, destinations);
 		int this_dist = graph::shortest_dist(std::list<station*>{this}, destinations);
+
+		printf("%i %i\n", other_dist, this_dist);
 
 		if (this_dist != -1 && other_dist < this_dist) {
 			auto tmp = iter;
@@ -238,7 +196,6 @@ void station::load(train *t) {
 	}
 
 	reorg_passengers();
-	t->reorg_passengers();
 }
 
 void station::update(long long delta) {

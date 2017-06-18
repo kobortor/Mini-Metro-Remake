@@ -1,6 +1,8 @@
 #include"train.h"
 #include"../functions.h"
+#include"game_variables.h"
 #include"main_game.h"
+#include"graph.h"
 #include<iostream>
 
 train::train(metro_line * _home_line, station *_cur_stn) :
@@ -11,8 +13,8 @@ train::train(metro_line * _home_line, station *_cur_stn) :
 	cur_track.begin = cur_stn->get_pos();
 	cur_track.end = cur_stn->get_pos();
 
-	posX = cur_stn->posX;
-	posY = cur_stn->posY;
+	posX = cur_stn->get_pos().x;
+	posY = cur_stn->get_pos().y;
 
 	prvX = posX;
 	prvY = posY;
@@ -26,8 +28,8 @@ train::train(metro_line * _home_line, segment track) :
 	status = TOWARDS_MID;
 	delay_for = 500;
 
-	posX = prv_stn->posX;
-	posY = prv_stn->posY;
+	posX = prv_stn->get_pos().x;
+	posY = prv_stn->get_pos().y;
 
 	prvX = posX;
 	prvY = posY;
@@ -194,6 +196,7 @@ void train::update(long long delta) {
 			status = LOADING;
 		}
 	} else if (status == LOADING) {
+		unload(cur_stn);
 		cur_stn->load(this);
 		if (marked_for_death) {
 			status = DEAD;
@@ -213,13 +216,59 @@ void train::update(long long delta) {
 	reorg_passengers();
 }
 
-int train::space_left() {
-	return 6 - passengers.size();
-}
-
 void train::add_passenger(passenger *pass) {
 	pass->MODE = passenger::TRAIN;
 	passengers.push_back(pass);
+	reorg_passengers();
+}
+
+void train::unload(station * stn) {
+	if (marked_for_death) {
+		for (passenger *pass : passengers) {
+			stn->add_passenger(pass);
+		}
+		passengers.clear();
+		return;
+	}
+
+	auto iter = passengers.begin();
+	while (iter != passengers.end()) {
+		if ((*iter)->get_type() == stn->get_type()) {
+			printf("Unload passenger because same type\n");
+			auto tmp = iter;
+			iter++;
+			passengers.erase(tmp);
+		} else {
+			std::list<station*> other_stn;
+			std::list<station*> destinations;
+			for (station &st : main_game::stations) {
+				if (st.get_type() == (*iter)->get_type()) {
+					destinations.push_back(&st);
+				}
+			}
+
+			for (station *st : home_line->stations) {
+				if (st != stn) {
+					other_stn.push_back(stn);
+				}
+			}
+
+			//inefficient, might optimize later
+			int other_dist = graph::shortest_dist(other_stn, destinations);
+			int this_dist = graph::shortest_dist(std::list<station*>{stn}, destinations);
+
+			if (this_dist == -1 || this_dist <= other_dist) {
+				printf("Unload passenger because they cannot benefit from riding further\n");
+				auto tmp = iter;
+				iter++;
+				stn->add_passenger(*tmp);
+				passengers.erase(tmp);
+			} else {
+				iter++;
+			}
+		}
+	}
+
 	reorg_passengers();
 }
 
@@ -227,11 +276,19 @@ float train::screen_size() {
 	return main_game::get_unit_length() * 0.5;
 }
 
+int train::num_passengers() {
+	return passengers.size();
+}
+
 float train::get_speed() {
 	//aim for something around 1 relative unit per 0.2 seconds
 	//=5 units / second
 	//=0.005 units per millisecond
 	return 0.005f * main_game::get_unit_length();
+}
+
+metro_line* train::get_home_line() {
+	return home_line;
 }
 
 void train::mark_for_death() {

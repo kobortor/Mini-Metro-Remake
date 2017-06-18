@@ -22,6 +22,14 @@ file_map_generator::file_map_generator(std::string file_name) {
 		}
 	}
 
+	//setting default values
+	rel_bounds = { 1, 1 };
+	rel_unit = 0.2;
+	game_variables::MAX_PASSENGERS = 6;
+	game_variables::OVERFLOW_LIMIT = 15000;
+	game_variables::OVERFLOW_RECOVERY_RATE = 0.5;
+	game_variables::TRAIN_CAPACITY = 6;
+
 	auto iter = input.begin();
 	while (iter != input.end()) {
 		str = *iter++;
@@ -52,6 +60,8 @@ file_map_generator::file_map_generator(std::string file_name) {
 			game_variables::OVERFLOW_LIMIT = stof(value);
 		} else if (attrib == "OVERFLOW RECOVERY RATE") {
 			game_variables::OVERFLOW_RECOVERY_RATE = stof(value);
+		} else if (attrib == "TRAIN CAPACITY") {
+			game_variables::TRAIN_CAPACITY = stof(value);
 		}
 	}
 

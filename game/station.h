@@ -25,7 +25,6 @@ public:
 
 	static float screen_size();
 protected:
-	friend class train;
 	float overflow_amnt = 0;
 	void reorg_passengers();
 

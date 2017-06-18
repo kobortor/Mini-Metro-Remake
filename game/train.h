@@ -19,14 +19,18 @@ public:
 	//milliseconds of change
 	void update(long long delta);
 
-	int space_left();
-
 	void add_passenger(passenger*);
+
+	void unload(station *stn);
 
 	static float screen_size();
 
+	int num_passengers();
+
 	//returns the distance travelled by the train in relative units per millisecond
 	static float get_speed();
+
+	metro_line* get_home_line();
 
 	void mark_for_death();
 
@@ -34,8 +38,6 @@ public:
 
 	bool highlighted = false;
 protected:
-	friend class station;
-
 	void reorg_passengers();
 
 	float posX, posY;

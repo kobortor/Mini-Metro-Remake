@@ -37,17 +37,16 @@ int graph::shortest_dist(std::list<station*> source, std::list<station*> dest) {
 		pq.pop();
 		auto links = adj.find(fr.second);
 
-		if (fr.first > distances[fr.second]) {
+		auto prv_dist = distances.find(fr.second);
+
+		if (prv_dist != distances.end() && fr.first > prv_dist->second) {
 			continue;
 		}
 
 		if (links != adj.end()) {
 			for (station *stn : links->second) {
 				auto dest = distances.find(stn);
-				if (dest == distances.end()) {
-					distances[stn] = fr.first + 1;
-					pq.push({ fr.first + 1, stn });
-				} else if(distances[stn] > fr.first + 1) {
+				if (dest == distances.end() || distances[stn] > fr.first + 1) {
 					distances[stn] = fr.first + 1;
 					pq.push({ fr.first + 1, stn });
 				}

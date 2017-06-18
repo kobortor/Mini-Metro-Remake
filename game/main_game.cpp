@@ -43,6 +43,7 @@ void main_game::initialize(map_generator* _map_gen) {
 		sf::Color::Yellow
 	};
 
+	CLICK_MODE = NONE;
 	game_start_time = sys::get_millis();
 	last_update = 0;
 	background.setFillColor(sf::Color::White);
