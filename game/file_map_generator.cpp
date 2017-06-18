@@ -1,4 +1,5 @@
 #include"file_map_generator.h"
+#include"game_variables.h"
 #include"main_game.h"
 #include"../functions.h"
 #include<iostream>
@@ -20,7 +21,7 @@ file_map_generator::file_map_generator(std::string file_name) {
 			input.push_back(str);
 		}
 	}
-	
+
 	auto iter = input.begin();
 	while (iter != input.end()) {
 		str = *iter++;
@@ -34,17 +35,23 @@ file_map_generator::file_map_generator(std::string file_name) {
 		}
 
 		std::string attrib = str.substr(0, colon);
-		std::string value = str.substr(colon+1);
+		std::string value = str.substr(colon + 1);
 
 		func::trim(attrib);
 		func::trim(value);
 
 		if (attrib == "WIDTH") {
-			rel_bounds.x = std::stof(value);
+			rel_bounds.x = stof(value);
 		} else if (attrib == "HEIGHT") {
-			rel_bounds.y = std::stof(value);
+			rel_bounds.y = stof(value);
 		} else if (attrib == "RELATIVE UNIT") {
-			rel_unit = std::stof(value);
+			rel_unit = stof(value);
+		} else if (attrib == "MAX PASSENGERS") {
+			game_variables::MAX_PASSENGERS = stof(value);
+		} else if (attrib == "OVERFLOW LIMIT") {
+			game_variables::OVERFLOW_LIMIT = stof(value);
+		} else if (attrib == "OVERFLOW RECOVERY RATE") {
+			game_variables::OVERFLOW_RECOVERY_RATE = stof(value);
 		}
 	}
 
@@ -81,7 +88,7 @@ void file_map_generator::update_until(long long game_tick) {
 		last_passenger = game_tick;
 	} else {
 		while (game_tick - last_passenger > 450) {
-			
+
 			//cheap way to cycle through
 			station::STATION_TYPE type[] = { station::TRIANGLE, station::SQUARE, station::CIRCLE };
 

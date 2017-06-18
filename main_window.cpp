@@ -31,6 +31,9 @@ void main_window::handle_mouse_click(sf::Event::MouseButtonEvent eve) {
 		}
 	} else if (RENDER_MODE == IN_GAME) {
 		main_game::handle_mouse_click(eve);
+	} else if (RENDER_MODE == GAME_OVER) {
+		main_game::cleanup();
+		RENDER_MODE = MAIN_MENU;
 	}
 }
 void main_window::handle_mouse_move(sf::Event::MouseMoveEvent eve) {
@@ -75,13 +78,15 @@ void main_window::handle_resize(sf::Event::SizeEvent eve) {
 	} else if (RENDER_MODE == IN_GAME) {
 		main_game::resize();
 	}
-
 }
 
 void main_window::render() {
 	sf::Text txt;
 	txt.setFont(font::consola);
 	txt.setString(std::to_string(sys::get_millis()));
+	if (RENDER_MODE == GAME_OVER) {
+		return;
+	}
 	instance.clear();
 	if (RENDER_MODE == MAIN_MENU) {
 		txt.setString(std::to_string(sys::get_millis()));
@@ -90,6 +95,17 @@ void main_window::render() {
 	} else if (main_window::RENDER_MODE == main_window::IN_GAME) {
 		main_game::update();
 		main_game::render();
+		if (main_game::is_game_over()) {
+			RENDER_MODE = GAME_OVER;
+			sf::Text txt;
+			txt.setFont(font::consola);
+			txt.setCharacterSize(instance.getSize().y / 8);
+			txt.setFillColor(sf::Color::Black);
+			txt.setString("GAME OVER!\n");
+			float wid = txt.getLocalBounds().width;
+			txt.setPosition(instance.getSize().x / 2 - wid / 2, main_game::get_window_bounds().top + instance.getSize().y / 16);
+			instance.draw(txt);
+		}
 	}
 	instance.display();
 }

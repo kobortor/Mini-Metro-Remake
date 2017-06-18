@@ -85,6 +85,29 @@ namespace func {
 		targ.draw(verts.data(), verts.size(), sf::TrianglesStrip);
 	}
 
+	void draw_semi_circle(sf::Vector2f center, float radius, float begin_ang, float end_ang, int num_points, sf::Color col, sf::RenderTarget & targ) {
+		if (num_points <= 1) {
+			return;
+		}
+
+		if (end_ang - begin_ang >= 2 * 3.141592) {
+			end_ang = begin_ang + 2 * 3.141592;
+		}
+
+		std::vector<sf::Vertex> verts;
+		verts.reserve(1 + num_points);
+
+		float delta_ang = (end_ang - begin_ang) / (num_points - 1);
+		verts.push_back(center);
+		for (int a = 0; a < num_points; a++, begin_ang += delta_ang) {
+			verts.push_back(center + sf::Vector2f(radius * sin(begin_ang), radius * -cos(begin_ang)));
+		}
+		for (sf::Vertex &v : verts) {
+			v.color = col;
+		}
+		targ.draw(verts.data(), 1 + num_points, sf::TriangleFan);
+	}
+
 	float dist_to_line(sf::Vector2f begin, sf::Vector2f end, sf::Vector2f point) {
 		float ans = hypotf(point - begin);
 		ans = std::min(ans, hypotf(point - end));

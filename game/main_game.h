@@ -23,6 +23,7 @@ public:
 	static void cleanup();
 
 	static void set_edit_line(metro_line* line, CLICK_MODE_TYPE mode);
+	static bool is_game_over();
 
 	static float get_station_mouse_limit();
 

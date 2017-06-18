@@ -117,6 +117,9 @@ void main_game::update() {
 	for (train &t : trains) {
 		t.update(delta);
 	}
+	for (station &stn : stations) {
+		stn.update(delta);
+	}
 	auto iter = trains.begin();
 	while (iter != trains.end()) {
 		if (iter->is_dead()) {
@@ -128,6 +131,16 @@ void main_game::update() {
 		}
 	}
 }
+
+bool main_game::is_game_over() {
+	for (station &stn : stations) {
+		if (stn.is_game_over()) {
+			return true;
+		}
+	}
+	return false;
+}
+
 sf::Vector2f main_game::get_relative_bounds() {
 	return map_gen->get_relative_bounds();
 }

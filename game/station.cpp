@@ -5,6 +5,7 @@
 #include<bitset>
 #include"graph.h"
 #include"../functions.h"
+#include"game_variables.h"
 
 station::station(float _relX, float _relY, STATION_TYPE _type) :relX(_relX), relY(_relY), type(_type) {
 	resize();
@@ -116,7 +117,22 @@ void station::draw(sf::RenderTarget& targ, sf::RenderStates) const {
 
 	circ.setPosition(posX - inner_radius, posY - inner_radius);
 	circ.setRadius(inner_radius);
-	circ.setFillColor(sf::Color::White);
+
+	sf::Color col = sf::Color::White;
+	if (overflow_amnt > 0) {
+		float warn_radius = screen_size() * 2;
+
+		float amnt = overflow_amnt / game_variables::get_overflow_limit();
+		int sub = std::min(255, int(amnt * 255));
+		col.g -= sub;
+		col.b -= sub;
+
+		sf::Color col = sf::Color::Black;
+		col.a = 32 + sub / 4;
+		func::draw_semi_circle(sf::Vector2f(posX, posY), warn_radius, 0, 3.141592 * 2 * amnt, 60, col, targ);
+	}
+
+	circ.setFillColor(col);
 	targ.draw(circ);
 
 	for (const passenger *pass : passengers) {
@@ -225,8 +241,23 @@ void station::load(train *t) {
 	t->reorg_passengers();
 }
 
+void station::update(long long delta) {
+	if (passengers.size() >= game_variables::get_max_passengers()) {
+		overflow_amnt += delta;
+	} else {
+		overflow_amnt -= delta * game_variables::get_overflow_recovery_rate();
+		if (overflow_amnt < 0) {
+			overflow_amnt = 0;
+		}
+	}
+}
+
 sf::Vector2f station::get_pos() {
 	return sf::Vector2f(posX, posY);
+}
+
+bool station::is_game_over() {
+	return overflow_amnt >= game_variables::get_overflow_limit();
 }
 
 float station::screen_size() {

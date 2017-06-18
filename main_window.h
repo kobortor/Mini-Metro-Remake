@@ -11,8 +11,7 @@ public:
 	enum {
 		MAIN_MENU,
 		IN_GAME,
-		PAUSE_MENU,
-		OPTION_MENU
+		GAME_OVER
 	} static RENDER_MODE;
 
 	static void handle_mouse_click(sf::Event::MouseButtonEvent eve);

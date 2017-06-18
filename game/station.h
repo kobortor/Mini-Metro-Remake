@@ -18,12 +18,15 @@ public:
 	bool contained(int x, int y);
 	void add_passenger(passenger * pass);
 	void load(train *t);
+	void update(long long delta);
 	STATION_TYPE get_type();
 	sf::Vector2f get_pos();
+	bool is_game_over();
 
 	static float screen_size();
 protected:
 	friend class train;
+	float overflow_amnt = 0;
 	void reorg_passengers();
 
 	std::list<passenger*> passengers;
