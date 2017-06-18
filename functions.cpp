@@ -59,6 +59,32 @@ namespace func {
 		targ.draw(vert, 4, sf::TriangleFan);
 	}
 
+	void draw_ring(sf::Vector2f center, float inner_radius, float outer_radius, int num_points, sf::Color col, sf::RenderTarget & targ) {
+		std::vector<sf::Vertex> verts;
+		verts.reserve(2 * num_points + 2);
+
+		verts.push_back(sf::Vector2f(0, inner_radius));
+		verts.push_back(sf::Vector2f(0, outer_radius));
+
+		float delta_angle = 3.141592f * 2 / num_points;
+
+		for (int a = 1; a < num_points; a++) {
+			sf::Vector2f vec(sin(delta_angle * a), cos(delta_angle * a));
+			verts.push_back(vec * inner_radius);
+			verts.push_back(vec * outer_radius);
+		}
+
+		verts.push_back(sf::Vector2f(0, inner_radius));
+		verts.push_back(sf::Vector2f(0, outer_radius));
+
+		for (sf::Vertex &v : verts) {
+			v.color = col;
+			v.position += center;
+		}
+
+		targ.draw(verts.data(), verts.size(), sf::TrianglesStrip);
+	}
+
 	float dist_to_line(sf::Vector2f begin, sf::Vector2f end, sf::Vector2f point) {
 		float ans = hypotf(point - begin);
 		ans = std::min(ans, hypotf(point - end));

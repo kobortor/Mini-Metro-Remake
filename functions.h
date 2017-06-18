@@ -28,5 +28,7 @@ namespace func {
 
 	void draw_thick_line(sf::Vector2f begin, sf::Vector2f end, float wid, sf::Color col, sf::RenderTarget &targ);
 
+	void draw_ring(sf::Vector2f center, float inner_radius, float outer_radius, int num_points, sf::Color col, sf::RenderTarget& targ);
+
 	float dist_to_line(sf::Vector2f begin, sf::Vector2f end, sf::Vector2f point);
 }

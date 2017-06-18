@@ -155,13 +155,17 @@ void main_game::render() {
 
 	if (CLICK_MODE == PLACE_TRAIN) {
 		sf::RectangleShape rect;
-		float ybnd = window_bounds.height;
-		float radius = 0.025;
-		rect.setPosition(prvX - radius * ybnd, prvY - radius * ybnd);
+		float radius = get_unit_length() * 0.375;
+		rect.setPosition(prvX - radius, prvY - radius);
 		//intentionally both height to make square
-		rect.setSize(sf::Vector2f(2 * radius * window_bounds.height, 2 * radius * window_bounds.height));
+		rect.setSize(sf::Vector2f(2 * radius, 2 * radius));
 		rect.setTexture(&textures::train_cursor);
 		main_window::get_instance().draw(rect);
+	}
+
+	if (CLICK_MODE == DELETE_TRAIN) {
+		float radius = delete_train_button::select_range();
+		func::draw_ring(sf::Vector2f(prvX, prvY), radius, radius * 1.1, 30, sf::Color::Red, main_window::get_instance());
 	}
 }
 void main_game::cleanup() {
