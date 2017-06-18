@@ -21,9 +21,9 @@ segment* main_game::selected_seg;
 time_t main_game::last_update;
 std::list<sf::Color> main_game::avail_colors;
 train_button* main_game::train_btn;
-int main_game::trains_left;
 delete_train_button* main_game::del_train_btn;
 float main_game::unit_length;
+const int main_game::MAX_TRAINS = 10;
 
 main_game::CLICK_MODE_TYPE main_game::CLICK_MODE;
 
@@ -47,8 +47,6 @@ void main_game::initialize(map_generator* _map_gen) {
 	last_update = 0;
 	background.setFillColor(sf::Color(50, 50, 50));
 	map_gen = _map_gen;
-	
-	trains_left = 5;
 
 	auto rel_bound = get_relative_bounds();
 
@@ -124,7 +122,6 @@ void main_game::update() {
 		if (iter->is_dead()) {
 			auto tmp = iter;
 			iter++;
-			trains_left++;
 			trains.erase(tmp);
 		} else {
 			iter++;
@@ -237,8 +234,11 @@ void main_game::handle_mouse_click(sf::Event::MouseButtonEvent eve) {
 		}
 	}
 
-	if (CLICK_MODE == NONE || CLICK_MODE == PLACE_TRAIN) {
+	if (CLICK_MODE == NONE) {
 		train_btn->try_click(eve.x, eve.y, true);
+	}
+	if (CLICK_MODE == NONE) {
+		del_train_btn->try_click(eve.x, eve.y, true);
 	}
 
 	mouse_button_pressed[eve.button] = true;
@@ -344,6 +344,9 @@ void main_game::handle_mouse_move(sf::Event::MouseMoveEvent eve) {
 			}
 		}
 	}
+	if (CLICK_MODE == DELETE_TRAIN) {
+		del_train_btn->try_click(eve.x, eve.y, false);
+	}
 
 	prvX = eve.x;
 	prvY = eve.y;
@@ -371,8 +374,11 @@ void main_game::handle_mouse_release(sf::Event::MouseButtonEvent eve) {
 			}
 		}
 		CLICK_MODE = NONE;
-	} else if(CLICK_MODE == NONE || CLICK_MODE == PLACE_TRAIN) {
+	} else if(CLICK_MODE == PLACE_TRAIN) {
 		train_btn->try_release(eve.x, eve.y);
+	} else if (CLICK_MODE == DELETE_TRAIN) {
+		printf("try release\n");
+		del_train_btn->try_release(eve.x, eve.y);
 	}
 
 	mouse_button_pressed[eve.button] = false;

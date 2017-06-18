@@ -9,7 +9,7 @@ class main_game {
 public:
 	main_game() = delete; //singleton
 
-	enum CLICK_MODE_TYPE { NONE, LINE_EDIT_FRONT, LINE_EDIT_BACK, PLACE_TRAIN };
+	enum CLICK_MODE_TYPE { NONE, LINE_EDIT_FRONT, LINE_EDIT_BACK, PLACE_TRAIN, DELETE_TRAIN };
 
 	static void initialize(map_generator* _map_gen);
 	static sf::Vector2f get_relative_bounds();
@@ -49,7 +49,8 @@ public:
 	static std::list<sf::Color> avail_colors;
 	static float unit_length;
 
-	static int trains_left;
+	const static int MAX_TRAINS;
+
 	static metro_line* edit_line;
 	static segment edit_seg;
 	static segment* selected_seg;

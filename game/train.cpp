@@ -49,7 +49,7 @@ bool train::is_dead() {
 }
 
 sf::Vector2f train::get_pos() {
-	return sf::Vector2f();
+	return sf::Vector2f(posX, posY);
 }
 
 void train::resize() {
@@ -138,8 +138,12 @@ void train::update(long long delta) {
 		}
 	} else if (status == LOADING) {
 		cur_stn->load(this);
-		status = STARTING;
-		delay_for = 500;
+		if (marked_for_death) {
+			status = DEAD;
+		} else {
+			status = STARTING;
+			delay_for = 500;
+		}
 	} else if (status == STARTING) {
 		delay_for -= delta;
 		if (delay_for <= 0) {
@@ -171,6 +175,10 @@ float train::get_speed() {
 	//=5 units / second
 	//=0.005 units per millisecond
 	return 0.005f * main_game::get_unit_length();
+}
+
+void train::mark_for_death() {
+	marked_for_death = true;
 }
 
 void train::reorg_passengers() {

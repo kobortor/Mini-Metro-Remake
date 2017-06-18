@@ -21,7 +21,7 @@ void train_button::draw(sf::RenderTarget &targ, sf::RenderStates) const {
 	txt.setCharacterSize(char_size);
 	txt.setFont(font::consola);
 
-	txt.setString(std::to_string(main_game::trains_left));
+	txt.setString(std::to_string(main_game::MAX_TRAINS - main_game::trains.size()));
 	txt.setPosition(x + wid, y - char_size);
 	targ.draw(txt);
 
@@ -30,7 +30,7 @@ void train_button::draw(sf::RenderTarget &targ, sf::RenderStates) const {
 	rect.setTexture(texture);
 	targ.draw(rect);
 
-	if (main_game::trains_left == 0) {
+	if (main_game::MAX_TRAINS == main_game::trains.size()) {
 		func::draw_thick_line(sf::Vector2f(x, y), sf::Vector2f(x + wid, y + ht), 5, sf::Color::Red, targ);
 		func::draw_thick_line(sf::Vector2f(x + wid, y), sf::Vector2f(x, y + ht), 5, sf::Color::Red, targ);
 	}
@@ -40,7 +40,7 @@ void train_button::on_click(int prevX, int prevY, int curX, int curY, bool initC
 	//maybe make it show a highlight so we know its clicked
 	if (initClick) {
 		main_game::selected_seg = nullptr;
-		if (main_game::CLICK_MODE == main_game::NONE && main_game::trains_left != 0) {
+		if (main_game::CLICK_MODE == main_game::NONE && main_game::MAX_TRAINS != main_game::trains.size()) {
 			main_game::CLICK_MODE = main_game::PLACE_TRAIN;
 		}
 	}
@@ -56,7 +56,6 @@ void train_button::on_release(int prevX, int prevY, int curX, int curY) {
 			} else {
 				main_game::trains.emplace_back(main_game::selected_seg->parent, main_game::selected_seg->get_reverse());
 			}
-			main_game::trains_left--;
 			main_game::selected_seg->highlighted = false;
 		}
 		main_game::selected_seg = nullptr;

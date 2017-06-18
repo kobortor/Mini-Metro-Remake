@@ -27,6 +27,8 @@ public:
 
 	//returns the distance travelled by the train in relative units per millisecond
 	static float get_speed();
+
+	void mark_for_death();
 protected:
 	friend class station;
 
@@ -46,6 +48,7 @@ protected:
 	metro_line *home_line;
 	long long delay_for;
 
+	bool marked_for_death = false;
 	enum TRAIN_STATUS {
 		TOWARDS_MID,
 		TOWARDS_END,
