@@ -326,23 +326,7 @@ void main_game::handle_mouse_move(sf::Event::MouseMoveEvent eve) {
 		}
 	}
 	if (CLICK_MODE == PLACE_TRAIN) {
-		selected_seg = nullptr;
-		for (metro_line &ml : lines) {
-			for (segment &segs : ml.segments) {
-				segs.highlighted = false;
-				if (selected_seg != nullptr) {
-					continue;
-				}
-				sf::Vector2f mid = segs.calc_mid();
-				float dist_to = std::min(func::dist_to_line(segs.begin, mid, sf::Vector2f(prvX, prvY)),
-					func::dist_to_line(mid, segs.end, sf::Vector2f(prvX, prvY)));
-				if (dist_to < 6) {
-					//essentially a break and reset statement
-					selected_seg = &segs;
-					segs.highlighted = true;
-				}
-			}
-		}
+		train_btn->try_click(eve.x, eve.y, false);
 	}
 	if (CLICK_MODE == DELETE_TRAIN) {
 		del_train_btn->try_click(eve.x, eve.y, false);

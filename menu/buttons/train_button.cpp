@@ -40,8 +40,26 @@ void train_button::on_click(int prevX, int prevY, int curX, int curY, bool initC
 	//maybe make it show a highlight so we know its clicked
 	if (initClick) {
 		main_game::selected_seg = nullptr;
-		if (main_game::CLICK_MODE == main_game::NONE && main_game::MAX_TRAINS != main_game::trains.size()) {
+		if (main_game::MAX_TRAINS != main_game::trains.size()) {
 			main_game::CLICK_MODE = main_game::PLACE_TRAIN;
+		}
+	} else {
+		main_game::selected_seg = nullptr;
+		for (metro_line &ml : main_game::lines) {
+			for (segment &segs : ml.segments) {
+				segs.highlighted = false;
+				if (main_game::selected_seg != nullptr) {
+					continue;
+				}
+				sf::Vector2f mid = segs.calc_mid();
+				float dist_to = std::min(func::dist_to_line(segs.begin, mid, sf::Vector2f(curX, curY)),
+					func::dist_to_line(mid, segs.end, sf::Vector2f(curX, curY)));
+				if (dist_to < 6) {
+					//essentially a break and reset statement
+					main_game::selected_seg = &segs;
+					segs.highlighted = true;
+				}
+			}
 		}
 	}
 }
