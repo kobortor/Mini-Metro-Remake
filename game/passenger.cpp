@@ -24,8 +24,9 @@ void passenger::draw(sf::RenderTarget &targ, sf::RenderStates) const {
 		break;
 	}
 
-	sf::CircleShape circ(screen_size() / 2, num_sides);
-	circ.setPosition(posX, posY);
+	float radius = screen_size() / 2;
+	sf::CircleShape circ(radius, num_sides);
+	circ.setPosition(posX - radius, posY - radius);
 
 	if (MODE == STATION) {
 		circ.setFillColor(sf::Color::Red);

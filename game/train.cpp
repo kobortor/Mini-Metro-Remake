@@ -58,24 +58,26 @@ void train::draw(sf::RenderTarget &targ, sf::RenderStates) const {
 			func::draw_thick_line(sf::Vector2f(posX - radius, posY + radius), sf::Vector2f(posX + radius, posY - radius), thickness, pink, targ);
 		}
 
-		if (posX != prvX || posY != prvY) {
-			float arrow_tip = screen_size() * 2;
-			float arrow_near = screen_size();
-			float base_angle = atan2f(posY - prvY, posX - prvX);
-			float arrow_angle = 3.141592 / 6;
-
-			sf::Vector2f dir(posX - prvX, posY - prvY);
-			sf::Vertex vert[3];
-			vert[0] = sf::Vector2f(posX + arrow_near * cos(base_angle - arrow_angle), posY + arrow_near * sin(base_angle - arrow_angle));
-			vert[1] = sf::Vector2f(posX + arrow_tip * cos(base_angle), posY + arrow_tip * sin(base_angle));
-			vert[2] = sf::Vector2f(posX + arrow_near * cos(base_angle + arrow_angle), posY + arrow_near * sin(base_angle + arrow_angle));
-
-			for (int a = 0; a < 3; a++) {
-				vert[a].color = color;
-			}
-
-			targ.draw(vert, 3, sf::Triangles);
+		sf::Vector2f delta(0, -1);
+		if (prvX != posX || prvY != posY) {
+			delta = { posX - prvX, posY - prvY };
 		}
+		float arrow_tip = screen_size() * 2;
+		float arrow_near = screen_size();
+		float base_angle = atan2f(delta.y, delta.x);
+		float arrow_angle = 3.141592 / 6;
+
+		sf::Vector2f dir(posX - prvX, posY - prvY);
+		sf::Vertex vert[3];
+		vert[0] = sf::Vector2f(posX + arrow_near * cos(base_angle - arrow_angle), posY + arrow_near * sin(base_angle - arrow_angle));
+		vert[1] = sf::Vector2f(posX + arrow_tip * cos(base_angle), posY + arrow_tip * sin(base_angle));
+		vert[2] = sf::Vector2f(posX + arrow_near * cos(base_angle + arrow_angle), posY + arrow_near * sin(base_angle + arrow_angle));
+
+		for (int a = 0; a < 3; a++) {
+			vert[a].color = color;
+		}
+
+		targ.draw(vert, 3, sf::Triangles);
 
 		for (passenger *p : passengers) {
 			targ.draw(*p);
@@ -241,30 +243,31 @@ bool train::is_marked_for_death() {
 }
 
 void train::reorg_passengers() {
-	const int PASSENGERS_PER_ROW = 3;
-	const float padding = 0.25;
-
-	//cheap round up
-	int num_rows = (passengers.size() + PASSENGERS_PER_ROW - 1) / PASSENGERS_PER_ROW;
-	auto iter = passengers.begin();
-	float pXpos = posX + screen_size() / 2 - passenger::screen_size() * (1 + padding);
-	float pYpos = posY - num_rows * passenger::screen_size() * (1 + padding);
-
-	int idx = 0;
-	while (iter != passengers.end()) {
-		if (idx >= PASSENGERS_PER_ROW) {
-			pXpos -= (PASSENGERS_PER_ROW - 1) * passenger::screen_size() * (1 + padding);
-			pYpos += passenger::screen_size() * (1 + padding);
-			idx = 0;
-		} else {
-			pXpos += passenger::screen_size() * (1 + padding);
-		}
-		(*iter)->posX = pXpos;
-		(*iter)->posY = pYpos;
-
-		idx++;
-		iter++;
+	sf::Vector2f offset(0, 1);
+	if (posX != prvX || posY != prvY) {
+		//backwards from normal direction
+		offset = -func::normalize(sf::Vector2f(posX - prvX, posY - prvY));
 	}
+	offset = offset * passenger::screen_size();
+	sf::Vector2f perp(-offset.y, offset.x);
+
+	sf::Vector2f curPos = sf::Vector2f(posX, posY) + offset - perp * 0.5f;
+
+	bool left_side = true;
+	for (passenger *pass : passengers) {
+		pass->posX = curPos.x;
+		pass->posY = curPos.y;
+
+		if (left_side) {
+			curPos += perp;
+		} else {
+			curPos -= perp;
+			curPos += offset;
+		}
+
+		left_side ^= 1;
+	}
+
 }
 
 void train::seek() {

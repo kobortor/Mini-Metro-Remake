@@ -80,7 +80,7 @@ void file_map_generator::update_until(long long game_tick) {
 	if (main_game::stations.empty()) {
 		last_passenger = game_tick;
 	} else {
-		while (game_tick - last_passenger > 1500) {
+		while (game_tick - last_passenger > 450) {
 			
 			//cheap way to cycle through
 			station::STATION_TYPE type[] = { station::TRIANGLE, station::SQUARE, station::CIRCLE };
@@ -90,7 +90,7 @@ void file_map_generator::update_until(long long game_tick) {
 			if (iter->get_type() != type[last_passenger / 3 % 3]) {
 				iter->add_passenger(new passenger(type[last_passenger / 3 % 3]));
 			}
-			last_passenger += 1500;
+			last_passenger += 450;
 		}
 	}
 }
