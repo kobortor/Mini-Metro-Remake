@@ -14,7 +14,7 @@ bool main_window::mouse_button_pressed[sf::Mouse::ButtonCount];
 bool main_window::key_pressed[sf::Keyboard::KeyCount];
 
 void main_window::initialize() {
-	instance.create(sf::VideoMode(500, 500), "WTF");
+	instance.create(sf::VideoMode(500, 500), "Mini Metro Remake - ICS4U Project");
 	map_menu.resize();
 	RENDER_MODE = MAIN_MENU;
 }
