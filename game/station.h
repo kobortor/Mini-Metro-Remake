@@ -15,7 +15,7 @@ public:
 
 	//The x position and y position relative to the screen ratios
 	//also the type of the station
-	station(float _relX, float _relY, STATION_TYPE _type);
+	station(float _relX, float _relY, STATION_TYPE _type, sf::Vector2f rel_bounds, sf::IntRect window_bounds);
 
 	//Overridden
 	void resize(sf::Vector2f rel_bounds, sf::IntRect window_bounds) override;

@@ -105,7 +105,7 @@ sf::IntRect main_game::get_window_bounds() {
 }
 
 void main_game::add_station(float _relX, float _relY, station::STATION_TYPE _type) {
-	stations.emplace_back(_relX, _relY, _type);
+	stations.emplace_back(_relX, _relY, _type, get_relative_bounds(), get_window_bounds());
 }
 
 time_t main_game::get_game_time() {

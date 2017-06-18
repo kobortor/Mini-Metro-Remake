@@ -7,8 +7,8 @@
 #include"../functions.h"
 #include"game_variables.h"
 
-station::station(float _relX, float _relY, STATION_TYPE _type) :relX(_relX), relY(_relY), type(_type) {
-	resize(sf::Vector2f(1,1), sf::IntRect(0,0,1,1));
+station::station(float _relX, float _relY, STATION_TYPE _type, sf::Vector2f rel_bounds, sf::IntRect window_bounds) :relX(_relX), relY(_relY), type(_type) {
+	resize(rel_bounds, window_bounds);
 }
 
 void station::resize(sf::Vector2f rel_bounds, sf::IntRect window_bounds) {
