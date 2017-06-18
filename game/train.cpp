@@ -94,9 +94,9 @@ sf::Vector2f train::get_pos() {
 	return sf::Vector2f(posX, posY);
 }
 
-void train::resize() {
+void train::resize(sf::Vector2f rel_bounds, sf::IntRect window_bounds) {
 	//since this is separate from rest of the tracks, we need to do this
-	cur_track.resize();
+	cur_track.resize(rel_bounds, window_bounds);
 
 	if (status == TOWARDS_MID) {
 		sf::Vector2f &begin = cur_track.get_begin_point();

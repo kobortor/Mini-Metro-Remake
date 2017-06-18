@@ -1,11 +1,12 @@
 #pragma once
 #include<SFML\Graphics.hpp>
+#include"../resizable.h"
 #include<list>
 
 class passenger;
 class train;
 
-class station : public sf::Drawable{
+class station : public sf::Drawable, public resizable {
 public:
 	//Which type of station will determine what passengers will want to go here, and how to draw it
 	enum STATION_TYPE {
@@ -16,11 +17,11 @@ public:
 	//also the type of the station
 	station(float _relX, float _relY, STATION_TYPE _type);
 
-	//Resizes this object to the new screen size
-	void resize();
+	//Overridden
+	void resize(sf::Vector2f rel_bounds, sf::IntRect window_bounds) override;
 
 	//Rearrange the handles around this station
-	void rearrange_handles();
+	void rearrange_handles(sf::Vector2f rel_bounds, sf::IntRect window_bounds);
 
 	//Draws the object onto the render target
 	//Render state is never used, advanced shaders are out of the scope of this program

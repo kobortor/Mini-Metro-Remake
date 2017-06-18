@@ -8,20 +8,17 @@
 #include"game_variables.h"
 
 station::station(float _relX, float _relY, STATION_TYPE _type) :relX(_relX), relY(_relY), type(_type) {
-	resize();
+	resize(sf::Vector2f(1,1), sf::IntRect(0,0,1,1));
 }
 
-void station::resize() {
-	sf::Vector2f relBounds = main_game::get_relative_bounds();
-	sf::IntRect bounds = main_game::get_window_bounds();
-
-	posX = bounds.left + bounds.width * relX / relBounds.x;
-	posY = bounds.top + bounds.height * relY / relBounds.y;
+void station::resize(sf::Vector2f rel_bounds, sf::IntRect window_bounds) {
+	posX = window_bounds.left + window_bounds.width * relX / rel_bounds.x;
+	posY = window_bounds.top + window_bounds.height * relY / rel_bounds.y;
 
 	reorg_passengers();
 }
 
-void station::rearrange_handles() {
+void station::rearrange_handles(sf::Vector2f rel_bounds, sf::IntRect window_bounds) {
 	std::bitset<segment::NUM_DIRECTIONS> dirs;
 	std::vector<handle*> tofix;
 	for (metro_line &ml : main_game::lines) {
@@ -84,7 +81,7 @@ void station::rearrange_handles() {
 		for (handle *h : handles[a]) {
 			curAng += deltaAng;
 			h->set_angle(curAng);
-			h->resize();
+			h->resize(rel_bounds, window_bounds);
 		}
 	}
 }

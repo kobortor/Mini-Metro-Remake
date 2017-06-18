@@ -5,17 +5,17 @@
 #include"handle.h"
 #include<list>
 
-class metro_line : public sf::Drawable {
+class metro_line : public sf::Drawable, public resizable {
 public:
 	enum HANDLE_CLICK {
 		NONE, FRONT, END
 	};
 
 	//Constructs a metro_line beginning at [begin] with the color [_color]
-	metro_line(station* begin, sf::Color _color);
+	metro_line(station *begin, sf::Color _color, sf::Vector2f rel_bounds, sf::IntRect window_bounds);
 
 	//Resizes this object to the new screen size
-	void resize();
+	void resize(sf::Vector2f, sf::IntRect) override;
 
 	segment get_next_path(station* cur, station* prv);
 	HANDLE_CLICK click_handle(int posX, int posY);

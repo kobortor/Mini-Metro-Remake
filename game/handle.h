@@ -1,13 +1,14 @@
 #pragma once
 #include<SFML\Graphics.hpp>
 #include"station.h"
+#include"../resizable.h"
 
 class metro_line;
 
-class handle : public sf::Drawable {
+class handle : public sf::Drawable, public resizable {
 public:
 	//Constructs the handle based on the line of its parent and that station it's home to
-	handle(metro_line *_parent, station *_home);
+	handle(metro_line *_parent, station *_home, sf::Vector2f rel_bounds, sf::IntRect window_bounds);
 
 	//Returns true if coordinate is contained in the handle, false otherwise
 	bool contained(int x, int y) const;
@@ -17,8 +18,8 @@ public:
 	//This is a library function
 	void draw(sf::RenderTarget&, sf::RenderStates) const override;
 
-	//Resizes this object to the new screen size
-	void resize();
+	//Overridden
+	void resize(sf::Vector2f vec, sf::IntRect window_bounds) override;
 
 	//Returns the station the handle is located at
 	station* located_at();

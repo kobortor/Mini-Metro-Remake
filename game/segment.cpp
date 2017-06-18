@@ -61,7 +61,10 @@ void segment::draw(sf::RenderTarget& targ, sf::RenderStates) const {
 	}
 }
 
-void segment::resize() {
+void segment::resize(sf::Vector2f rel_bounds, sf::IntRect window_bounds) {
+	orig->resize(rel_bounds, window_bounds);
+	dest->resize(rel_bounds, window_bounds);
+
 	begin = orig->get_pos();
 	end = dest->get_pos();
 }

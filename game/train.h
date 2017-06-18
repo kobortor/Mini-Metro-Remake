@@ -3,7 +3,7 @@
 #include"metro_line.h"
 #include"passenger.h"
 
-class train : public sf::Drawable {
+class train : public sf::Drawable, public resizable {
 public:
 
 	//The line that this train runs on
@@ -26,8 +26,8 @@ public:
 	//Gets the position of the train (in pixels position)
 	sf::Vector2f get_pos();
 
-	//Resizes this object to the new screen size
-	void resize();
+	//Overridden
+	void resize(sf::Vector2f, sf::IntRect) override;
 
 	//Updates the station
 	//[delta] is the number of milliseconds since last update

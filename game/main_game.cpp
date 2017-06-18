@@ -85,15 +85,15 @@ void main_game::resize() {
 	unit_length = (window_bounds.width / rel_bounds.x) * map_gen->get_relative_unit();
 
 	for (station &stn : stations) {
-		stn.resize();
+		stn.resize(rel_bounds, window_bounds);
 	}
 
 	for (metro_line &ml : lines) {
-		ml.resize();
+		ml.resize(rel_bounds, window_bounds);
 	}
 
 	for (train &t : trains) {
-		t.resize();
+		t.resize(rel_bounds, window_bounds);
 	}
 
 	train_btn->resize();
@@ -239,7 +239,7 @@ void main_game::handle_mouse_click(sf::Event::MouseButtonEvent eve) {
 			for (station &stn : stations) {
 				if (stn.contained(eve.x, eve.y)) {
 					CLICK_MODE = LINE_EDIT_BACK;
-					lines.push_back(metro_line(&stn, avail_colors.back()));
+					lines.push_back(metro_line(&stn, avail_colors.back(), get_relative_bounds(), get_window_bounds()));
 					avail_colors.pop_back();
 					set_edit_line(&lines.back(), LINE_EDIT_BACK);
 					break;
@@ -324,7 +324,7 @@ void main_game::handle_mouse_move(sf::Event::MouseMoveEvent eve) {
 				} else if (edit_line->stations.size() >= 2) {
 					if (CLICK_MODE == LINE_EDIT_BACK) {
 						if (hover == edit_line->stations.back()) {
-							edit_line->stations.back()->rearrange_handles();
+							edit_line->stations.back()->rearrange_handles(get_relative_bounds(), get_window_bounds());
 							graph::erase_link(edit_line->segments.back().get_origin(), edit_line->segments.back().get_destination());
 							edit_line->segments.pop_back();
 							edit_line->stations.pop_back();
@@ -337,7 +337,7 @@ void main_game::handle_mouse_move(sf::Event::MouseMoveEvent eve) {
 						}
 					} else if (CLICK_MODE == LINE_EDIT_FRONT) {
 						if (hover == edit_line->stations.front()) {
-							edit_line->stations.front()->rearrange_handles();
+							edit_line->stations.front()->rearrange_handles(get_relative_bounds(), get_window_bounds());
 							graph::erase_link(edit_line->segments.front().get_origin(), edit_line->segments.front().get_destination());
 							edit_line->segments.pop_front();
 							edit_line->stations.pop_front();
@@ -382,11 +382,11 @@ void main_game::handle_mouse_release(sf::Event::MouseButtonEvent eve) {
 				lines.erase(iter);
 			}
 		} else {
-			edit_line->front_handle = handle(&*edit_line, edit_line->stations.front());
-			edit_line->back_handle = handle(&*edit_line, edit_line->stations.back());
+			edit_line->front_handle = handle(&*edit_line, edit_line->stations.front(), get_relative_bounds(), get_window_bounds());
+			edit_line->back_handle = handle(&*edit_line, edit_line->stations.back(), get_relative_bounds(), get_window_bounds());
 
 			for (station* stn : edit_line->stations) {
-				stn->rearrange_handles();
+				stn->rearrange_handles(get_relative_bounds(), get_window_bounds());
 			}
 		}
 		CLICK_MODE = NONE;

@@ -1,16 +1,20 @@
 #include"metro_line.h"
 
-metro_line::metro_line(station *begin, sf::Color _color) : front_handle(this, begin), back_handle(this, begin), color(_color) {
+metro_line::metro_line(station *begin, sf::Color _color, sf::Vector2f rel_bounds, sf::IntRect window_bounds) :
+	front_handle(this, begin, rel_bounds, window_bounds), back_handle(this, begin, rel_bounds, window_bounds), color(_color) {
 	stations.push_back(begin);
 }
 
-void metro_line::resize() {
+void metro_line::resize(sf::Vector2f rel_bounds, sf::IntRect window_bounds) {
+	for (station *stn : stations) {
+		stn->resize(rel_bounds, window_bounds);
+	}
 	for (segment &seg : segments) {
 		seg.set_begin_point(seg.get_origin()->get_pos());
 		seg.set_end_point(seg.get_destination()->get_pos());
 	}
-	front_handle.resize();
-	back_handle.resize();
+	front_handle.resize(rel_bounds, window_bounds);
+	back_handle.resize(rel_bounds, window_bounds);
 }
 
 segment metro_line::get_next_path(station* cur, station* prv) {

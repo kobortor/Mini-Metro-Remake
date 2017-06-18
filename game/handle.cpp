@@ -2,10 +2,10 @@
 #include"../functions.h"
 #include"metro_line.h"
 
-handle::handle(metro_line* _parent, station *_home) : parent(_parent), home(_home) { 
+handle::handle(metro_line * _parent, station * _home, sf::Vector2f rel_bounds, sf::IntRect window_bounds) : parent(_parent), home(_home) {
 	if (home != nullptr) {
-		home->rearrange_handles();
-		resize();
+		home->rearrange_handles(rel_bounds, window_bounds);
+		resize(rel_bounds, window_bounds);
 	}
 }
 
@@ -26,7 +26,8 @@ void handle::draw(sf::RenderTarget &targ, sf::RenderStates) const {
 	}
 }
 
-void handle::resize() {
+void handle::resize(sf::Vector2f vec, sf::IntRect window_bounds) {
+	//this should only be called from the parent metro_line, 
 	if (parent == nullptr) {
 		return;
 	}

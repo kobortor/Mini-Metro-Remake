@@ -28,7 +28,7 @@ Y---/
 
 class metro_line;
 
-class segment : public sf::Drawable {
+class segment : public sf::Drawable, public resizable {
 public:
 	segment();
 	segment(metro_line *_parent);
@@ -41,8 +41,8 @@ public:
 	//This is a library function
 	void draw(sf::RenderTarget&, sf::RenderStates) const override;
 
-	//Resizes this object to the new screen size
-	void resize();
+	//Overridden
+	void resize(sf::Vector2f rel_bounds, sf::IntRect window_bounds) override;
 
 	//Returns the width the segment in pixels
 	static float screen_size();
