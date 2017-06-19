@@ -6,7 +6,7 @@
 #include"../game/file_map_generator.h"
 
 map_button::map_button(int _x, int _y, int _wid, int _ht, std::string _display_name, std::string _map_file_name)
-	: button(_x,_y,_wid,_ht), display_name(_display_name), map_file_name(_map_file_name) {
+	: button(_x, _y, _wid, _ht), display_name(_display_name), map_file_name(_map_file_name) {
 }
 
 void map_button::draw(sf::RenderTarget& targ, sf::RenderStates) const {
@@ -18,9 +18,9 @@ void map_button::draw(sf::RenderTarget& targ, sf::RenderStates) const {
 	sf::RectangleShape rect(sf::Vector2f(wid, ht));
 	rect.setPosition(x, y);
 	if (isClicked) {
-		rect.setFillColor(sf::Color::White);
+		rect.setFillColor(sf::Color(192, 192, 192));
 	} else {
-		rect.setFillColor(sf::Color::Green);
+		rect.setFillColor(sf::Color(128, 128, 128));
 	}
 
 	targ.draw(rect);

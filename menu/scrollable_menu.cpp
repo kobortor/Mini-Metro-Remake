@@ -20,7 +20,7 @@ void scrollable_menu_H::draw(sf::RenderTarget &targ, sf::RenderStates) const {
 	sf::RectangleShape rect;
 	rect.setPosition(sf::Vector2f(0, y1));
 	rect.setSize(sf::Vector2f(10000, y2 - y1));
-	rect.setFillColor(sf::Color::Red);
+	rect.setFillColor(sf::Color::White);
 
 	targ.draw(rect);
 
