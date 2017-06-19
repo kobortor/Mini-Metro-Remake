@@ -87,30 +87,36 @@ float file_map_generator::get_relative_unit() {
 }
 
 void file_map_generator::update_until(long long game_tick) {
-	while (!points.empty() && game_tick - last_update > 1000) {
-		last_update += 1000;
+	while (!points.empty() && game_tick - last_update > 5000) {
+		last_update += 5000;
 		sf::Vector2f to_add = points.front();
 		points.pop();
 
-		//cheap way to cycle through
-		station::STATION_TYPE type[] = { station::TRIANGLE, station::SQUARE, station::CIRCLE };
-
-		main_game::add_station(to_add.x, to_add.y, type[last_update % 3]);
+		main_game::add_station(to_add.x, to_add.y, station::STATION_TYPE(rand() % station::NUM_STATION_TYPES));
 	}
 	if (main_game::stations.empty()) {
 		last_passenger = game_tick;
 	} else {
-		while (game_tick - last_passenger > 450) {
-
-			//cheap way to cycle through
-			station::STATION_TYPE type[] = { station::TRIANGLE, station::SQUARE, station::CIRCLE };
+		while (game_tick - last_passenger > next_passenger_delay) {
+			last_passenger += next_passenger_delay;
+			passenger_spawned++;
+			if (passenger_spawned > 1000) {
+				next_passenger_delay = 500;
+			} else {
+				next_passenger_delay = 2000 - next_passenger_delay / 1000.f * 1500;
+			}
 
 			auto iter = main_game::stations.begin();
 			std::advance(iter, rand() % main_game::stations.size());
-			if (iter->get_type() != type[last_passenger / 3 % 3]) {
-				iter->add_passenger(new passenger(type[last_passenger / 3 % 3]));
+
+			//keep trying until this works
+			while (1) {
+				station::STATION_TYPE tp = station::STATION_TYPE(rand() % station::NUM_STATION_TYPES);
+				if (tp != iter->get_type()) {
+					iter->add_passenger(new passenger(tp));
+					break;
+				}
 			}
-			last_passenger += 450;
 		}
 	}
 }

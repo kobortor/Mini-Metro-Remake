@@ -22,6 +22,8 @@ protected:
 	sf::Vector2f rel_bounds;
 	std::queue<sf::Vector2f> points;
 
+	int passenger_spawned = 0;
+	int next_passenger_delay = 7500;
 	long long last_passenger = 0;
 	long long last_update = 0;
 };

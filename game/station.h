@@ -10,7 +10,7 @@ class station : public sf::Drawable, public resizable {
 public:
 	//Which type of station will determine what passengers will want to go here, and how to draw it
 	enum STATION_TYPE {
-		CIRCLE, TRIANGLE, SQUARE
+		CIRCLE, TRIANGLE, SQUARE, NUM_STATION_TYPES
 	};
 
 	//The x position and y position relative to the screen ratios
