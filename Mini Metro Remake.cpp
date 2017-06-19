@@ -9,6 +9,7 @@
 
 //Program starts here
 int main() {
+	srand(sys::get_millis());
 	font::load();
 	textures::load();
 

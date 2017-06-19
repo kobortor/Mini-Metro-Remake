@@ -94,7 +94,6 @@ public:
 	//aka what action is it doing
 	static CLICK_MODE_TYPE CLICK_MODE;
 private:
-	static int trains_left;
 	static std::list<sf::Color> avail_colors;
 	static float unit_length;
 	static time_t game_start_time;

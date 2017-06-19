@@ -26,7 +26,6 @@ std::list<sf::Color> main_game::avail_colors;
 train_button* main_game::train_btn;
 delete_train_button* main_game::del_train_btn;
 float main_game::unit_length;
-int main_game::trains_left;
 main_game::CLICK_MODE_TYPE main_game::CLICK_MODE;
 int main_game::prvX = -1;
 int main_game::prvY = -1;
@@ -37,7 +36,7 @@ void main_game::initialize(map_generator* _map_gen) {
 	avail_colors = {
 		sf::Color::Green,
 		sf::Color::Blue,
-		sf::Color::Red,
+		sf::Color(255, 165, 0), //orange
 		sf::Color::Cyan,
 		sf::Color::Magenta,
 		sf::Color::Yellow
@@ -51,11 +50,10 @@ void main_game::initialize(map_generator* _map_gen) {
 
 	auto rel_bound = get_relative_bounds();
 
-	train_btn = new train_button((rel_bound.x - 0.25 * rel_bound.y), 0.05 * rel_bound.y, 
+	train_btn = new train_button((rel_bound.x - 0.25 * rel_bound.y), 0.05 * rel_bound.y,
 		0.2 * rel_bound.y, 0.1 * rel_bound.y);
 	del_train_btn = new delete_train_button((rel_bound.x - 0.25 * rel_bound.y), 0.15 * rel_bound.y,
 		0.2 * rel_bound.y, 0.1 * rel_bound.y);
-	trains_left = game_variables::get_max_train_count();
 
 	resize();
 }
@@ -148,7 +146,7 @@ bool main_game::is_game_over() {
 }
 
 int main_game::num_trains_left() {
-	return trains_left;
+	return game_variables::get_max_train_count() - trains.size();
 }
 
 sf::Vector2f main_game::get_relative_bounds() {
@@ -190,6 +188,20 @@ void main_game::render() {
 	if (CLICK_MODE == DELETE_TRAIN) {
 		float radius = delete_train_button::select_range();
 		func::draw_ring(sf::Vector2f(prvX, prvY), radius, radius * 1.1, 30, sf::Color::Red, main_window::get_instance());
+	}
+
+	int left_side = 0;
+	auto iter = avail_colors.begin();
+	while (iter != avail_colors.end()) {
+		float side_len = get_unit_length();
+		sf::RectangleShape rect;
+		rect.setSize(sf::Vector2f(side_len, side_len));
+
+		rect.setPosition(left_side, window_bounds.top + window_bounds.height - side_len);
+		rect.setFillColor(*iter);
+		left_side += side_len;
+		iter++;
+		main_window::get_instance().draw(rect);
 	}
 }
 
@@ -390,7 +402,7 @@ void main_game::handle_mouse_release(sf::Event::MouseButtonEvent eve) {
 			}
 		}
 		CLICK_MODE = NONE;
-	} else if(CLICK_MODE == PLACE_TRAIN) {
+	} else if (CLICK_MODE == PLACE_TRAIN) {
 		train_btn->try_release(eve.x, eve.y);
 	} else if (CLICK_MODE == DELETE_TRAIN) {
 		del_train_btn->try_release(eve.x, eve.y);

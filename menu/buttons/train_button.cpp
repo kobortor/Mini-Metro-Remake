@@ -16,6 +16,7 @@ void train_button::draw(sf::RenderTarget &targ, sf::RenderStates) const {
 	sf::Text txt;
 	txt.setCharacterSize(char_size);
 	txt.setFont(font::consola);
+	txt.setFillColor(sf::Color::Red);
 
 	txt.setString(std::to_string(main_game::num_trains_left()));
 	txt.setPosition(x + wid, y - char_size);

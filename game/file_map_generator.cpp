@@ -74,8 +74,9 @@ file_map_generator::file_map_generator(std::string file_name) {
 		std::stringstream ss(*iter++);
 		float x, y;
 		ss >> x >> y;
-		points.push({ x, y });
+		points.push_back({ x, y });
 	}
+	std::random_shuffle(points.begin(), points.end());
 }
 
 sf::Vector2f file_map_generator::get_relative_bounds() {
@@ -87,10 +88,17 @@ float file_map_generator::get_relative_unit() {
 }
 
 void file_map_generator::update_until(long long game_tick) {
-	while (!points.empty() && game_tick - last_update > 5000) {
-		last_update += 5000;
-		sf::Vector2f to_add = points.front();
-		points.pop();
+	while (!points.empty() && game_tick - last_update > next_station_delay) {
+		last_update += next_station_delay;
+		station_spawned++;
+		if (station_spawned > 15) {
+			next_station_delay = 2000 + 15 * 1000;
+		} else {
+			next_station_delay = 2000 + 1000 * station_spawned;
+		}
+
+		sf::Vector2f to_add = points.back();
+		points.pop_back();
 
 		main_game::add_station(to_add.x, to_add.y, station::STATION_TYPE(rand() % station::NUM_STATION_TYPES));
 	}
@@ -103,7 +111,7 @@ void file_map_generator::update_until(long long game_tick) {
 			if (passenger_spawned > 1000) {
 				next_passenger_delay = 500;
 			} else {
-				next_passenger_delay = 2000 - next_passenger_delay / 1000.f * 1500;
+				next_passenger_delay = 2000 - passenger_spawned / 200 * 1750;
 			}
 
 			auto iter = main_game::stations.begin();

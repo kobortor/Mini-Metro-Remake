@@ -1,6 +1,7 @@
 #include"handle.h"
 #include"../functions.h"
 #include"metro_line.h"
+#include"main_game.h"
 
 handle::handle(metro_line * _parent, station * _home, sf::Vector2f rel_bounds, sf::IntRect window_bounds) : parent(_parent), home(_home) {
 	if (home != nullptr) {
@@ -40,8 +41,7 @@ void handle::resize(sf::Vector2f vec, sf::IntRect window_bounds) {
 		return;
 	}
 
-	const float d1 = 35;
-	const float d2 = 60;
+	const float d2 = main_game::get_unit_length() * 2;
 
 	sf::Vector2f orig = home->get_pos();
 

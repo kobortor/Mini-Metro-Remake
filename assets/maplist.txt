@@ -1,5 +1,7 @@
+Washington D.C.
+assets/DC.txt
 Toronto
-assets/Toronto.txt
+assets/TO.txt
 New York
 assets/NYC.txt
 Osaka

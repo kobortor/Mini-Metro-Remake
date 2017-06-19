@@ -20,10 +20,12 @@ public:
 protected:
 	float rel_unit;
 	sf::Vector2f rel_bounds;
-	std::queue<sf::Vector2f> points;
+	std::vector<sf::Vector2f> points;
 
 	int passenger_spawned = 0;
+	int station_spawned = 0;
 	int next_passenger_delay = 7500;
+	int next_station_delay = 2000;
 	long long last_passenger = 0;
 	long long last_update = 0;
 };
