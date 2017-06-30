@@ -31,7 +31,3 @@ The coordinates will then be given in pairs of floating point numbers separated 
     1.00 1.00
     2.00 3.00
     0.50 0.12
-	
-## Notices
-
-Only the NYC map is playable, typing coordinates off PDFs is very hard and tedious, but if you'd like you can type in your own maps.
